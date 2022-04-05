@@ -60,9 +60,9 @@ Window::~Window()
 {
 }
 
-Frame Window::renderFrame(Vec2 cameraPosition, float cameraZoom)
+Frame Window::renderFrame(Vec2 cameraPosition, Vec2 cameraRadius)
 {
-	return Frame(window, cameraPosition, cameraZoom);
+	return Frame(window, cameraPosition, cameraRadius);
 }
 
 }

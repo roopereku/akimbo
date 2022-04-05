@@ -3,7 +3,7 @@
 
 namespace Akimbo {
 
-Core::Core() : window("Akimbo", Vec2(0.5f, 0.5f))
+Core::Core() : cameraRadius(1.0f, 1.0f), window("Akimbo", Vec2(0.5f, 0.5f))
 {
 }
 
@@ -36,7 +36,7 @@ void Core::start()
 		}
 
 		//	Create a new frame that the user can use for drawing
-		Frame frame = window.renderFrame(cameraPosition, 1.0f);
+		Frame frame = window.renderFrame(cameraPosition, cameraRadius);
 
 		onUpdate(delta);
 		onRender(frame);

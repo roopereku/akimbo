@@ -3,8 +3,8 @@
 
 namespace Akimbo {
 
-Frame::Frame(SDL_Window* w, Vec2 cameraPosition, float cameraZoom)
-	: window(w), cameraPosition(cameraPosition), cameraZoom(cameraZoom)
+Frame::Frame(SDL_Window* w, Vec2 cameraPosition, Vec2 cameraRadius)
+	: window(w), cameraPosition(cameraPosition), cameraRadius(cameraRadius)
 {
 	color(0, 0, 0);
 	SDL_RenderClear(SDL_GetRenderer(window));
@@ -17,11 +17,8 @@ Frame::~Frame()
 
 void Frame::drawBox(Vec2 position, Vec2 size, bool filled)
 {
-	/*	TODO Support world space range that looks like (-1.0f, -1.0f) - (+1.0f, +1.0f)
-	 *	This can be done by subtracting the radius of the world space from the size */
-
 	Vec2i p = convert(position).as <int> ();
-	Vec2i s = convert(size).as <int> ();
+	Vec2i s = convert(size - cameraRadius).as <int> ();
 
 	SDL_Rect r { p.x, p.y, s.x + 1, s.y + 1 };
 	if(filled) SDL_RenderFillRect(SDL_GetRenderer(window), &r);
@@ -51,16 +48,20 @@ Vec2 Frame::convert(Vec2 position)
 {
 	int w;
 	int h;
+	SDL_GetWindowSize(window, &w, &h);
 
 	//	Move the point depending on where the camera is
 	position -= cameraPosition;
 
-	//	TODO Support world space range that looks like (-1.0f, -1.0f) - (+1.0f, +1.0f)
-	/*	Assuming that the input is (0.5f, 0.5f), multiply said input with
-	 *	the window size so that the point ends up at the middle of the window */
-	SDL_GetWindowSize(window, &w, &h);
-	return Vec2(position.x * w, position.y * h);
-}
+	/*	Because the position can be negative, first make it positive by
+	 *	adding the camera radius to it and then convert it to screen space */
+	position += cameraRadius;
+	position *= (Vec2(w, h) / cameraRadius);
 
+	/*	If position is the same as the camera radius, 
+	 *	position will have a value that is window size times 2.
+	 *	To fix it just divide the position x and y by 2 */
+	return Vec2(position.x / 2, position.y / 2);
+}
 
 }

@@ -17,6 +17,7 @@ protected:
 	void setFpsCap(unsigned cap);
 
 	Vec2 cameraPosition;
+	Vec2 cameraRadius;
 
 private:
 	double fpsCapValue = 0;

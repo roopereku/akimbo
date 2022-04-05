@@ -18,14 +18,14 @@ public:
 	void drawDot(Vec2 position);
 
 protected:
-	Frame(SDL_Window* w, Vec2 cameraPosition, float cameraZoom);
+	Frame(SDL_Window* w, Vec2 cameraPosition, Vec2 cameraRadius);
 
 private:
 	Vec2 convert(Vec2 position);
 	SDL_Window* window;
 
 	Vec2 cameraPosition;
-	float cameraZoom;
+	Vec2 cameraRadius;
 };
 
 }
