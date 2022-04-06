@@ -65,4 +65,11 @@ Frame Window::renderFrame(Vec2 cameraPosition, Vec2 cameraRadius)
 	return Frame(window, cameraPosition, cameraRadius);
 }
 
+Vec2i Window::swapSize(Vec2i newSize)
+{
+	Vec2i oldSize = size;
+	size = newSize;
+	return oldSize;
+}
+
 }

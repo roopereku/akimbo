@@ -17,10 +17,13 @@ public:
 
 	Frame renderFrame(Vec2 cameraPosition, Vec2 cameraRadius);
 	bool valid() { return window && renderer; }
+	Vec2i swapSize(Vec2i newSize);
 
 private:
 	SDL_Window* window;
 	SDL_Renderer* renderer;
+
+	Vec2i size;
 };
 
 }
