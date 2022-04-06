@@ -58,6 +58,10 @@ Window::Window(const std::string& title, Vec2 sizeMultiplier)
 
 Window::~Window()
 {
+	if(renderer) SDL_DestroyRenderer(renderer);
+	if(window) SDL_DestroyWindow(window);
+
+	SDL_Quit();
 }
 
 Frame Window::renderFrame(Vec2 cameraPosition, Vec2 cameraRadius)
