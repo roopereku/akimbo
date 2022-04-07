@@ -6,11 +6,11 @@ OBJECT_RELEASE	=	$(addprefix obj/release/,$(addsuffix .o,$(SOURCE)))
 
 debug:	obj/ $(OBJECT_DEBUG)
 	@make -C akimbo debug
-	@g++ -o akimboengine $(OBJECT_DEBUG) akimbo/obj/debug/*.cc.o -lSDL2 -lSDL2_image
+	@g++ -o akimboengine $(OBJECT_DEBUG) akimbo/obj/debug/*.cc.o -lSDL2 -lSDL2_image -lSDL2_ttf
 
 release:	obj/ $(OBJECT_RELEASE)
 	@make -C akimbo release
-	@g++ -o akimboengine $(OBJECT_RELEASE) akimbo/obj/release/*.cc.o -lSDL2 -lSDL2_image
+	@g++ -o akimboengine $(OBJECT_RELEASE) akimbo/obj/release/*.cc.o -lSDL2 -lSDL2_image -lSDL2_ttf
 
 obj/debug/%.cc.o:	%.cc $(HEADER)
 	@echo "Building $< in debug mode"

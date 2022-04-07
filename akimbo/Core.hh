@@ -1,6 +1,7 @@
 #ifndef AKIMBO_CORE_HH
 #define AKIMBO_CORE_HH
 
+#include "Font.hh"
 #include "Window.hh"
 #include "Texture.hh"
 
@@ -18,6 +19,7 @@ protected:
 	virtual void onUpdate(double delta)=0;
 
 	void setFpsCap(unsigned cap);
+	Font& loadFont(const std::string& path);
 	Texture& loadTexture(const std::string& path);
 
 	Vec2 cameraPosition;
@@ -27,6 +29,7 @@ private:
 	double fpsCapValue = 0;
 
 	std::vector <Texture> textures;
+	std::vector <Font> fonts;
 	Window window;
 };
 

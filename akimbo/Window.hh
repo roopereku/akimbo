@@ -23,6 +23,7 @@ public:
 	 *	expose renderer for the texture class which takes
 	 *	a Window in it's constructor */
 	friend class Texture;
+	friend class Font;
 
 private:
 	SDL_Window* window;

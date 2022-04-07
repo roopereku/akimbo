@@ -79,4 +79,10 @@ Texture& Core::loadTexture(const std::string& path)
 	return textures.back();
 }
 
+Font& Core::loadFont(const std::string& path)
+{
+	fonts.emplace_back(path, &window);
+	return fonts.back();
+}
+
 }

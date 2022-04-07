@@ -53,6 +53,68 @@ void Frame::drawTexture(Texture& texture, Vec2 position, Vec2 size)
 	SDL_RenderCopy(SDL_GetRenderer(window), texture.texture, NULL, &r);
 }
 
+void Frame::drawCharacter(char chr, Font& font, Vec2 position, Vec2 size)
+{
+	//	Calculate the position of the character in the font
+	int index = chr - 32;
+	int x = font.characterSize.x * index;
+
+	Vec2i p = convert(position).as <int> ();
+	Vec2i s = convert(size - cameraRadius).as <int> ();
+
+	SDL_Rect r { p.x, p.y, s.x + 1, s.y + 1 };
+	SDL_Rect src { x, 0, font.characterSize.x, font.characterSize.y };
+
+	//	Draw the given character from the font texture
+	SDL_RenderCopy(SDL_GetRenderer(window), font.texture, &src, &r);
+}
+
+void Frame::drawText(const std::string& str, Font& font, Vec2 position, Vec2 size)
+{
+	size_t longestLine = 0;
+	size_t lineLength = 0;
+	size_t lines = 1;
+
+	//	First find all the line breaks and the longest line
+	for(auto c : str)
+	{
+		if(c == '\n')
+		{
+			if(lineLength > longestLine)
+				longestLine = lineLength;
+
+			lines++;
+			lineLength = 0;
+		}
+
+		else lineLength++;
+	}
+
+	//	There might not even be a new line so update the longest line
+	if(lineLength > longestLine)
+		longestLine = lineLength;
+
+	//	Calculate the size of a single character
+	size /= Vec2(longestLine, lines);
+	float originX = position.x;
+
+	for(auto c : str)
+	{
+		//	If the character is a newline, go on the next line
+		if(c == '\n')
+		{
+			position.x = originX;
+			position.y += size.y;
+
+			continue;
+		}
+
+		//	Move the position forward and draw the character
+		drawCharacter(c, font, position, size);
+		position.x += size.x;
+	}
+}
+
 Vec2 Frame::convert(Vec2 position)
 {
 	int w;

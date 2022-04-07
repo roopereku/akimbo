@@ -1,6 +1,7 @@
 #ifndef AKIMBO_FRAME_HH
 #define AKIMBO_FRAME_HH
 
+#include "Font.hh"
 #include "Texture.hh"
 #include "Vector2.hh"
 
@@ -19,6 +20,8 @@ public:
 	void drawDot(Vec2 position);
 
 	void drawTexture(Texture& texture, Vec2 position, Vec2 size);
+	void drawCharacter(char chr, Font& font, Vec2 position, Vec2 size);
+	void drawText(const std::string& str, Font& font, Vec2 position, Vec2 size);
 
 protected:
 	Frame(SDL_Window* w, Vec2 cameraPosition, Vec2 cameraRadius);

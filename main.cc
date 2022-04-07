@@ -3,7 +3,7 @@
 class Game : public Akimbo::Core
 {
 public:
-	Game() : Akimbo::Core(), t(loadTexture("test.png"))
+	Game() : Akimbo::Core(), t(loadTexture("test.png")), f(loadFont("/usr/share/fonts/TTF/AndaleMo.TTF"))
 	{
 	}
 
@@ -17,6 +17,10 @@ public:
 
 		frame.color(255, 0, 0);
 		frame.drawTexture(t, Vec2(-0.25f, -0.25f), Vec2(0.5f, 0.5f));
+
+		frame.color(0, 255, 0);
+		frame.drawBox(Vec2(-0.75f, -0.75f), Vec2(0.25f, 0.25f), false);
+		frame.drawText("moi\n12345", f, Vec2(-0.75f, -0.75f), Vec2(0.25f, 0.25f));
 	}
 
 	void onUpdate(double delta) override
@@ -26,6 +30,7 @@ public:
 
 private:
 	Akimbo::Texture& t;
+	Akimbo::Font& f;
 };
 
 int main()
