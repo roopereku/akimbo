@@ -19,11 +19,17 @@ public:
 	bool valid() { return window && renderer; }
 	Vec2i swapSize(Vec2i newSize);
 
+	/*	Because SDL requires SDL_Renderer to create textures, let's
+	 *	expose renderer for the texture class which takes
+	 *	a Window in it's constructor */
+	friend class Texture;
+
 private:
 	SDL_Window* window;
-	SDL_Renderer* renderer;
-
 	Vec2i size;
+
+protected:
+	SDL_Renderer* renderer;
 };
 
 }

@@ -19,8 +19,8 @@ void Frame::drawBox(Vec2 position, Vec2 size, bool filled)
 {
 	Vec2i p = convert(position).as <int> ();
 	Vec2i s = convert(size - cameraRadius).as <int> ();
-
 	SDL_Rect r { p.x, p.y, s.x + 1, s.y + 1 };
+
 	if(filled) SDL_RenderFillRect(SDL_GetRenderer(window), &r);
 	else SDL_RenderDrawRect(SDL_GetRenderer(window), &r);
 }
@@ -42,6 +42,15 @@ void Frame::drawDot(Vec2 position)
 void Frame::color(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	SDL_SetRenderDrawColor(SDL_GetRenderer(window), r, g, b, a);
+}
+
+void Frame::drawTexture(Texture& texture, Vec2 position, Vec2 size)
+{
+	Vec2i p = convert(position).as <int> ();
+	Vec2i s = convert(size - cameraRadius).as <int> ();
+	SDL_Rect r { p.x, p.y, s.x + 1, s.y + 1 };
+
+	SDL_RenderCopy(SDL_GetRenderer(window), texture.texture, NULL, &r);
 }
 
 Vec2 Frame::convert(Vec2 position)

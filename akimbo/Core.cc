@@ -73,4 +73,10 @@ void Core::setFpsCap(unsigned cap)
 	fpsCapValue = 1.0 / cap;
 }
 
+Texture& Core::loadTexture(const std::string& path)
+{
+	textures.emplace_back(path, &window);
+	return textures.back();
+}
+
 }
