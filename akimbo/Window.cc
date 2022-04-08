@@ -64,7 +64,7 @@ Window::~Window()
 	SDL_Quit();
 }
 
-Frame Window::renderFrame(Vec2 cameraPosition, Vec2 cameraRadius)
+Frame Window::renderFrame(Vec2& cameraPosition, Vec2& cameraRadius)
 {
 	return Frame(window, cameraPosition, cameraRadius);
 }

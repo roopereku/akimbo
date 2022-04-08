@@ -15,7 +15,7 @@ public:
 	Window(const std::string& title, Vec2 sizeMultiplier);
 	~Window();
 
-	Frame renderFrame(Vec2 cameraPosition, Vec2 cameraRadius);
+	Frame renderFrame(Vec2& cameraPosition, Vec2& cameraRadius);
 	bool valid() { return window && renderer; }
 	Vec2i swapSize(Vec2i newSize);
 

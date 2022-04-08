@@ -3,7 +3,7 @@
 
 namespace Akimbo {
 
-Frame::Frame(SDL_Window* w, Vec2 cameraPosition, Vec2 cameraRadius)
+Frame::Frame(SDL_Window* w, Vec2& cameraPosition, Vec2& cameraRadius)
 	: window(w), cameraPosition(cameraPosition), cameraRadius(cameraRadius)
 {
 	color(0, 0, 0);

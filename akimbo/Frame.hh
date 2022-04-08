@@ -24,14 +24,14 @@ public:
 	void drawText(const std::string& str, Font& font, Vec2 position, Vec2 size);
 
 protected:
-	Frame(SDL_Window* w, Vec2 cameraPosition, Vec2 cameraRadius);
+	Frame(SDL_Window* w, Vec2& cameraPosition, Vec2& cameraRadius);
 
 private:
 	Vec2 convert(Vec2 position);
 	SDL_Window* window;
 
-	Vec2 cameraPosition;
-	Vec2 cameraRadius;
+	Vec2& cameraPosition;
+	Vec2& cameraRadius;
 };
 
 }
