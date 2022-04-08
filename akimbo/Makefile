@@ -1,5 +1,5 @@
-HEADER	=	$(wildcard *.hh)
-SOURCE	=	$(wildcard *.cc)
+HEADER	=	$(wildcard *.hh ui/*.hh)
+SOURCE	=	$(wildcard *.cc ui/*.cc)
 
 OBJECT_DEBUG	=	$(addprefix obj/debug/,$(addsuffix .o,$(SOURCE)))
 OBJECT_RELEASE	=	$(addprefix obj/release/,$(addsuffix .o,$(SOURCE)))
@@ -17,8 +17,8 @@ obj/release/%.cc.o:	%.cc $(HEADER)
 	@g++ -c -o $@ $< -std=c++17 -pedantic -Wall -Wextra -O3
 
 obj/:
-	@mkdir -p obj/debug
-	@mkdir -p obj/release
+	@mkdir -p obj/debug/ui
+	@mkdir -p obj/release/ui
 
 clean:
 	@rm -r obj/

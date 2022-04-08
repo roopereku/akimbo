@@ -4,6 +4,7 @@
 #include "Font.hh"
 #include "Window.hh"
 #include "Texture.hh"
+#include "ui/Container.hh"
 
 #include <vector>
 
@@ -14,6 +15,17 @@ public:
 	Core();
 	void start();
 
+private:
+	Vec2 cameraRadius;
+	Vec2 uiRadius;
+
+	double fpsCapValue = 0;
+	Window window;
+
+	std::vector <Texture> textures;
+	std::vector <Font> fonts;
+
+
 protected:
 	virtual void onRender(Frame& frame)=0;
 	virtual void onUpdate(double delta)=0;
@@ -23,14 +35,9 @@ protected:
 	Texture& loadTexture(const std::string& path);
 
 	Vec2 cameraPosition;
-	Vec2 cameraRadius;
+	void zoomCamera(float zoom);
 
-private:
-	double fpsCapValue = 0;
-
-	std::vector <Texture> textures;
-	std::vector <Font> fonts;
-	Window window;
+	UI::Container uiRoot;
 };
 
 }

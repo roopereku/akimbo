@@ -3,7 +3,8 @@
 
 namespace Akimbo {
 
-Core::Core() : cameraRadius(1.0f, 1.0f), window("Akimbo", Vec2(0.5f, 0.5f))
+Core::Core() :	cameraRadius(2.0f, 2.0f), uiRadius(1.0f, 1.0f),
+				window("Akimbo", Vec2(0.5f, 0.5f)), uiRoot(this, uiRadius)
 {
 }
 
@@ -36,9 +37,14 @@ void Core::start()
 							//	Calculate a relation between the sizes
 							Vec2 relation = oldSize.as <float> () / newSize.as <float> ();
 
-							//	If the relation isn't just zeroes, adjust the camera radius
+							//	If the relation isn't just zeroes, adjust the camera and UI radius
 							if(relation < Vec2(0.0000f, 0.0000f) || relation > Vec2(0.0000f, 0.0000f))
+							{
 								cameraRadius = cameraRadius / relation;
+								uiRadius = uiRadius / relation;
+								uiRoot.adjustPosition(uiRadius);
+							}
+
 						}
 					}
 
@@ -60,10 +66,21 @@ void Core::start()
 		}
 
 		//	Create a new frame that the user can use for drawing
-		Frame frame = window.renderFrame(cameraPosition, cameraRadius);
+		Vec2 radius = cameraRadius;
+		Vec2 position = cameraPosition;
+		Frame frame = window.renderFrame(position, radius);
 
+		//	Call the user defined update and render
 		onUpdate(delta);
 		onRender(frame);
+
+		/*	The UI shouldn't use the camera in any way so let's trick
+		 *	the frame and modify the position and radius to fit the UI */
+		position = Vec2(0.0f, 0.0f);
+		radius = uiRadius;
+
+		//	Render the UI
+		uiRoot.onRender(frame);
 	}
 }
 
@@ -71,6 +88,11 @@ void Core::setFpsCap(unsigned cap)
 {
 	DBG_LOG("Capped FPS to %u", cap);
 	fpsCapValue = 1.0 / cap;
+}
+
+void Core::zoomCamera(float zoom)
+{
+	cameraRadius = cameraRadius / zoom;
 }
 
 Texture& Core::loadTexture(const std::string& path)
