@@ -53,6 +53,8 @@ Window::Window(const std::string& title, Vec2 sizeMultiplier)
 		return;
 	}
 
+	//	The window size might have changed so let's update it
+	SDL_GetWindowSize(window, &size.x, &size.y);
 	DBG_LOG("Window created");
 }
 
@@ -71,6 +73,7 @@ Frame Window::renderFrame(Vec2& cameraPosition, Vec2& cameraRadius)
 
 Vec2i Window::swapSize(Vec2i newSize)
 {
+	DBG_LOG("Window now has size %d %d", newSize.x, newSize.y);
 	Vec2i oldSize = size;
 	size = newSize;
 	return oldSize;
