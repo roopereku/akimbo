@@ -16,6 +16,10 @@ class Widget
 public:
 	Widget(Core* core, const EdgeConstraints& edges);
 
+	//	Widgets should never be copied
+	Widget(const Widget& rhs) = delete;
+	Widget& operator=(const Widget& rhs) = delete;
+
 	virtual void onRender(Frame& frame);
 	virtual void onMouseClick(Vec2, int) {};
 	virtual void onResize(Vec2 resizeFactor) {};
@@ -27,9 +31,8 @@ public:
 
 	virtual Widget* isInside(Vec2 point);
 
-	//	Helpers to get some constrain with a gap
+	//	Helpers to get constraints relative to this widget
 	/*	FIXME
-	 *
 	 *	The gap could be negated for bottom and right so that when gap is 0.1f, and constraint
 	 *	is right, the gap goes left instead of right */
 	Constraint top(float gap, bool isPercentage) { return Constraint(edges.top, gap, isPercentage); }
