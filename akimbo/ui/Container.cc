@@ -2,7 +2,7 @@
 
 namespace Akimbo::UI {
 
-Container::Container(Core* core, Vec2 cameraRadius)
+Container::Container(Core* core, Vec2 uiRadius)
 	: Widget(core, {})
 {
 	//	Since this constructor creates a root container, make it fill the entire screen
@@ -11,7 +11,7 @@ Container::Container(Core* core, Vec2 cameraRadius)
 	edges.right = Constraint(edges.left, 1.0f, true);
 	edges.bottom = Constraint(edges.top, 1.0f, true);
 
-	adjustPosition(cameraRadius);
+	adjustPosition(uiRadius);
 }
 
 Container::Container(Core* core, const EdgeConstraints& edges)
