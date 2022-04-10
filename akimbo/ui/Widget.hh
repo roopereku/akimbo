@@ -17,12 +17,15 @@ public:
 	Widget(Core* core, const EdgeConstraints& edges);
 
 	virtual void onRender(Frame& frame);
-	virtual void adjustPosition(Vec2 uiRadius);
+	virtual void onMouseClick(Vec2, int) {};
 	virtual void onResize(Vec2 resizeFactor) {};
+	virtual void adjustPosition(Vec2 uiRadius);
 
 	void setBackgroundColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
 	void setBackgroundImage(Texture& texture);
 	void removeBackgroundImage();
+
+	virtual Widget* isInside(Vec2 point);
 
 	//	Helpers to get some constrain with a gap
 	/*	FIXME
@@ -41,6 +44,7 @@ protected:
 	Vec2 position;
 	Vec2 size;
 
+private:
 	//	Widget background stuff
 	uint8_t bgRed = 0;
 	uint8_t bgGreen = 0;

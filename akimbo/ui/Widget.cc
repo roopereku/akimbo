@@ -1,12 +1,11 @@
 #include "Widget.hh"
 #include "../Core.hh"
-#include "../Debug.hh"
 
 namespace Akimbo::UI
 {
 
 Widget::Widget(Core* core, const EdgeConstraints& edges)
-	: core(core), edges(edges), size(1.0f, 1.0f)
+	: core(core), size(1.0f, 1.0f), edges(edges)
 {
 }
 
@@ -53,6 +52,15 @@ void Widget::onRender(Frame& frame)
 		frame.color(255, 0, 0);	
 		frame.drawBox(position, size, false);
 	);
+}
+
+Widget* Widget::isInside(Vec2 point)
+{
+	//	If the point is inside this widget, return this widget
+	if(point >= position && point <= position + size)
+		return this;
+
+	return nullptr;
 }
 
 void Widget::setBackgroundColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a)

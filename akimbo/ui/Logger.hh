@@ -16,6 +16,7 @@ public:
 
 	void onRender(Frame& frame) override;
 	void onResize(Vec2 resizeFactor) override;
+	void onMouseClick(Vec2 at, int button) override;
 
 	void addMessage(const std::string& msg);
 

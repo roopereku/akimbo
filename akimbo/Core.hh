@@ -25,10 +25,10 @@ private:
 	std::vector <Texture> textures;
 	std::vector <Font> fonts;
 
-
 protected:
-	virtual void onRender(Frame& frame)=0;
-	virtual void onUpdate(double delta)=0;
+	virtual void onRender(Frame&) {};
+	virtual void onUpdate(double) {};
+	virtual void onMouseClick(Vec2, int) {};
 
 	void setFpsCap(unsigned cap);
 	Font& loadFont(const std::string& path);

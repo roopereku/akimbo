@@ -3,20 +3,31 @@
 namespace Akimbo::UI {
 
 Container::Container(Core* core, Vec2 uiRadius)
-	: Widget(core, {})
+	: Widget(core, { Constraint(0.0f, false), Constraint(0.0f, false), Constraint(1.0f, true), Constraint(1.0f, true) })
 {
-	//	Since this constructor creates a root container, make it fill the entire screen
-	edges.left = Constraint(0.0f, false);
-	edges.top = Constraint(0.0f, false);
-	edges.right = Constraint(edges.left, 1.0f, true);
-	edges.bottom = Constraint(edges.top, 1.0f, true);
-
 	adjustPosition(uiRadius);
 }
 
 Container::Container(Core* core, const EdgeConstraints& edges)
 	: Widget(core, edges)
 {
+}
+
+Widget* Container::isInside(Vec2 point)
+{
+	//	The point isn't inside this container
+	if(!Widget::isInside(point))
+		return nullptr;
+
+	for(auto& child : children)
+	{
+		//	Is the point inside this child
+		Widget* result = child->isInside(point);
+		if(result) return result;
+	}
+
+	//	The point isn't inside the children
+	return this;
 }
 
 void Container::onRender(Frame& frame)
@@ -35,7 +46,7 @@ void Container::adjustPosition(Vec2 uiRadius)
 	Widget::adjustPosition(uiRadius);
 
 	for(auto& child : children)
-		child->adjustPosition(uiRadius);
+		child->adjustPosition(size / 2);
 }
 
 }

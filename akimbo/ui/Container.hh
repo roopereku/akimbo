@@ -19,6 +19,7 @@ public:
 
 	void onRender(Frame& frame) override;
 	void adjustPosition(Vec2 uiRadius) override;
+	Widget* isInside(Vec2 point) override;
 
 	template <typename T, typename... Args>
 	T& add(const EdgeConstraints& edges, Args&& ...args)
@@ -34,7 +35,7 @@ public:
 		child.core = core;
 
 		//	Update the position of the new widget according to the given constraints
-		children.back()->adjustPosition(size);
+		child.adjustPosition(size / 2);
 
 		return static_cast <T&> (*children.back());
 	}

@@ -45,9 +45,35 @@ void Core::start()
 								uiRoot.adjustPosition(uiRadius);
 							}
 
+							break;
+
 						}
 					}
 
+					break;
+				}
+
+				case SDL_MOUSEBUTTONUP:
+				{
+					//	Get a mouse position that's in (-1, -1) - (+1, +1) range
+					Vec2 mousePosition = window.getMousePosition();
+
+					//	Fit the mouse position to the UI space
+					Vec2 mouseUI = mousePosition * uiRadius;
+
+					//	Does the click happend inside a widget
+					UI::Widget* uiClickAt = uiRoot.isInside(mouseUI);
+					if(uiClickAt != &uiRoot)
+					{
+						//	FIXME pass some sensible value to button
+						uiClickAt->onMouseClick(mouseUI, 0);
+						break;
+					}
+
+					/*	If the click didn't happen inside a widget, fit the mouse
+					 *	position to the camera space and pass it to the user */
+					Vec2 mouseCamera = mousePosition * cameraRadius + cameraPosition;
+					onMouseClick(mouseCamera, 1);
 					break;
 				}
 			}

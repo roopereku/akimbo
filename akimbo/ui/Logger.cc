@@ -36,6 +36,11 @@ void Logger::onResize(Vec2 resizeFactor)
 	rows /= resizeFactor.y;
 }
 
+void Logger::onMouseClick(Vec2 at, int button)
+{
+	addMessage("Logger clicked");
+}
+
 void Logger::addMessage(const std::string& msg)
 {
 	messages.push_back(msg);
