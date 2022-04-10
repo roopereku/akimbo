@@ -18,6 +18,7 @@ public:
 
 	virtual void onRender(Frame&) {};
 	virtual void adjustPosition(Vec2 uiRadius);
+	virtual void onResize(Vec2 resizeFactor) {};
 
 	//	Helpers to get some constrain with a gap
 	/*	FIXME

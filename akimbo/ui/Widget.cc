@@ -5,7 +5,7 @@ namespace Akimbo::UI
 {
 
 Widget::Widget(Core* core, const EdgeConstraints& edges)
-	: core(core), edges(edges) 
+	: core(core), edges(edges), size(1.0f, 1.0f)
 {
 }
 
@@ -19,7 +19,14 @@ void Widget::adjustPosition(Vec2 uiRadius)
 
 	//	Calculate the position and size of the widget
 	position = Vec2(edges.left, edges.top);
-	size = Vec2(edges.right, edges.bottom) - position;
+	Vec2 newSize = Vec2(edges.right, edges.bottom) - position;
+
+	//	How mcuh did the widget size change
+	Vec2 relation = size / newSize;
+	size = newSize;
+
+	//	Do resizing if necessary
+	onResize(relation);
 }
 
 }
