@@ -21,7 +21,8 @@ public:
 	Widget& operator=(const Widget& rhs) = delete;
 
 	virtual void onRender(Frame& frame);
-	virtual void onMouseClick(Vec2, int) {};
+	virtual void onMouseClick(Vec2, int) {}
+	virtual void onUpdate(double delta) {}
 	virtual void onResize(Vec2 resizeFactor) {};
 	virtual void adjustPosition(Vec2 uiRadius);
 

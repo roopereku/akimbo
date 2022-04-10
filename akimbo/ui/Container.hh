@@ -18,6 +18,7 @@ public:
 	Container(Core* core, const EdgeConstraints& edges);
 
 	void onRender(Frame& frame) override;
+	void onUpdate(double delta) override;
 	void adjustPosition(Vec2 uiRadius) override;
 	Widget* isInside(Vec2 point) override;
 

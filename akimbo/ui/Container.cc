@@ -41,6 +41,12 @@ void Container::onRender(Frame& frame)
 	}
 }
 
+void Container::onUpdate(double delta)
+{
+	for(auto& child : children)
+		child->onUpdate(delta);
+}
+
 void Container::adjustPosition(Vec2 uiRadius)
 {
 	Widget::adjustPosition(uiRadius);

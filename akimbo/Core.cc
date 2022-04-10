@@ -91,13 +91,16 @@ void Core::start()
 			delta = fpsCapValue;
 		}
 
+		//	Call updates
+		uiRoot.onUpdate(delta);
+		onUpdate(delta);
+
 		//	Create a new frame that the user can use for drawing
 		Vec2 radius = cameraRadius;
 		Vec2 position = cameraPosition;
 		Frame frame = window.renderFrame(position, radius);
 
-		//	Call the user defined update and render
-		onUpdate(delta);
+		//	Call user defined rendering
 		onRender(frame);
 
 		/*	The UI shouldn't use the camera in any way so let's trick
