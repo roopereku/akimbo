@@ -18,6 +18,9 @@ public:
 			f
 		);
 
+		logger1.setBackgroundColor(100, 0, 0);
+		logger2.setBackgroundColor(0, 100, 0);
+
 		logger1.addMessage("This is a test message for logger1");
 		logger1.addMessage("This is a second test message for logger1");
 

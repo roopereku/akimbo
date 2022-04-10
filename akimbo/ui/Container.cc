@@ -21,11 +21,13 @@ Container::Container(Core* core, const EdgeConstraints& edges)
 
 void Container::onRender(Frame& frame)
 {
-	frame.color(255, 0, 0);
-	frame.drawBox(position, size, false);
+	Widget::onRender(frame);
 
 	for(auto& child : children)
+	{
+		child->Widget::onRender(frame);
 		child->onRender(frame);
+	}
 }
 
 void Container::adjustPosition(Vec2 uiRadius)

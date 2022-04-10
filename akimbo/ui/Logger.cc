@@ -14,9 +14,6 @@ Logger::Logger(Core* core, const EdgeConstraints& edges, Font& font)
 
 void Logger::onRender(Frame& frame)
 {
-	frame.color(0, 255, 0);
-	frame.drawBox(position, size, false);
-
 	Vec2 currentPosition = position;
 
 	for(size_t y = 0; y < static_cast <size_t> (rows) && y < messages.size(); y++)
