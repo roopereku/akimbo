@@ -1,33 +1,32 @@
 #include "akimbo/Core.hh"
 #include "akimbo/ui/Logger.hh"
+#include "akimbo/ui/Switch.hh"
 
 class Game : public Akimbo::Core
 {
 public:
 	Game() : Akimbo::Core(), t(loadTexture("test.png")), f(loadFont("/usr/share/fonts/TTF/AndaleMo.TTF"))
 	{
-		Akimbo::UI::Container& cont1 = uiRoot.add <Akimbo::UI::Container> ({
+		auto& cont1 = uiRoot.add <Akimbo::UI::Container> ({
 			uiRoot.left(0.1f, false), uiRoot.top(0.1f, false),
 			uiRoot.right(-0.1f, false), uiRoot.top(0.5f, true)
 		});
 
-		Akimbo::UI::Logger& logger1 = uiRoot.add <Akimbo::UI::Logger> ({
-			cont1.left(0.1f, false), cont1.bottom(0.0f, false),
-			cont1.right(-0.1f, false), uiRoot.bottom(-0.1f, false)
-			}, f
-		);
+		auto& logger1 = cont1.add <Akimbo::UI::Logger> ({
+			cont1.left(0.5f, true), cont1.top(0.2f, false),
+			cont1.right(-0.1f, false), cont1.bottom(-0.2f, false)
+		}, f);
 
-		Akimbo::UI::Logger& logger2 = cont1.add <Akimbo::UI::Logger> ({
-			cont1.left(0.25f, true), cont1.top(0.1f, false),
-			cont1.right(-0.1f, false), cont1.bottom(-0.1f, false)
-			}, f
-		);
+		auto& switch1 = cont1.add <Akimbo::UI::Switch> ({
+			cont1.left(0.2f, false), cont1.top(0.25f, true),
+			logger1.left(-0.2f, false), cont1.bottom(-0.25f, true),
+		}, true);
 
-		logger1.setBackgroundColor(100, 0, 0);
-		logger2.setBackgroundColor(100, 0, 100);
-
-		logger1.addMessage("This is a test message for logger1");
-		logger2.addMessage("This is a test message for logger2");
+		switch1.onSwitch = [&logger1](bool on)
+		{
+			if(on) logger1.addMessage("Switch on");
+			else logger1.addMessage("Switch off");
+		};
 	}
 
 	void onMouseClick(Vec2 at, int button) override
