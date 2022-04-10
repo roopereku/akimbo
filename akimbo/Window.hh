@@ -17,7 +17,9 @@ public:
 
 	Frame renderFrame(Vec2& cameraPosition, Vec2& cameraRadius);
 	bool valid() { return window && renderer; }
+
 	Vec2i swapSize(Vec2i newSize);
+	Vec2 getMousePosition();
 
 	/*	Because SDL requires SDL_Renderer to create textures, let's
 	 *	expose renderer for the texture class which takes

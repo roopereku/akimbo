@@ -79,4 +79,24 @@ Vec2i Window::swapSize(Vec2i newSize)
 	return oldSize;
 }
 
+Vec2 Window::getMousePosition()
+{
+	Vec2i mouseReal;
+	SDL_GetMouseState(&mouseReal.x, &mouseReal.y);
+
+	/*	Because (0.0, 0.0) is always the center, we can subtract the real mouse
+	 *	position by half of the window size and then divide it with the same value
+	 *
+	 *	For an example if the window size is (800, 800) and mouse position is (400, 400)
+	 *	mouseReal = (400 - 400, 400 - 400) = (0, 0)
+	 *	mouseReal / (400, 400) = (0, 0)
+	 *
+	 *	Or if the window size is (800, 800) and mouse position is (800, 800)
+	 *	mouseReal = (800 - 400, 800 - 400) = (400, 400)
+	 *	mouseReal / (400, 400) = (1, 1)
+	 */
+	mouseReal -= (size / 2);
+	return Vec2(mouseReal.as <float> () / (size.as <float> () / 2));
+}
+
 }
