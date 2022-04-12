@@ -23,9 +23,13 @@ public:
 	Widget* isInside(Vec2 point) override;
 
 	template <typename T, typename... Args>
-	T& add(const EdgeConstraints& edges, Args&& ...args)
+	T& add(Constraint left, Constraint top, Constraint right, Constraint bottom, Args&& ...args)
 	{
 		//	Create a new widget of the given type and pass arbitrary parameters to it
+		/*	FIXME this is a lot of unnecessary copying.
+		 *	Ideally EdgeConstraints could have a constructor and a move constructor
+		 *	which is then used */
+		EdgeConstraints edges { left, top, right, bottom };
 		children.push_back(std::make_shared <T> (core, edges, std::forward <Args> (args)...));
 
 		//	Because C++ only let's us access protected stuff if child is a container, cast it
