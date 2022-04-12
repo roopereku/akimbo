@@ -19,6 +19,10 @@ Constraint::Constraint()
 
 Constraint& Constraint::then(float gap, bool isPercentage)
 {
+	/*	If this constraint already has a continuation,
+	 *	try calling then() on said continuation */
+	if(after) return after->then(gap, isPercentage);
+
 	after = std::make_shared <Constraint> (*this, gap, isPercentage);
 	after->first = false;
 	
@@ -47,18 +51,22 @@ void Constraint::updatePosition(float relativePosition, float size)
 	//	Gap isn't a percentage
 	else position += gap;
 
-	//	Update constraints called by then()
-	if(after) after->updatePosition(position, size);
+	//	Update the constraint called by then()
+	if(after)
+	{
+		after->updatePosition(position, size);
+
+		/*	Assuming that the intermediate positions aren't needed
+		 *	at this point, let's make all of them identical to
+		 *	the final position so that we don't have to
+		 *	find it when it should be used */
+		position = after->position;
+	}
 }
 
 Constraint::operator float()
 {
-	//	Find the final position
-	Constraint* last = this;
-	while(last->after)
-		last = last->after.get();
-
-	return last->position;
+	return position;
 }
 
 }
