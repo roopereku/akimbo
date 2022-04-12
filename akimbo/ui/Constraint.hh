@@ -1,6 +1,8 @@
 #ifndef AKIMBO_UI_CONSTRAINT_HH
 #define AKIMBO_UI_CONSTRAINT_HH
 
+#include <memory>
+
 namespace Akimbo::UI {
 
 class Constraint
@@ -11,11 +13,19 @@ public:
 	Constraint();
 
 	void updatePosition(float size);
+	Constraint& then(float gap, bool isPercentage);
+
 	operator float();
 
 private:
+	void updatePosition(float relativePosition, float size);
+
 	Constraint* relative = nullptr;
+	std::shared_ptr <Constraint> after;
+
 	bool isPercentage = false;
+	bool first = true;
+
 	float position = 0.0f;
 	float gap = 0.0f;
 };
