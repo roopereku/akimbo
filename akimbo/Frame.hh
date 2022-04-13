@@ -24,12 +24,14 @@ public:
 	void drawText(const std::string& str, Font& font, Vec2 position, Vec2 size);
 
 protected:
+	//	Only Window can access the constructor, so only it can start rendering
 	Frame(SDL_Window* w, Vec2& cameraPosition, Vec2& cameraRadius);
 
 private:
+	//	Converts a world-space position to a screen-space position
 	Vec2 convert(Vec2 position);
-	SDL_Window* window;
 
+	SDL_Window* window;
 	Vec2& cameraPosition;
 	Vec2& cameraRadius;
 };

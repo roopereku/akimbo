@@ -20,16 +20,26 @@ public:
 	Widget(const Widget& rhs) = delete;
 	Widget& operator=(const Widget& rhs) = delete;
 
+	//	Functions that get called on each frame
 	virtual void onRender(Frame& frame);
 	virtual void onUpdate(double delta);
+
+	//	Function that gets called when the user clicks this widget
 	virtual void onMouseClick(Vec2, int button);
+
+	//	Function that gets called when the widget is resized
 	virtual void onResize(Vec2 resizeFactor);
+
+	//	Function that gets called when constraints should be updated
+	//	NOTE Do not override or bad stuff happens
 	virtual void adjustPosition(Vec2 uiRadius);
 
+	//	Widget background setters
 	void setBackgroundColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
 	void setBackgroundImage(Texture& texture);
 	void removeBackgroundImage();
 
+	//	Is a point inside this widget
 	virtual Widget* isInside(Vec2 point);
 
 	//	Helpers to get constraints relative to this widget

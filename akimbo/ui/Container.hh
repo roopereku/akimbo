@@ -22,6 +22,7 @@ public:
 	void adjustPosition(Vec2 uiRadius) override;
 	Widget* isInside(Vec2 point) override;
 
+	//	Function that adds a new arbitrary widget inside this container
 	template <typename T, typename... Args>
 	T& add(Constraint left, Constraint top, Constraint right, Constraint bottom, Args&& ...args)
 	{
