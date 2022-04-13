@@ -7,27 +7,27 @@ public:
 	{
 		/*	Every widget lives inside an instance of
 		 *	Akimbo::UI::Container. You don't have to create
-		 *	one because akimbo provides "uiRoot". */
+		 *	one because akimbo provides "ui". */
 
-		/*	Let's add another container inside of "uiRoot" by
+		/*	Let's add another container inside of "ui" by
 		 *	using the add() function */
-		auto& container1 = uiRoot.add <Akimbo::UI::Container> (
+		auto& container1 = ui.add <Akimbo::UI::Container> (
 
-			//	The left edge sticks to the left edge of "uiRoot"
-			uiRoot.left(0.0f, false),
+			//	The left edge sticks to the left edge of "ui"
+			ui.left(0.0f, false),
 
-			//	The top edge will stick to the top edge of "uiRoot"
-			uiRoot.top(0.0f, false),
+			//	The top edge will stick to the top edge of "ui"
+			ui.top(0.0f, false),
 
-			/*	The right edge will be at the middle of "uiRoot". This is
+			/*	The right edge will be at the middle of "ui". This is
 			 *	because "isPercentage" is passed "true" which means that
 			 *	0.5f is treated as a percentage. This percentage corresponds
-			 *	to a portion of the size of "uiRoot" and that portion will
-			 *	be added to whatever uiRoot.left(0.0f, false) is */
-			uiRoot.left(0.5f, true),
+			 *	to a portion of the size of "ui" and that portion will
+			 *	be added to whatever ui.left(0.0f, false) is */
+			ui.left(0.5f, true),
 
-			//	The bottom edge will stick to the bottom edge of "uiRoot"
-			uiRoot.bottom(0.0f, false)
+			//	The bottom edge will stick to the bottom edge of "ui"
+			ui.bottom(0.0f, false)
 
 		);
 
@@ -39,14 +39,14 @@ public:
 		 *	the size doesn't change. To accomplish we need to use then()
 		 *
 		 *	What Constraint::then() does it that it applies another operation
-		 *	to a constraint, so if you write uiRoot.left(0.5f, true), that
-		 *	constraint will be at the center of uiRoot horizontally, but if
-		 *	you call uiRoot.left(0.5f, true).then(-0.25f, true),
-		 *	the constraint will be only at 25% of "uiRoot".
+		 *	to a constraint, so if you write ui.left(0.5f, true), that
+		 *	constraint will be at the center of ui horizontally, but if
+		 *	you call ui.left(0.5f, true).then(-0.25f, true),
+		 *	the constraint will be only at 25% of "ui".
 		 *
 		 *	This could be chained with another then() which would look like
-		 *	uiRoot.left(0.5f, true).then(-0.25f, true).then(0.5f, true) which
-		 *	would make the constraint's final position be at 75% of uiRoot */
+		 *	ui.left(0.5f, true).then(-0.25f, true).then(0.5f, true) which
+		 *	would make the constraint's final position be at 75% of ui */
 		auto& container2 = container1.add <Akimbo::UI::Container> (
 
 			/*	In short terms every constraint is initially at the

@@ -37,7 +37,7 @@ protected:
 	Vec2 cameraPosition;
 	void zoomCamera(float zoom);
 
-	UI::Container uiRoot;
+	UI::Container ui;
 };
 
 }

@@ -4,7 +4,7 @@
 namespace Akimbo {
 
 Core::Core() :	cameraRadius(2.0f, 2.0f), uiRadius(1.0f, 1.0f),
-				window("Akimbo", Vec2(0.5f, 0.5f)), uiRoot(this, uiRadius)
+				window("Akimbo", Vec2(0.5f, 0.5f)), ui(this, uiRadius)
 {
 }
 
@@ -42,7 +42,7 @@ void Core::start()
 							{
 								cameraRadius = cameraRadius / relation;
 								uiRadius = uiRadius / relation;
-								uiRoot.adjustPosition(uiRadius);
+								ui.adjustPosition(uiRadius);
 							}
 
 							break;
@@ -62,8 +62,8 @@ void Core::start()
 					Vec2 mouseUI = mousePosition * uiRadius;
 
 					//	Does the click happend inside a widget
-					UI::Widget* uiClickAt = uiRoot.isInside(mouseUI);
-					if(uiClickAt != &uiRoot)
+					UI::Widget* uiClickAt = ui.isInside(mouseUI);
+					if(uiClickAt != &ui)
 					{
 						//	FIXME pass some sensible value to button
 						uiClickAt->onMouseClick(mouseUI, 0);
@@ -92,7 +92,7 @@ void Core::start()
 		}
 
 		//	Call updates
-		uiRoot.onUpdate(delta);
+		ui.onUpdate(delta);
 		onUpdate(delta);
 
 		//	Create a new frame that the user can use for drawing
@@ -109,7 +109,7 @@ void Core::start()
 		radius = uiRadius;
 
 		//	Render the UI
-		uiRoot.onRender(frame);
+		ui.onRender(frame);
 	}
 }
 
