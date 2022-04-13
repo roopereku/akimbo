@@ -13,7 +13,7 @@ public:
 	Constraint();
 
 	void updatePosition(float size);
-	Constraint& then(float gap, bool isPercentage);
+	Constraint& then(float gap, bool isPercentage = false);
 
 	operator float();
 

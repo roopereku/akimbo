@@ -11,10 +11,10 @@ public:
 
 		//	Create a logger that fills up most of the window
 		auto& loggerObject = ui.add <Akimbo::UI::Logger> (
-			ui.left(0.1f, false),
-			ui.top(0.1f, false),
-			ui.right(-0.1f, false),
-			ui.bottom(-0.1f, false),
+			ui.left(0.1f),
+			ui.top(0.1f),
+			ui.right(-0.1f),
+			ui.bottom(-0.1f),
 
 			//	The font to be used is passed after the constraints
 			loggerFont

@@ -81,4 +81,24 @@ void Widget::removeBackgroundImage()
 	bgImage = nullptr;
 }
 
+Constraint Widget::top(float gap, bool isPercentage)
+{
+	return Constraint(edges.top, gap, isPercentage);
+}
+
+Constraint Widget::left(float gap, bool isPercentage)
+{
+	return Constraint(edges.left, gap, isPercentage);
+}
+
+Constraint Widget::right(float gap, bool isPercentage)
+{
+	return Constraint(edges.right, gap, isPercentage);
+}
+
+Constraint Widget::bottom(float gap, bool isPercentage)
+{
+	return Constraint(edges.bottom, gap, isPercentage);
+}
+
 }

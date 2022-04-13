@@ -13,22 +13,33 @@ public:
 		 *	using the add() function */
 		auto& container1 = ui.add <Akimbo::UI::Container> (
 
+			/*	All widgets require 4 constraints which are
+			 *	Left edge, Top edge, Right edge and Bottom edge.
+			 *
+			 *	You can access the constraints of other widgets with functions
+			 *	called left(), top(), right(), bottom(). All of said functions take 2 arguments:
+			 *	- gap (Defaults to 0.0f)
+			 *
+			 *		Determines how far this constraint should be from the given edge. For an example
+			 *		ui.left(0.1f, false) would shift it right 0.1 units from the root container's left edge.
+			 *
+			 *	- isPercentage (Defaults to false)
+			 *
+			 *		Should gap be treated as a percentage? If so, gap will represent a portion of
+			 *		of the parent container's size. For an example ui.left(0.1f, true) ends up at
+			 *		root container's X + 10% of root container's width */
+
 			//	The left edge sticks to the left edge of "ui"
-			ui.left(0.0f, false),
+			ui.left(),
 
 			//	The top edge will stick to the top edge of "ui"
-			ui.top(0.0f, false),
+			ui.top(),
 
-			/*	The right edge will be at the middle of "ui". This is
-			 *	because "isPercentage" is passed "true" which means that
-			 *	0.5f is treated as a percentage. This percentage corresponds
-			 *	to a portion of the size of "ui" and that portion will
-			 *	be added to whatever ui.left(0.0f, false) is */
+			//	The right edge will be at the middle of "ui"
 			ui.left(0.5f, true),
 
 			//	The bottom edge will stick to the bottom edge of "ui"
-			ui.bottom(0.0f, false)
-
+			ui.bottom()
 		);
 
 		//	Let's give "container1" a blue background to make it stand out
@@ -36,26 +47,27 @@ public:
 
 		/*	Let's add another container but this time inside "container1"
 		 *	Let's also place it at the very center and make it so that
-		 *	the size doesn't change. To accomplish we need to use then()
+		 *	the size doesn't change. To accomplish we need to use then().
 		 *
 		 *	What Constraint::then() does it that it applies another operation
 		 *	to a constraint, so if you write ui.left(0.5f, true), that
 		 *	constraint will be at the center of ui horizontally, but if
 		 *	you call ui.left(0.5f, true).then(-0.25f, true),
-		 *	the constraint will be only at 25% of "ui".
+		 *	the constraint will only at at 25% of "ui".
 		 *
 		 *	This could be chained with another then() which would look like
 		 *	ui.left(0.5f, true).then(-0.25f, true).then(0.5f, true) which
-		 *	would make the constraint's final position be at 75% of ui */
+		 *	would make the constraint's final position be
+		 *	at 75% of the root containers width */
 		auto& container2 = container1.add <Akimbo::UI::Container> (
 
 			/*	In short terms every constraint is initially at the
 			 *	middle of "container1", but they will be shifted
 			 *	appropriately so that they're different */
-			container1.left(0.5f, true).then(-0.2f, false),
-			container1.top(0.5f, true).then(-0.2f, false),
-			container1.left(0.5f, true).then(+0.2f, false),
-			container1.top(0.5f, true).then(+0.2f, false)
+			container1.left(0.5f, true).then(-0.2f),
+			container1.top(0.5f, true).then(-0.2f),
+			container1.left(0.5f, true).then(+0.2f),
+			container1.top(0.5f, true).then(+0.2f)
 
 		);
 

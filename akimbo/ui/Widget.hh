@@ -36,10 +36,10 @@ public:
 	/*	FIXME
 	 *	The gap could be negated for bottom and right so that when gap is 0.1f, and constraint
 	 *	is right, the gap goes left instead of right */
-	Constraint top(float gap, bool isPercentage) { return Constraint(edges.top, gap, isPercentage); }
-	Constraint left(float gap, bool isPercentage) { return Constraint(edges.left, gap, isPercentage); }
-	Constraint right(float gap, bool isPercentage) { return Constraint(edges.right, gap, isPercentage); }
-	Constraint bottom(float gap, bool isPercentage) { return Constraint(edges.bottom, gap, isPercentage); }
+	Constraint top(float gap = 0.0f, bool isPercentage = false);
+	Constraint left(float gap = 0.0f, bool isPercentage = false);
+	Constraint right(float gap = 0.0f, bool isPercentage = false);
+	Constraint bottom(float gap = 0.0f, bool isPercentage = false);
 
 protected:
 	Core* core;

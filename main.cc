@@ -10,13 +10,15 @@ public:
 		auto& switch1 = ui.add <Akimbo::UI::Switch> (
 			ui.left(0.25f, true),
 			ui.top(0.4f, true),
-			ui.left(0.25f, true).then(0.4f, false),
-			ui.top(0.4f, true).then(0.5f, false)
+			ui.left(0.25f, true).then(0.4f),
+			ui.top(0.4f, true).then(0.5f)
 		);
 
 		auto& logger1 = ui.add <Akimbo::UI::Logger> (
-			switch1.right(0.1f, false), switch1.top(0.0f, false),
-			ui.right(-0.1f, false), ui.bottom(-0.1f, false),
+			switch1.right(0.1f, false),
+			switch1.top(),
+			ui.right(-0.1f),
+			ui.bottom(-0.1f),
 			f
 		);
 
