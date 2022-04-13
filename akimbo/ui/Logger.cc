@@ -38,6 +38,9 @@ void Logger::onResize(Vec2 resizeFactor)
 
 void Logger::onMouseClick(Vec2 at, int button)
 {
+	(void)button;
+	(void)at;
+
 	addMessage("Logger clicked");
 }
 

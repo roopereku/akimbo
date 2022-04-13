@@ -21,9 +21,9 @@ public:
 	Widget& operator=(const Widget& rhs) = delete;
 
 	virtual void onRender(Frame& frame);
-	virtual void onMouseClick(Vec2, int) {}
-	virtual void onUpdate(double delta) {}
-	virtual void onResize(Vec2 resizeFactor) {};
+	virtual void onUpdate(double delta);
+	virtual void onMouseClick(Vec2, int button);
+	virtual void onResize(Vec2 resizeFactor);
 	virtual void adjustPosition(Vec2 uiRadius);
 
 	void setBackgroundColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);

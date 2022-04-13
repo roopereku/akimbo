@@ -25,6 +25,9 @@ void Switch::onRender(Frame& frame)
 
 void Switch::onMouseClick(Vec2 at, int button)
 {
+	(void)button;
+	(void)at;
+
 	direction = on ? -5 : +5;
 	on = !on;
 

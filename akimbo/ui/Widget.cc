@@ -81,6 +81,18 @@ void Widget::removeBackgroundImage()
 	bgImage = nullptr;
 }
 
+void Widget::onUpdate(double)
+{
+}
+
+void Widget::onMouseClick(Vec2, int)
+{
+}
+
+void Widget::onResize(Vec2)
+{
+}
+
 Constraint Widget::top(float gap, bool isPercentage)
 {
 	return Constraint(edges.top, gap, isPercentage);
