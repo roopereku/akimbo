@@ -19,10 +19,12 @@ public:
 	void onMouseClick(Vec2 at, int button) override;
 
 	void addMessage(const std::string& msg);
+	void setColumns(unsigned amount);
 
 private:
 	float columns;
-	float rows;
+	unsigned visibleRows = 0;
+	unsigned scroll = 0;
 
 	std::vector <std::string> messages;
 	Vec2 characterSize;

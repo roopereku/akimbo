@@ -21,23 +21,30 @@ public:
 			cont1.bottom(0.1f)
 		);
 
-		auto& cont3 = cont1.add <Akimbo::UI::Container> (
-			cont2.right(),
-			cont2.top(),
-			cont1.right(0.1f),
-			cont2.bottom()
-		);
+		//auto& cont3 = cont1.add <Akimbo::UI::Container> (
+		//	cont2.right(),
+		//	cont2.top(),
+		//	cont1.right(0.1f),
+		//	cont2.bottom()
+		//);
 
-		auto& switch1 = cont2.add <Akimbo::UI::Switch> (
-			cont2.left(50),
-			cont2.top(50).then(-0.3f),
-			cont3.left(),
-			cont2.bottom(50).then(-0.3f)
+		auto& switch1 = cont2.add <Akimbo::UI::Logger> (
+			cont2.left(),
+			cont2.top(),
+			cont2.right(),
+			cont2.bottom(),
+			f
 		);
 
 		cont1.setBackgroundColor(0, 0, 100);
 		cont2.setBackgroundColor(100, 0, 0);
-		cont3.setBackgroundColor(100, 100, 0);
+		//cont3.setBackgroundColor(100, 100, 0);
+
+		switch1.addMessage("1");
+		switch1.addMessage("12");
+		switch1.addMessage("123");
+		switch1.addMessage("1234");
+		switch1.addMessage("12345");
 	}
 
 	void onMouseClick(Vec2 at, int button) override

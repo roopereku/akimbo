@@ -1,26 +1,27 @@
 #include "Logger.hh"
 #include "../Debug.hh"
 
+#include <cmath>
+
 namespace Akimbo::UI {
 
 Logger::Logger(Core* core, const EdgeConstraints& edges, Font& font)
 	: Widget(core, edges), font(font)
 {
 	columns = 20;
-	rows = 10;
-
-	characterSize = size / Vec2(columns, rows);
+	onResize(Vec2());
 }
 
 void Logger::onRender(Frame& frame)
 {
 	Vec2 currentPosition = position;
 
-	for(size_t y = 0; y < static_cast <size_t> (rows) && y < messages.size(); y++)
+	for(size_t y = scroll; y < messages.size() && y < scroll + visibleRows; y++)
 	{
-		for(size_t x = 0; x < static_cast <size_t> (columns) && x < messages[y].length(); x++)
+		std::string& msg = messages[y];
+		for(size_t x = 0; x < static_cast <size_t> (columns) && x < msg.length(); x++)
 		{
-			frame.drawCharacter(messages[y][x], font, currentPosition, characterSize);
+			frame.drawCharacter(msg[x], font, currentPosition, characterSize);
 			currentPosition.x += characterSize.x;
 		}
 
@@ -29,11 +30,27 @@ void Logger::onRender(Frame& frame)
 	}
 }
 
-void Logger::onResize(Vec2 resizeFactor)
+void Logger::setColumns(unsigned amount)
 {
-	//	To keep the text size the same, just resize rows and columns
-	columns /= resizeFactor.x;
-	rows /= resizeFactor.y;
+	columns = amount;
+	onResize(Vec2());
+}
+
+void Logger::onResize(Vec2)
+{
+	//	How wide is one character to fit n amount of them next to each other		
+	characterSize.x = size.x / columns;
+	characterSize.y = characterSize.x;
+
+	//	How many rows are visible?
+	visibleRows = size.y / characterSize.y;
+
+	//	Are all of the messages visible?
+	if(messages.size() - visibleRows >= messages.size())
+		scroll = 0;
+
+	//	If all are not visible, focus on the few before the last one
+	else scroll = messages.size() - visibleRows;
 }
 
 void Logger::onMouseClick(Vec2 at, int button)
@@ -47,6 +64,12 @@ void Logger::onMouseClick(Vec2 at, int button)
 void Logger::addMessage(const std::string& msg)
 {
 	messages.push_back(msg);
+
+	if(messages.size() >= visibleRows)
+	{
+		DBG_LOG("Scroll %u -> %u", scroll, scroll + 1);
+		scroll++;
+	}
 }
 
 }
