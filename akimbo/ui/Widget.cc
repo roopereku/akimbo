@@ -102,26 +102,48 @@ void Widget::onResize(Vec2)
 {
 }
 
-Constraint Widget::top(float gap, bool isPercentage)
+Constraint Widget::top(float units)
 {
-	return Constraint(edges.top, gap, isPercentage);
+	return Constraint(edges.top, units, false);
 }
 
-Constraint Widget::left(float gap, bool isPercentage)
+Constraint Widget::left(float units)
 {
-	return Constraint(edges.left, gap, isPercentage);
+	return Constraint(edges.left, units, false);
 }
 
-Constraint Widget::right(float gap, bool isPercentage)
+Constraint Widget::right(float units)
 {
-	//	Negate gap so that constraint movement is right -> left
-	return Constraint(edges.right, -gap, isPercentage);
+	//	Negate units so that constraint movement is right -> left
+	return Constraint(edges.right, -units, false);
 }
 
-Constraint Widget::bottom(float gap, bool isPercentage)
+Constraint Widget::bottom(float units)
 {
-	//	Negate gap so that constraint movement is bottom -> top
-	return Constraint(edges.bottom, -gap, isPercentage);
+	//	Negate units so that constraint movement is bottom -> top
+	return Constraint(edges.bottom, -units, false);
+}
+
+Constraint Widget::top(int percents)
+{
+	return Constraint(edges.top, static_cast <float> (percents) / 100.0f, true);
+}
+
+Constraint Widget::left(int percents)
+{
+	return Constraint(edges.left, static_cast <float> (percents) / 100.0f, true);
+}
+
+Constraint Widget::right(int percents)
+{
+	//	Negate percents so that constraint movement is right -> left
+	return Constraint(edges.right, static_cast <float> (-percents) / 100.0f, true);
+}
+
+Constraint Widget::bottom(int percents)
+{
+	//	Negate percents so that constraint movement is bottom -> top
+	return Constraint(edges.bottom, static_cast <float> (-percents) / 100.0f, true);
 }
 
 }

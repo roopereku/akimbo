@@ -19,6 +19,16 @@ Constraint::Constraint()
 {
 }
 
+Constraint& Constraint::then(float units)
+{
+	return then(units, false);
+}
+
+Constraint& Constraint::then(int percents)
+{
+	return then(static_cast <float> (percents) / 100.0f, true);
+}
+
 Constraint& Constraint::then(float gap, bool isPercentage)
 {
 	/*	Because the first constraint could be a temporary, we need to return

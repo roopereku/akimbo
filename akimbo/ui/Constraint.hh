@@ -12,8 +12,11 @@ public:
 	Constraint(float gap, bool isPercentage);
 	Constraint();
 
+	//	then() overloads for units and percents
+	Constraint& then(float units);
+	Constraint& then(int percents);
+
 	void updatePosition(float size);
-	Constraint& then(float gap, bool isPercentage = false);
 
 	operator float();
 
@@ -28,6 +31,7 @@ protected:
 	void negateGap();
 
 private:
+	Constraint& then(float gap, bool isPercentage);
 	void updatePosition(float relativePosition, float size);
 
 	Constraint* relative = nullptr;

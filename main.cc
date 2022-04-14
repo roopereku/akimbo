@@ -8,31 +8,31 @@ public:
 	Game() : Akimbo::Core(), t(loadTexture("test.png")), f(loadFont("/usr/share/fonts/TTF/AndaleMo.TTF"))
 	{
 		auto& cont1 = ui.add <Akimbo::UI::Container> (
-			ui.left().then(0.1f, true),
-			ui.top().then(0.1f, true),
-			ui.right().then(0.1f, true),
-			ui.bottom().then(0.1f, true)
+			ui.left().then(10),
+			ui.top().then(10),
+			ui.right().then(10),
+			ui.bottom().then(10)
 		);
 
 		auto& cont2 = cont1.add <Akimbo::UI::Container> (
-			cont1.left(0.1f, false),
-			cont1.top(0.1f, false),
-			cont1.left(0.5f, true),
-			cont1.bottom(0.1f, false)
+			cont1.left(0.1f),
+			cont1.top(0.1f),
+			cont1.left(50),
+			cont1.bottom(0.1f)
 		);
 
 		auto& cont3 = cont1.add <Akimbo::UI::Container> (
 			cont2.right(),
 			cont2.top(),
-			cont1.right(0.1f, false),
+			cont1.right(0.1f),
 			cont2.bottom()
 		);
 
 		auto& switch1 = cont2.add <Akimbo::UI::Switch> (
-			cont2.left(0.5f, true).then(-0.3f),
-			cont2.top(0.5f, true).then(-0.3f),
-			cont3.left(0.2f, false),
-			cont2.bottom(0.5f, true).then(-0.3f)
+			cont2.left(50),
+			cont2.top(50).then(-0.3f),
+			cont3.left(),
+			cont2.bottom(50).then(-0.3f)
 		);
 
 		cont1.setBackgroundColor(0, 0, 100);

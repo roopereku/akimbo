@@ -42,14 +42,17 @@ public:
 	//	Is a point inside this widget
 	virtual Widget* isInside(Vec2 point);
 
-	//	Helpers to get constraints relative to this widget
-	/*	FIXME
-	 *	The gap could be negated for bottom and right so that when gap is 0.1f, and constraint
-	 *	is right, the gap goes left instead of right */
-	Constraint top(float gap = 0.0f, bool isPercentage = false);
-	Constraint left(float gap = 0.0f, bool isPercentage = false);
-	Constraint right(float gap = 0.0f, bool isPercentage = false);
-	Constraint bottom(float gap = 0.0f, bool isPercentage = false);
+	//	Helpers to get constraints relative to this widget with units
+	Constraint top(float units = 0.0f);
+	Constraint left(float units = 0.0f);
+	Constraint right(float units = 0.0f);
+	Constraint bottom(float units = 0.0f);
+
+	//	Helpers to get constraints relative to this widget with percents
+	Constraint top(int percents);
+	Constraint left(int percents);
+	Constraint right(int percents);
+	Constraint bottom(int percents);
 
 protected:
 	bool isRelativeConstraint(Constraint& constraint);
