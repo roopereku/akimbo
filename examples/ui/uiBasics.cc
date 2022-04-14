@@ -17,16 +17,16 @@ public:
 			 *	Left edge, Top edge, Right edge and Bottom edge.
 			 *
 			 *	You can access the constraints of other widgets with functions
-			 *	called left(), top(), right(), bottom(). All of said functions take 2 arguments:
-			 *	- gap (Defaults to 0.0f)
+			 *	called left(), top(), right(), bottom(). All of said functions take 1 argument:
+			 *	- float for units (Defaults to 0.0f)
 			 *
-			 *		Determines how far this constraint should be from the given edge. For an example
-			 *		ui.left(0.1f, false) would shift it right 0.1 units from the root container's left edge.
+			 *		Determines how far this constraint should be from the given edge in units.
+			 *		For an example ui.left(0.1f) ends up at root container's X + 0.1 units
 			 *
-			 *	- isPercentage (Defaults to false)
+			 *	- int for percentages
 			 *
 			 *		Should gap be treated as a percentage? If so, gap will represent a portion of
-			 *		of the parent container's size. For an example ui.left(0.1f, true) ends up at
+			 *		of the parent container's size. For an example ui.left(10) ends up at
 			 *		root container's X + 10% of root container's width */
 
 			/*	NOTE
@@ -42,7 +42,7 @@ public:
 			ui.top(),
 
 			//	The right edge will be at the middle of "ui"
-			ui.right(0.5f, true),
+			ui.right(50),
 
 			//	The bottom edge will stick to the bottom edge of "ui"
 			ui.bottom()
@@ -70,10 +70,10 @@ public:
 			/*	In short terms every constraint is initially at the
 			 *	middle of "container1", but they will be slightly
 			 *	moved backwards so that they're not at the same position */
-			container1.left(0.5f, true).then(-0.2f),
-			container1.top(0.5f, true).then(-0.2f),
-			container1.right(0.5f, true).then(-0.2f),
-			container1.bottom(0.5f, true).then(-0.2f)
+			container1.left(50).then(-0.2f),
+			container1.top(50).then(-0.2f),
+			container1.right(50).then(-0.2f),
+			container1.bottom(50).then(-0.2f)
 
 		);
 
