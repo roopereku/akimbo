@@ -13,8 +13,8 @@ public:
 		auto& loggerObject = ui.add <Akimbo::UI::Logger> (
 			ui.left(0.1f),
 			ui.top(0.1f),
-			ui.right(-0.1f),
-			ui.bottom(-0.1f),
+			ui.right(0.1f),
+			ui.bottom(0.1f),
 
 			//	The font to be used is passed after the constraints
 			loggerFont

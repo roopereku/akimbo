@@ -1,4 +1,4 @@
-#include "../../akimbo/Core.hh"
+#include "akimbo/akimbo/Core.hh"
 
 class Basics : public Akimbo::Core
 {
@@ -29,6 +29,12 @@ public:
 			 *		of the parent container's size. For an example ui.left(0.1f, true) ends up at
 			 *		root container's X + 10% of root container's width */
 
+			/*	NOTE
+			 *	If you add a widget that has constraints that are relative to the container the widget is
+			 *	being added to, gap will always move in the direction of the center of said container.
+			 *	If the constraints are NOT relative to the container, gap will always
+			 *	move in the opposite direction of the container's center */
+
 			//	The left edge sticks to the left edge of "ui"
 			ui.left(),
 
@@ -36,7 +42,7 @@ public:
 			ui.top(),
 
 			//	The right edge will be at the middle of "ui"
-			ui.left(0.5f, true),
+			ui.right(0.5f, true),
 
 			//	The bottom edge will stick to the bottom edge of "ui"
 			ui.bottom()
@@ -62,12 +68,12 @@ public:
 		auto& container2 = container1.add <Akimbo::UI::Container> (
 
 			/*	In short terms every constraint is initially at the
-			 *	middle of "container1", but they will be shifted
-			 *	appropriately so that they're different */
+			 *	middle of "container1", but they will be slightly
+			 *	moved backwards so that they're not at the same position */
 			container1.left(0.5f, true).then(-0.2f),
 			container1.top(0.5f, true).then(-0.2f),
-			container1.left(0.5f, true).then(+0.2f),
-			container1.top(0.5f, true).then(+0.2f)
+			container1.right(0.5f, true).then(-0.2f),
+			container1.bottom(0.5f, true).then(-0.2f)
 
 		);
 
@@ -82,6 +88,4 @@ public:
 		 *	Some widgets have additional parameters which is why you
 		 *	should check other examples in examples/ui */
 	}
-
-private:
 };

@@ -10,8 +10,8 @@ public:
 		auto& switchObject = ui.add <Akimbo::UI::Switch> (
 			ui.left(0.5f, true).then(-0.2f),
 			ui.top(0.5f, true).then(-0.2f),
-			ui.left(0.5f, true).then(+0.2f),
-			ui.top(0.5f, true).then(+0.2f)
+			ui.right(0.5f, true).then(-0.2f),
+			ui.bottom(0.5f, true).then(-0.2f)
 		);
 
 		/*	Akimbo::UI::Switch has a callback variable called onSwitch
