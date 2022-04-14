@@ -52,6 +52,8 @@ public:
 	Constraint bottom(float gap = 0.0f, bool isPercentage = false);
 
 protected:
+	bool isRelativeConstraint(Constraint& constraint);
+
 	Core* core;
 	Widget* parent = nullptr;
 

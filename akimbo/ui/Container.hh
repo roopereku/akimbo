@@ -26,6 +26,13 @@ public:
 	template <typename T, typename... Args>
 	T& add(Constraint left, Constraint top, Constraint right, Constraint bottom, Args&& ...args)
 	{
+		/*	If some of the given constraints don't originate from this container,
+		 *	negate their gaps so that they move to the inverse direction */
+		if(!isRelativeConstraint(left)) left.negateGap();
+		if(!isRelativeConstraint(top)) top.negateGap();
+		if(!isRelativeConstraint(right)) right.negateGap();
+		if(!isRelativeConstraint(bottom)) bottom.negateGap();
+
 		//	Create a new widget of the given type and pass arbitrary parameters to it
 		/*	FIXME this is a lot of unnecessary copying.
 		 *	Ideally EdgeConstraints could have a constructor and a move constructor

@@ -17,6 +17,16 @@ public:
 
 	operator float();
 
+	friend class Widget;
+	friend class Container;
+
+protected:
+	/*	Helper functions that are used for corrections when
+	 *	someone uses adds a new widget but doesn't use constraints
+	 *	from the container this new widget is being added to */
+	bool isRelative(Constraint& constraint);
+	void negateGap();
+
 private:
 	void updatePosition(float relativePosition, float size);
 

@@ -1,5 +1,6 @@
 #include "Widget.hh"
 #include "../Core.hh"
+#include "../Debug.hh"
 
 namespace Akimbo::UI
 {
@@ -63,6 +64,14 @@ Widget* Widget::isInside(Vec2 point)
 	return nullptr;
 }
 
+bool Widget::isRelativeConstraint(Constraint& constraint)
+{
+	return	edges.left.isRelative(constraint) ||
+			edges.right.isRelative(constraint) ||
+			edges.top.isRelative(constraint) ||
+			edges.bottom.isRelative(constraint);
+}
+
 void Widget::setBackgroundColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 {
 	bgRed = r;
@@ -105,12 +114,14 @@ Constraint Widget::left(float gap, bool isPercentage)
 
 Constraint Widget::right(float gap, bool isPercentage)
 {
-	return Constraint(edges.right, gap, isPercentage);
+	//	Negate gap so that constraint movement is right -> left
+	return Constraint(edges.right, -gap, isPercentage);
 }
 
 Constraint Widget::bottom(float gap, bool isPercentage)
 {
-	return Constraint(edges.bottom, gap, isPercentage);
+	//	Negate gap so that constraint movement is bottom -> top
+	return Constraint(edges.bottom, -gap, isPercentage);
 }
 
 }

@@ -7,26 +7,37 @@ class Game : public Akimbo::Core
 public:
 	Game() : Akimbo::Core(), t(loadTexture("test.png")), f(loadFont("/usr/share/fonts/TTF/AndaleMo.TTF"))
 	{
-		auto& switch1 = ui.add <Akimbo::UI::Switch> (
-			ui.left(0.25f, true),
-			ui.top(0.4f, true),
-			ui.left(0.25f, true).then(0.4f),
-			ui.top(0.4f, true).then(0.5f)
+		auto& cont1 = ui.add <Akimbo::UI::Container> (
+			ui.left().then(0.1f, true),
+			ui.top().then(0.1f, true),
+			ui.right().then(0.1f, true),
+			ui.bottom().then(0.1f, true)
 		);
 
-		auto& logger1 = ui.add <Akimbo::UI::Logger> (
-			switch1.right(0.1f, false),
-			switch1.top(),
-			ui.right(-0.1f),
-			ui.bottom(-0.1f),
-			f
+		auto& cont2 = cont1.add <Akimbo::UI::Container> (
+			cont1.left(0.1f, false),
+			cont1.top(0.1f, false),
+			cont1.left(0.5f, true),
+			cont1.bottom(0.1f, false)
 		);
 
-		switch1.onSwitch = [&logger1](bool on)
-		{
-			if(on) logger1.setBackgroundColor(0, 100, 0);
-			else logger1.setBackgroundColor(100, 100, 100);
-		};
+		auto& cont3 = cont1.add <Akimbo::UI::Container> (
+			cont2.right(),
+			cont2.top(),
+			cont1.right(0.1f, false),
+			cont2.bottom()
+		);
+
+		auto& switch1 = cont2.add <Akimbo::UI::Switch> (
+			cont2.left(0.5f, true).then(-0.3f),
+			cont2.top(0.5f, true).then(-0.3f),
+			cont3.left(0.2f, false),
+			cont2.bottom(0.5f, true).then(-0.3f)
+		);
+
+		cont1.setBackgroundColor(0, 0, 100);
+		cont2.setBackgroundColor(100, 0, 0);
+		cont3.setBackgroundColor(100, 100, 0);
 	}
 
 	void onMouseClick(Vec2 at, int button) override
@@ -36,8 +47,8 @@ public:
 
 	void onRender(Akimbo::Frame& frame) override
 	{
-		frame.color(0, 255, 0);
-		frame.drawBox(boxAt, Vec2(1.0f, 1.0f), false);
+		//frame.color(0, 255, 0);
+		//frame.drawBox(boxAt, Vec2(1.0f, 1.0f), false);
 	}
 
 	void onUpdate(double delta) override
