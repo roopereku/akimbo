@@ -73,7 +73,6 @@ Frame Window::renderFrame(Vec2& cameraPosition, Vec2& cameraRadius)
 
 Vec2i Window::swapSize(Vec2i newSize)
 {
-	DBG_LOG("Window now has size %d %d", newSize.x, newSize.y);
 	Vec2i oldSize = size;
 	size = newSize;
 	return oldSize;
