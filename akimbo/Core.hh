@@ -4,6 +4,7 @@
 #include "Font.hh"
 #include "Window.hh"
 #include "Texture.hh"
+#include "EventHandler.hh"
 #include "ui/Container.hh"
 
 #include <vector>
@@ -26,6 +27,8 @@ private:
 
 	std::vector <Texture> textures;
 	std::vector <Font> fonts;
+
+	EventHandler events;
 
 protected:
 	//	Functions called on each frame

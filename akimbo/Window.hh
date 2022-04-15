@@ -22,8 +22,8 @@ public:
 	//	Helper which sets a new window size and returns the old one.
 	Vec2i swapSize(Vec2i newSize);
 
-	//	Returns the cursor position converted to a value that's in (-1, -1) - (+1, +1) range
-	Vec2 getMousePosition();
+	//	Returns some real position converted to a value that's in (-1, -1) - (+1, +1) range
+	Vec2 toWorldPosition(Vec2i real);
 
 	/*	Because SDL requires SDL_Renderer to create textures, let's
 	 *	expose renderer for the texture & font class which takes
