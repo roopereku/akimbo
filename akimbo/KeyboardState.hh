@@ -6,31 +6,27 @@
 
 namespace Akimbo {
 
-enum class Modifier
+enum class Key
 {
-	Shift, Control,
-	Alt, AltGr
-};
+	ArrowUp,
+	ArrowDown,
+	ArrowLeft,
+	ArrowRight,
 
-enum class Arrow
-{
-	Left, Right, Top, Down
+	Alt,
+	Shift,
+	Control,
 };
 
 class KeyboardState
 {
 public:
-	bool isPressed(Modifier modifier);
-	bool isPressed(Arrow arrowKey);
+	bool isPressed(Key key);
 	bool isPressed(char key);
-
-	char key();
 
 	friend class EventHandler;
 
 protected:
-	char lastKey;
-
 	//	TODO extend to unicode
 	std::array <bool, 95> keys;
 	std::array <bool, 4> modifierKeys;

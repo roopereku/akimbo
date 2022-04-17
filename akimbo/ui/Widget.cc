@@ -90,17 +90,11 @@ void Widget::removeBackgroundImage()
 	bgImage = nullptr;
 }
 
-void Widget::onUpdate(double)
-{
-}
-
-void Widget::onMouseClick(Vec2, int)
-{
-}
-
-void Widget::onResize(Vec2)
-{
-}
+void Widget::onUpdate(double) {}
+void Widget::onResize(Vec2) {}
+void Widget::onMouseClick(Vec2, int) {}
+void Widget::onKeyPress(char) {}
+void Widget::onKeyPress(Key) {}
 
 Constraint Widget::top(float units)
 {

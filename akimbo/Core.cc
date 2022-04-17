@@ -6,8 +6,22 @@ namespace Akimbo {
 Core::Core() :	cameraRadius(2.0f, 2.0f), uiRadius(1.0f, 1.0f),
 				window("Akimbo", Vec2(0.5f, 0.5f)), ui(this, uiRadius)
 {
-	events.onKeyPress = [this](KeyboardState& keys)
+	events.onKeyPress = [this](char key)
 	{
+		//	If a widget is focused, pass the keypress to it
+		if(widgetFocus)
+			widgetFocus->onKeyPress(key);
+
+		else onKeyPress(key);
+	};
+
+	events.onKeyPressOther = [this](Key key)
+	{
+		//	If a widget is focused, pass the keypress to it
+		if(widgetFocus)
+			widgetFocus->onKeyPress(key);
+
+		else onKeyPress(key);
 	};
 
 	events.onMouseClick = [this](Vec2i realPosition, int button)
@@ -18,22 +32,30 @@ Core::Core() :	cameraRadius(2.0f, 2.0f), uiRadius(1.0f, 1.0f),
 		//	Fit the mouse position to the UI space
 		Vec2 mouseUI = mousePosition * uiRadius;
 
-		//	Does the click happend inside a widget
+		//	Does the click happen inside a widget
 		UI::Widget* uiClickAt = ui.isInside(mouseUI);
 		if(uiClickAt != &ui)
 		{
+			setWidgetFocus(*uiClickAt);
 			uiClickAt->onMouseClick(mouseUI, button);
 			return;
 		}
 
+		//	We're no longer focused on any widgets
+		widgetFocus = nullptr;
+
 		/*	If the click didn't happen inside a widget, fit the mouse
 		 *	position to the camera space and pass it to the user */
 		Vec2 mouseCamera = mousePosition * cameraRadius + cameraPosition;
-		onMouseClick(mouseCamera, 1);
+		onMouseClick(mouseCamera, button);
 	};
 
 	events.onWindowResize = [this](Vec2i newSize)
 	{
+
+		/*	If a resize happens, we don't wan't to stretch the image
+		 *	but adjust the camera radius so that the image remains the same size */
+
 		//	Request the old size from the window
 		Vec2i oldSize = window.swapSize(newSize);
 
@@ -103,6 +125,11 @@ void Core::start()
 	}
 }
 
+void Core::setWidgetFocus(UI::Widget& widget)
+{
+	widgetFocus = &widget;
+}
+
 void Core::setFpsCap(unsigned cap)
 {
 	DBG_LOG("Capped FPS to %u", cap);
@@ -125,5 +152,11 @@ Font& Core::loadFont(const std::string& path)
 	fonts.emplace_back(path, &window);
 	return fonts.back();
 }
+
+void Core::onRender(Frame&) {}
+void Core::onUpdate(double) {}
+void Core::onMouseClick(Vec2, int) {}
+void Core::onKeyPress(char) {}
+void Core::onKeyPress(Key) {}
 
 }

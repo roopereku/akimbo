@@ -1,6 +1,7 @@
 #ifndef AKIMBO_UI_WIDGET_HH
 #define AKIMBO_UI_WIDGET_HH
 
+#include "../KeyboardState.hh"
 #include "Constraint.hh"
 #include "../Frame.hh"
 
@@ -26,6 +27,10 @@ public:
 
 	//	Function that gets called when the user clicks this widget
 	virtual void onMouseClick(Vec2, int button);
+
+	//	Function that gets called when a key is pressed while this widget is active
+	virtual void onKeyPress(char key);
+	virtual void onKeyPress(Key key);
 
 	//	Function that gets called when the widget is resized
 	virtual void onResize(Vec2 resizeFactor);

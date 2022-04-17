@@ -5,14 +5,9 @@
 
 namespace Akimbo {
 
-void EventHandler::toggleTextInput()
+EventHandler::EventHandler()
 {
-	textInput = !textInput;
-
-	if(textInput)
-		SDL_StartTextInput();
-
-	else SDL_StopTextInput();
+	SDL_StartTextInput();
 }
 
 void EventHandler::update()
@@ -23,17 +18,19 @@ void EventHandler::update()
 		switch(event.type)
 		{
 			case SDL_KEYDOWN:
+				//	TODO handle key states
 			break;
 
 			case SDL_TEXTINPUT:
+				//	TODO support unicode
+				if(onKeyPress)
+					onKeyPress(event.text.text[0]);
 			break;
 
 			case SDL_WINDOWEVENT:
 			{
 				switch(event.window.event)
 				{
-					/*	If a resize happens, we don't wan't to stretch the image
-					 *	but adjust the camera radius so that the image remains the same size */
 					case SDL_WINDOWEVENT_RESIZED:
 					{
 						if(onWindowResize)

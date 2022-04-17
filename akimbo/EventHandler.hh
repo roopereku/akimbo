@@ -11,16 +11,18 @@ namespace Akimbo {
 class EventHandler
 {
 public:
+	EventHandler();
+
 	std::function <void(Vec2i position, int button)> onMouseClick;
-	std::function <void(KeyboardState& keys)> onKeyPress;
 	std::function <void(Vec2i newSize)> onWindowResize;
 	std::function <void()> onWindowClose;
 
-	void toggleTextInput();
+	std::function <void(char key)> onKeyPress;
+	std::function <void(Key key)> onKeyPressOther;
+
 	void update();
 
 private:
-	bool textInput = false;
 	KeyboardState keys;
 };
 
