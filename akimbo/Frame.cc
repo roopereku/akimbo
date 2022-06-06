@@ -1,138 +1,92 @@
+#include "Matrix4.hh"
 #include "Frame.hh"
 #include "Debug.hh"
+#include "Mesh.hh"
+
+#include <glm/gtc/matrix_transform.hpp>
+#include <SDL2/SDL_log.h>
+#include <GL/glew.h>
 
 namespace Akimbo {
 
-Frame::Frame(SDL_Window* w, Vec2& cameraPosition, Vec2& cameraRadius)
-	: window(w), cameraPosition(cameraPosition), cameraRadius(cameraRadius)
+Frame::Frame() : shader("akimbo/shaders/test.vs", "akimbo/shaders/test.fs")
 {
-	color(0, 0, 0);
-	SDL_RenderClear(SDL_GetRenderer(window));
+	transform.scale(0.5f, 0.5f, 1.0f);
+	resize(Vec2i(540, 960));
 }
 
 Frame::~Frame()
 {
-	SDL_RenderPresent(SDL_GetRenderer(window));
+	clearBuffers();
 }
 
-void Frame::drawBox(Vec2 position, Vec2 size, bool filled)
+void Frame::clearBuffers()
 {
-	Vec2i p = convert(position).as <int> ();
-	Vec2i s = convert(size - cameraRadius + cameraPosition).as <int> ();
-	SDL_Rect r { p.x, p.y, s.x + 1, s.y + 1 };
+	//	Delete the buffers if they exist
+	if(texture > 0) glDeleteTextures(1, &texture);
+	if(rbo > 0) glDeleteRenderbuffers(1, &fbo);
+	if(fbo > 0) glDeleteFramebuffers(1, &fbo);
 
-	if(filled) SDL_RenderFillRect(SDL_GetRenderer(window), &r);
-	else SDL_RenderDrawRect(SDL_GetRenderer(window), &r);
+	//	Null them just in case
+	texture = 0;
+	rbo = 0;
+	fbo = 0;
 }
 
-void Frame::drawLine(Vec2 from, Vec2 to)
+void Frame::resize(Vec2i size)
 {
-	from = convert(from);
-	to = convert(to);
+	clearBuffers();
 
-	SDL_RenderDrawLine(SDL_GetRenderer(window), from.x, from.y, to.x, to.y);
-}
+	glGenFramebuffers(1, &fbo);
+	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 
-void Frame::drawDot(Vec2 position)
-{
-	position = convert(position);
-	SDL_RenderDrawPoint(SDL_GetRenderer(window), position.x, position.y);
-}
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
 
-void Frame::color(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
-{
-	SDL_SetRenderDrawColor(SDL_GetRenderer(window), r, g, b, a);
-}
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, size.x, size.y, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-void Frame::drawTexture(Texture& texture, Vec2 position, Vec2 size)
-{
-	Vec2i p = convert(position).as <int> ();
-	Vec2i s = convert(size - cameraRadius + cameraPosition).as <int> ();
-	SDL_Rect r { p.x, p.y, s.x + 1, s.y + 1 };
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0);
 
-	SDL_RenderCopy(SDL_GetRenderer(window), texture.texture, NULL, &r);
-}
+	glGenRenderbuffers(1, &rbo);
+	glBindRenderbuffer(GL_RENDERBUFFER, rbo);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, size.x, size.y);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
-void Frame::drawCharacter(char chr, Font& font, Vec2 position, Vec2 size)
-{
-	//	Calculate the position of the character in the font
-	int index = chr - 32;
-	int x = font.characterSize.x * index;
-
-	Vec2i p = convert(position).as <int> ();
-	Vec2i s = convert(size - cameraRadius + cameraPosition).as <int> ();
-
-	SDL_Rect r { p.x, p.y, s.x + 1, s.y + 1 };
-	SDL_Rect src { x, 0, font.characterSize.x, font.characterSize.y };
-
-	//	Draw the given character from the font texture
-	SDL_RenderCopy(SDL_GetRenderer(window), font.texture, &src, &r);
-}
-
-void Frame::drawText(const std::string& str, Font& font, Vec2 position, Vec2 size)
-{
-	size_t longestLine = 0;
-	size_t lineLength = 0;
-	size_t lines = 1;
-
-	//	First find all the line breaks and the longest line
-	for(auto c : str)
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
+	if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 	{
-		if(c == '\n')
-		{
-			if(lineLength > longestLine)
-				longestLine = lineLength;
-
-			lines++;
-			lineLength = 0;
-		}
-
-		else lineLength++;
+		SDL_Log("Framebuffer not complete");
+		return;
 	}
 
-	//	There might not even be a new line so update the longest line
-	if(lineLength > longestLine)
-		longestLine = lineLength;
-
-	//	Calculate the size of a single character
-	size /= Vec2(longestLine, lines);
-	float originX = position.x;
-
-	for(auto c : str)
-	{
-		//	If the character is a newline, go on the next line
-		if(c == '\n')
-		{
-			position.x = originX;
-			position.y += size.y;
-
-			continue;
-		}
-
-		//	Move the position forward and draw the character
-		drawCharacter(c, font, position, size);
-		position.x += size.x;
-	}
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-Vec2 Frame::convert(Vec2 position)
+Render Frame::render()
 {
-	int w;
-	int h;
-	SDL_GetWindowSize(window, &w, &h);
+	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+	glEnable(GL_DEPTH_TEST);
 
-	//	Move the point depending on where the camera is
-	position -= cameraPosition;
+	return Render(shader);
+}
 
-	/*	Because the position can be negative, first make it positive by
-	 *	adding the camera radius to it and then convert it to screen space */
-	position += cameraRadius;
-	position *= (Vec2(w, h) / cameraRadius);
+void Frame::draw()
+{
+	static Mesh square(Mesh::Shape::Square);
 
-	/*	If position is the same as the camera radius, 
-	 *	position will have a value that is window size times 2.
-	 *	To fix it just divide the position x and y by 2 */
-	return Vec2(position.x / 2, position.y / 2);
+	shader.use();
+
+	glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	shader.setTransform(transform.transform);
+
+	glBindTexture(GL_TEXTURE_2D, texture);
+	square.draw();
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 }
