@@ -1,6 +1,8 @@
 #include "Core.hh"
 #include "Debug.hh"
 
+#include <GL/glew.h>
+
 namespace Akimbo {
 
 Core::Core() :	cameraRadius(2.0f, 2.0f), uiRadius(1.0f, 1.0f),
@@ -46,13 +48,12 @@ Core::Core() :	cameraRadius(2.0f, 2.0f), uiRadius(1.0f, 1.0f),
 
 		/*	If the click didn't happen inside a widget, fit the mouse
 		 *	position to the camera space and pass it to the user */
-		Vec2 mouseCamera = mousePosition * cameraRadius + cameraPosition;
-		onMouseClick(mouseCamera, button);
+		//Vec2 mouseCamera = mousePosition * cameraRadius + cameraPosition;
+		onMouseClick(mousePosition, button);
 	};
 
 	events.onWindowResize = [this](Vec2i newSize)
 	{
-
 		/*	If a resize happens, we don't wan't to stretch the image
 		 *	but adjust the camera radius so that the image remains the same size */
 
@@ -60,21 +61,27 @@ Core::Core() :	cameraRadius(2.0f, 2.0f), uiRadius(1.0f, 1.0f),
 		Vec2i oldSize = window.swapSize(newSize);
 
 		//	Calculate a relation between the sizes
-		Vec2 relation = oldSize.as <float> () / newSize.as <float> ();
+		Vec2 relation = oldSize / newSize;
 
 		//	If the relation isn't just zeroes, adjust the camera and UI radius
 		if(relation < Vec2(0.0000f, 0.0000f) || relation > Vec2(0.0000f, 0.0000f))
 		{
 			cameraRadius = cameraRadius / relation;
-			uiRadius = uiRadius / relation;
-			ui.adjustPosition(uiRadius);
+		//	uiRadius = uiRadius / relation;
+		//	ui.adjustPosition(uiRadius);
 		}
-	};
 
+		//glViewport(0, 0, 1920, 1080);
+	};
 }
 
 void Core::start()
 {
+	{
+		Render render = frame.render();
+		onRender(render);
+	}
+
 	bool running = window.valid();
 	uint64_t lastTicks = SDL_GetTicks();
 
@@ -104,24 +111,19 @@ void Core::start()
 		}
 
 		//	Call updates
-		ui.onUpdate(delta);
-		onUpdate(delta);
+		//ui.onUpdate(delta);
+		//onUpdate(delta);
 
-		//	Create a new frame that the user can use for drawing
-		Vec2 radius = cameraRadius;
-		Vec2 position = cameraPosition;
-		Frame frame = window.renderFrame(position, radius);
+		frame.draw();
+		window.swapBuffer();
 
-		//	Call user defined rendering
-		onRender(frame);
+		///*	The UI shouldn't use the camera in any way so let's trick
+		// *	the frame and modify the position and radius to fit the UI */
+		//position = Vec2(0.0f, 0.0f);
+		//radius = uiRadius;
 
-		/*	The UI shouldn't use the camera in any way so let's trick
-		 *	the frame and modify the position and radius to fit the UI */
-		position = Vec2(0.0f, 0.0f);
-		radius = uiRadius;
-
-		//	Render the UI
-		ui.onRender(frame);
+		////	Render the UI
+		//ui.onRender(frame);
 	}
 }
 
@@ -136,24 +138,19 @@ void Core::setFpsCap(unsigned cap)
 	fpsCapValue = 1.0 / cap;
 }
 
-void Core::zoomCamera(float zoom)
-{
-	cameraRadius = cameraRadius / zoom;
-}
-
 Texture& Core::loadTexture(const std::string& path)
 {
-	textures.emplace_back(path, &window);
+	textures.emplace_back(path);
 	return textures.back();
 }
 
 Font& Core::loadFont(const std::string& path)
 {
-	fonts.emplace_back(path, &window);
+	fonts.emplace_back(path);
 	return fonts.back();
 }
 
-void Core::onRender(Frame&) {}
+void Core::onRender(Render&) {}
 void Core::onUpdate(double) {}
 void Core::onMouseClick(Vec2, int) {}
 void Core::onKeyPress(char) {}

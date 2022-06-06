@@ -9,25 +9,6 @@ class Game : public Akimbo::Core
 public:
 	Game() : Akimbo::Core(), t(loadTexture("test.png")), f(loadFont("/usr/share/fonts/TTF/AndaleMo.TTF"))
 	{
-		auto& l1 = ui.add <Akimbo::UI::Label> (
-			ui.left(50).then(-0.3f),
-			ui.top(33).then(-0.15f),
-			ui.right(50).then(-0.3f),
-			ui.top(33).then(+0.15f),
-			f
-		);
-
-		auto& l2 = ui.add <Akimbo::UI::TextInput> (
-			ui.left(50).then(-0.3f),
-			ui.bottom(33).then(+0.15f),
-			ui.right(50).then(-0.3f),
-			ui.bottom(33).then(-0.15f),
-			f
-		);
-
-		l1.setText("Start");
-
-		//setWidgetFocus(l1);
 	}
 
 	void onMouseClick(Vec2 at, int button) override
@@ -40,15 +21,17 @@ public:
 		DBG_LOG("User defined '%c'", key);
 	}
 
-	void onRender(Akimbo::Frame& frame) override
+	void onRender(Akimbo::Render& render) override
 	{
-		frame.color(0, 255, 0);
-		frame.drawBox(boxAt, Vec2(1.0f, 1.0f), false);
+		DBG_LOG("Render");
+		render.color(1.0f, 1.0f, 1.0f);
+		render.clear();
+		//render.color(0.0f, 1.0f, 0.0f);
+		//render.box(boxAt, Vec2(0.5f, 0.5f), false);
 	}
 
 	void onUpdate(double delta) override
 	{
-		//zoomCamera(1.0 - delta / 2);
 	}
 
 private:

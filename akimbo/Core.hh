@@ -2,6 +2,7 @@
 #define AKIMBO_CORE_HH
 
 #include "Font.hh"
+#include "Frame.hh"
 #include "Window.hh"
 #include "Texture.hh"
 #include "EventHandler.hh"
@@ -30,10 +31,11 @@ private:
 	std::vector <Font> fonts;
 
 	EventHandler events;
+	Frame frame;
 
 protected:
 	//	Functions called on each frame
-	virtual void onRender(Frame& frame);
+	virtual void onRender(Render& render);
 	virtual void onUpdate(double delta);
 
 	//	Function that's called when the user clicks on non-UI
@@ -48,13 +50,6 @@ protected:
 
 	Font& loadFont(const std::string& path);
 	Texture& loadTexture(const std::string& path);
-
-	//	Where is the camera?
-	Vec2 cameraPosition;
-
-	/*	Function that can zoom the camera. For an example zoomCamera(2.0f)
-	 *	doubles the camera zoom and zoomCamera(0.5f) halve it */
-	void zoomCamera(float zoom);
 
 	//	Focus on some widget
 	void setWidgetFocus(UI::Widget& widget);
