@@ -22,7 +22,7 @@ public:
 	Widget& operator=(const Widget& rhs) = delete;
 
 	//	Functions that get called on each frame
-	virtual void onRender(Frame& frame);
+	virtual void onRender(Render& render);
 	virtual void onUpdate(double delta);
 
 	//	Function that gets called when the user clicks this widget
@@ -40,7 +40,7 @@ public:
 	virtual void adjustPosition(Vec2 uiRadius);
 
 	//	Widget background setters
-	void setBackgroundColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
+	void setBackgroundColor(float r, float g, float b, float a = 1.0f);
 	void setBackgroundImage(Texture& texture);
 	void removeBackgroundImage();
 
@@ -70,10 +70,10 @@ protected:
 
 private:
 	//	Widget background stuff
-	uint8_t bgRed = 0;
-	uint8_t bgGreen = 0;
-	uint8_t bgBlue = 0;
-	uint8_t bgAlpha = 0;
+	float bgRed = 0;
+	float bgGreen = 0;
+	float bgBlue = 0;
+	float bgAlpha = 0;
 	Texture* bgImage = nullptr;
 
 	EdgeConstraints edges;

@@ -14,7 +14,7 @@ class Logger : public Widget
 public:
 	Logger(Core* core, const EdgeConstraints& edges, Font& font);
 
-	void onRender(Frame& frame) override;
+	void onRender(Render& render) override;
 	void onResize(Vec2 resizeFactor) override;
 	void onMouseClick(Vec2 at, int button) override;
 

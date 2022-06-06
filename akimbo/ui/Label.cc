@@ -7,9 +7,9 @@ Label::Label(Core* core, const EdgeConstraints& edges, Font& font)
 {
 }
 
-void Label::onRender(Frame& frame)
+void Label::onRender(Render& render)
 {
-	frame.drawText(text, font, position, size);
+	render.text(text, font, position, size);
 }
 
 void Label::setText(const std::string& str)

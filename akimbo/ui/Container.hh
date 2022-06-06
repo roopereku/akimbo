@@ -17,7 +17,7 @@ public:
 	Container(Core* core, Vec2 uiRadius);
 	Container(Core* core, const EdgeConstraints& edges);
 
-	void onRender(Frame& frame) override;
+	void onRender(Render& render) override;
 	void onUpdate(double delta) override;
 	void adjustPosition(Vec2 uiRadius) override;
 	Widget* isInside(Vec2 point) override;
@@ -48,7 +48,7 @@ public:
 		child.core = core;
 
 		//	Update the position of the new widget according to the given constraints
-		child.adjustPosition(size / 2);
+		child.adjustPosition(size / 2.0f);
 
 		return static_cast <T&> (*children.back());
 	}

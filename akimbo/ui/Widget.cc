@@ -30,12 +30,12 @@ void Widget::adjustPosition(Vec2 uiRadius)
 	onResize(relation);
 }
 
-void Widget::onRender(Frame& frame)
+void Widget::onRender(Render& render)
 {
 	//	If there's a background image, draw it
 	if(bgImage)
 	{
-		frame.drawTexture(*bgImage, position, size);
+		//frame.drawTexture(*bgImage, position, size);
 		return;
 	}
 
@@ -45,13 +45,13 @@ void Widget::onRender(Frame& frame)
 	//	If there is a background color, draw a filled box with that color
 	if(!transparent)
 	{
-		frame.color(bgRed, bgGreen, bgBlue);
-		frame.drawBox(position, size, true);
+		render.color(bgRed, bgGreen, bgBlue);
+		render.box(position, size, true);
 	}
 
 	DBG(
-		frame.color(255, 0, 0);	
-		frame.drawBox(position, size, false);
+		render.color(1.0f, 0.0f, 0.0f);
+		render.box(position, size, false);
 	);
 }
 
@@ -72,7 +72,7 @@ bool Widget::isRelativeConstraint(Constraint& constraint)
 			edges.bottom.isRelative(constraint);
 }
 
-void Widget::setBackgroundColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+void Widget::setBackgroundColor(float r, float g, float b, float a)
 {
 	bgRed = r;
 	bgGreen = g;

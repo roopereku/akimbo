@@ -30,14 +30,14 @@ Widget* Container::isInside(Vec2 point)
 	return this;
 }
 
-void Container::onRender(Frame& frame)
+void Container::onRender(Render& render)
 {
-	Widget::onRender(frame);
+	Widget::onRender(render);
 
 	for(auto& child : children)
 	{
-		child->Widget::onRender(frame);
-		child->onRender(frame);
+		child->Widget::onRender(render);
+		child->onRender(render);
 	}
 }
 
@@ -52,7 +52,7 @@ void Container::adjustPosition(Vec2 uiRadius)
 	Widget::adjustPosition(uiRadius);
 
 	for(auto& child : children)
-		child->adjustPosition(size / 2);
+		child->adjustPosition(size / 2.0f);
 }
 
 }

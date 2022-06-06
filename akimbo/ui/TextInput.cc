@@ -6,9 +6,9 @@ TextInput::TextInput(Core* core, const EdgeConstraints& edges, Font& font) : Wid
 {
 }
 
-void TextInput::onRender(Frame& frame)
+void TextInput::onRender(Render& render)
 {
-	frame.drawText(text, font, position, size);
+	render.text(text, font, position, size);
 }
 
 void TextInput::onKeyPress(char key)

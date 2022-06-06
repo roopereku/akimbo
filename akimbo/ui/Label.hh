@@ -12,7 +12,7 @@ class Label : public Widget
 public:
 	Label(Core* core, const EdgeConstraints& edges, Font& font);
 
-	void onRender(Frame& frame);
+	void onRender(Render& render);
 	void setText(const std::string& str);
 
 private:

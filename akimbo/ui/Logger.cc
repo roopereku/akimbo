@@ -12,7 +12,7 @@ Logger::Logger(Core* core, const EdgeConstraints& edges, Font& font)
 	onResize(Vec2());
 }
 
-void Logger::onRender(Frame& frame)
+void Logger::onRender(Render& render)
 {
 	Vec2 currentPosition = position;
 
@@ -21,7 +21,7 @@ void Logger::onRender(Frame& frame)
 		std::string& msg = messages[y];
 		for(size_t x = 0; x < static_cast <size_t> (columns) && x < msg.length(); x++)
 		{
-			frame.drawCharacter(msg[x], font, currentPosition, characterSize);
+			render.character(msg[x], font, currentPosition, characterSize);
 			currentPosition.x += characterSize.x;
 		}
 
