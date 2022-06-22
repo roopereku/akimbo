@@ -23,11 +23,20 @@ public:
 	void character(char chr, Font& font, Vec2 position, Vec2 size);
 	void text(const std::string& str, Font& font, Vec2 position, Vec2 size);
 
+	const Vec2 topLeft;
+	const Vec2 topRight;
+	const Vec2 bottomLeft;
+	const Vec2 bottomRight;
+	const Vec2 center;
+	const Vec2 radius;
+
 	friend class Frame;
 
 protected:
 	//	Only Frame can create a Render object
-	Render(Shader& shader);
+	Render(Shader& shader, Mat4& projection, float horizontalRadius);
+
+	Mat4& projection;
 	Shader& shader;
 
 	float r = 0.0f;

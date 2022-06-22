@@ -11,8 +11,10 @@ namespace Akimbo {
 
 Frame::Frame() : shader("akimbo/shaders/test.vs", "akimbo/shaders/test.fs")
 {
-	transform.scale(0.5f, 0.5f, 1.0f);
-	resize(Vec2i(540, 960));
+	/*	800x800 is a good reference size where (-1.0, 1.0) is the
+	 *	top-left corner when the projection is applied */
+	actualWidth = 800;
+	resize(Vec2i(800, 800));
 }
 
 Frame::~Frame()
@@ -43,17 +45,21 @@ void Frame::resize(Vec2i size)
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
 
+	//	Create a texture to draw onto
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, size.x, size.y, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
+	//	Attach the texture to the framebuffer
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0);
 
+	//	Create a renderbuffer
 	glGenRenderbuffers(1, &rbo);
 	glBindRenderbuffer(GL_RENDERBUFFER, rbo);
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, size.x, size.y);
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
+	//	Attach the renderbuffer to the framebuffer
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
 	if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 	{
@@ -63,6 +69,18 @@ void Frame::resize(Vec2i size)
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	/*	The horizontal screen radius is initially -1.0 - +1.0, but when projection
+	 *	is applied, it might no longer be -1.0 - +1.0. The vertical screen radius will
+	 *	always stay the same but the horizontal doesn't so adjust it */
+	float oldHorizontal = horizontalRadius;
+	horizontalRadius = static_cast <float> (size.x) / size.y;
+
+	//	Recreate the Projection View matrix with the new frame dimensions
+	projection = glm::perspective(glm::radians(90.0f), static_cast <float> (size.x) / size.y, 1.0f, 100.0f);
+	Mat4 view = glm::lookAt(Vec3(0, 0, 1), Vec3(0, 0, 0), Vec3(0, 1, 0));
+
+	projection = projection * view;
 }
 
 Render Frame::render()
@@ -70,7 +88,13 @@ Render Frame::render()
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 	glEnable(GL_DEPTH_TEST);
 
-	return Render(shader);
+	DBG
+	(
+		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	)
+
+	return Render(shader, projection, horizontalRadius);
 }
 
 void Frame::draw()
@@ -78,10 +102,6 @@ void Frame::draw()
 	static Mesh square(Mesh::Shape::Square);
 
 	shader.use();
-
-	glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT);
-
 	shader.setTransform(transform.transform);
 
 	glBindTexture(GL_TEXTURE_2D, texture);

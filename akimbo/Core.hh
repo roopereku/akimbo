@@ -20,9 +20,6 @@ public:
 	void start();
 
 private:
-	Vec2 cameraRadius;
-	Vec2 uiRadius;
-
 	UI::Widget* widgetFocus = nullptr;
 	double fpsCapValue = 0;
 	Window window;
@@ -34,7 +31,6 @@ private:
 	Frame frame;
 
 protected:
-	//	Functions called on each frame
 	virtual void onRender(Render& render);
 	virtual void onUpdate(double delta);
 
@@ -47,6 +43,8 @@ protected:
 
 	//	Function that can adjust the FPS cap
 	void setFpsCap(unsigned cap);
+
+	void render();
 
 	Font& loadFont(const std::string& path);
 	Texture& loadTexture(const std::string& path);

@@ -1,12 +1,14 @@
 #include "Core.hh"
 #include "Debug.hh"
+#include "Mesh.hh"
 
 #include <GL/glew.h>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace Akimbo {
 
-Core::Core() :	cameraRadius(2.0f, 2.0f), uiRadius(1.0f, 1.0f),
-				window("Akimbo", Vec2(0.5f, 0.5f)), ui(this, uiRadius)
+Core::Core() : window("Akimbo", Vec2(0.5f, 0.5f)), ui(this, Vec2())
 {
 	events.onKeyPress = [this](char key)
 	{
@@ -32,7 +34,7 @@ Core::Core() :	cameraRadius(2.0f, 2.0f), uiRadius(1.0f, 1.0f),
 		Vec2 mousePosition = window.toWorldPosition(realPosition);
 
 		//	Fit the mouse position to the UI space
-		Vec2 mouseUI = mousePosition * uiRadius;
+		Vec2 mouseUI = mousePosition;
 
 		//	Does the click happen inside a widget
 		UI::Widget* uiClickAt = ui.isInside(mouseUI);
@@ -54,33 +56,21 @@ Core::Core() :	cameraRadius(2.0f, 2.0f), uiRadius(1.0f, 1.0f),
 
 	events.onWindowResize = [this](Vec2i newSize)
 	{
-		/*	If a resize happens, we don't wan't to stretch the image
-		 *	but adjust the camera radius so that the image remains the same size */
-
-		//	Request the old size from the window
 		Vec2i oldSize = window.swapSize(newSize);
-
-		//	Calculate a relation between the sizes
-		Vec2 relation = oldSize / newSize;
-
-		//	If the relation isn't just zeroes, adjust the camera and UI radius
-		if(relation < Vec2(0.0000f, 0.0000f) || relation > Vec2(0.0000f, 0.0000f))
-		{
-			cameraRadius = cameraRadius / relation;
-		//	uiRadius = uiRadius / relation;
-		//	ui.adjustPosition(uiRadius);
-		}
-
-		//glViewport(0, 0, 1920, 1080);
+		frame.resize(newSize);
+		render();
 	};
+}
+
+void Core::render()
+{
+	Render r = frame.render();
+	onRender(r);
 }
 
 void Core::start()
 {
-	{
-		Render render = frame.render();
-		onRender(render);
-	}
+	render();
 
 	bool running = window.valid();
 	uint64_t lastTicks = SDL_GetTicks();
@@ -113,6 +103,8 @@ void Core::start()
 		//	Call updates
 		//ui.onUpdate(delta);
 		//onUpdate(delta);
+
+		//frame.transform.rotate(0, 1, 1);
 
 		frame.draw();
 		window.swapBuffer();

@@ -23,11 +23,11 @@ public:
 
 	void onRender(Akimbo::Render& render) override
 	{
-		DBG_LOG("Render");
-		render.color(1.0f, 1.0f, 1.0f);
+		render.color(0.0f, 0.5f, 0.5f);
 		render.clear();
-		//render.color(0.0f, 1.0f, 0.0f);
-		//render.box(boxAt, Vec2(0.5f, 0.5f), false);
+
+		render.color(1.0f, 0.0f, 0.0f);
+		render.box(render.topLeft, Vec2(0.5f, 0.5f), true);
 	}
 
 	void onUpdate(double delta) override

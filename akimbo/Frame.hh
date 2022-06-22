@@ -8,6 +8,8 @@
 #include "Matrix4.hh"
 #include "Transform.hh"
 
+#include <functional>
+
 namespace Akimbo {
 class Frame
 {
@@ -21,7 +23,6 @@ public:
 	Render render();
 
 	Transform transform;
-	Transform camera;
 
 private:
 	void clearBuffers();
@@ -32,6 +33,8 @@ private:
 	unsigned fbo = 0;
 	unsigned rbo = 0;
 	unsigned texture = 0;
+
+	float horizontalRadius = 1.0f;
 };
 
 }

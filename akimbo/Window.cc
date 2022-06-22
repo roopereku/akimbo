@@ -39,7 +39,8 @@ Window::Window(const std::string& title, Vec2 sizeMultiplier)
 
 	//	Attempt to create a window
 	window = SDL_CreateWindow(	title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-								display.w * sizeMultiplier.x, display.h * sizeMultiplier.y,
+								//display.w * sizeMultiplier.x, display.h * sizeMultiplier.y,
+								800, 800,
 								SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL);
 
 	//	Was the window created
@@ -83,6 +84,7 @@ Window::~Window()
 
 Vec2i Window::swapSize(Vec2i newSize)
 {
+	glViewport(0, 0, newSize.x, newSize.y);
 	Vec2i oldSize = size;
 	size = newSize;
 	return oldSize;

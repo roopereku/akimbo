@@ -16,12 +16,14 @@ public:
 	void use();
 
 	void setTransform(const Mat4& transform);
+	void setColor(float r, float g, float b, float a = 1.0f);
 
 private:
 	unsigned loadShader(const std::string& path, bool isVertex);
 
 	unsigned id = 0;
 	unsigned transformLocation = 0;
+	unsigned colorLocation = 0;
 };
 
 }

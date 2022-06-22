@@ -7,7 +7,10 @@
 
 namespace Akimbo {
 
-Render::Render(Shader& shader) : shader(shader)
+Render::Render(Shader& shader, Mat4& projection, float horizontalRadius)
+	:	topLeft(-horizontalRadius, 1.0f), topRight(+horizontalRadius, 1.0f),
+		bottomLeft(-horizontalRadius, -1.0f), bottomRight(+horizontalRadius, -1.0f),
+		center(0.0f, 0.0f), radius(horizontalRadius, 1.0f), projection(projection), shader(shader)
 {
 	shader.use();
 }
@@ -36,11 +39,18 @@ void Render::box(Vec2 position, Vec2 size, bool filled)
 {
 	static Mesh square(Mesh::Shape::Square);
 
-	Mat4 transform = glm::translate(Mat4(1.0f), Vec3(position, 0.0f));
+	size /= 2.0f;
+
+	//	Position should determine the position of top left corner
+	position += Vec2(size.x, -size.y);
+
+	//	Create a transform that determines the position and scale
+	Mat4 transform = glm::translate(projection, Vec3(position, 0.0f));
 	transform = glm::scale(transform, Vec3(size, 1.0f));
 
 	shader.use();
 	shader.setTransform(transform);
+	shader.setColor(1.0f, 1.0f, 1.0f, 1.0f);
 
 	square.draw();
 }
