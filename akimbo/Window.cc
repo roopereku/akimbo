@@ -84,7 +84,6 @@ Window::~Window()
 
 Vec2i Window::swapSize(Vec2i newSize)
 {
-	glViewport(0, 0, newSize.x, newSize.y);
 	Vec2i oldSize = size;
 	size = newSize;
 	return oldSize;
