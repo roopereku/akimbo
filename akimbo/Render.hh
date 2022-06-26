@@ -6,6 +6,8 @@
 #include "Font.hh"
 
 namespace Akimbo {
+class Frame;
+
 class Render
 {
 public:
@@ -16,6 +18,7 @@ public:
 
 	void clear();
 
+	void frame(Frame& frame, Vec2 position, Vec2 size);
 	void box(Vec2 position, Vec2 size, bool filled);
 	void line(Vec2 from, Vec2 to);
 	void dot(Vec2 position);

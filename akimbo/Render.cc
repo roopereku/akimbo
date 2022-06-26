@@ -1,5 +1,6 @@
 #include "Matrix4.hh"
 #include "Render.hh"
+#include "Frame.hh"
 #include "Mesh.hh"
 
 #include <GL/glew.h>
@@ -19,6 +20,8 @@ Render::~Render()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glDisable(GL_DEPTH_TEST);
+
+	shader.use();
 }
 
 void Render::color(float r, float g, float b, float a)
@@ -33,6 +36,13 @@ void Render::clear()
 {
 	glClearColor(r, g, b, a);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void Render::frame(Frame& frame, Vec2 position, Vec2 size)
+{
+	glBindTexture(GL_TEXTURE_2D, frame.texture);
+	box(position, size, true);
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void Render::box(Vec2 position, Vec2 size, bool filled)
@@ -50,7 +60,6 @@ void Render::box(Vec2 position, Vec2 size, bool filled)
 
 	shader.use();
 	shader.setTransform(transform);
-	shader.setColor(1.0f, 1.0f, 1.0f, 1.0f);
 
 	square.draw();
 }
