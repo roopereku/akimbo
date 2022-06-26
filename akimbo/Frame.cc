@@ -13,7 +13,6 @@ Frame::Frame() : shader("akimbo/shaders/test.vs", "akimbo/shaders/test.fs")
 {
 	/*	800x800 is a good reference size where (-1.0, 1.0) is the
 	 *	top-left corner when the projection is applied */
-	actualWidth = 800;
 	resize(Vec2i(800, 800));
 }
 
@@ -37,6 +36,14 @@ void Frame::clearBuffers()
 
 void Frame::resize(Vec2i size)
 {
+	if(size.x < 0  || size.y < 0)
+	{
+		DBG_LOG("Negative size");
+		size = Vec2i(100, 100);
+	}
+
+	DBG_LOG("Creating framebuffer of size %d %d", size.x, size.y);
+
 	clearBuffers();
 
 	glGenFramebuffers(1, &fbo);
@@ -61,9 +68,13 @@ void Frame::resize(Vec2i size)
 
 	//	Attach the renderbuffer to the framebuffer
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
-	if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+	GLenum res = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+
+	if(res != GL_FRAMEBUFFER_COMPLETE)
 	{
-		SDL_Log("Framebuffer not complete");
+		DBG_LOG("fbo %u\ntexture %u\nrbo %u", fbo, texture, rbo);
+
+		SDL_Log("Framebuffer not complete: %x", res);
 		return;
 	}
 
@@ -81,10 +92,19 @@ void Frame::resize(Vec2i size)
 	Mat4 view = glm::lookAt(Vec3(0, 0, 1), Vec3(0, 0, 0), Vec3(0, 1, 0));
 
 	projection = projection * view;
+	realSize = size;
+}
+
+Vec2 Frame::getSize()
+{
+	return Vec2(horizontalRadius * 2.0f, 1.0f);
 }
 
 Render Frame::render()
 {
+	//	So that the rendering is done at correct scale, set the viewport
+	glViewport(0, 0, realSize.x, realSize.y);
+
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 	glEnable(GL_DEPTH_TEST);
 

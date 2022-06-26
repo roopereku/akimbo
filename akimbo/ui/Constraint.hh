@@ -28,7 +28,7 @@ protected:
 	 *	someone uses adds a new widget but doesn't use constraints
 	 *	from the container this new widget is being added to */
 	bool isRelative(Constraint& constraint);
-	void negateGap();
+	void negateGap(bool useRelative);
 
 private:
 	Constraint& then(float gap, bool isPercentage);
@@ -38,6 +38,7 @@ private:
 	std::shared_ptr <Constraint> after;
 
 	bool isPercentage = false;
+	bool useRelative = false;
 	bool first = true;
 
 	float position = 0.0f;

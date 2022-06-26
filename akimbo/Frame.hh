@@ -8,8 +8,6 @@
 #include "Matrix4.hh"
 #include "Transform.hh"
 
-#include <functional>
-
 namespace Akimbo {
 class Frame
 {
@@ -23,18 +21,25 @@ public:
 	Render render();
 
 	Transform transform;
+	Vec2 getSize();
+
+	friend class Render;
 
 private:
 	void clearBuffers();
 
 	Shader shader;
 	Mat4 projection;
+	Vec2i realSize;
 
 	unsigned fbo = 0;
 	unsigned rbo = 0;
-	unsigned texture = 0;
 
 	float horizontalRadius = 1.0f;
+
+protected:
+	//	Render::drawFrame() needs access to the texture
+	unsigned texture = 0;
 };
 
 }

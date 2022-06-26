@@ -2,36 +2,88 @@
 #include "../Core.hh"
 #include "../Debug.hh"
 
+#include <random>
+
 namespace Akimbo::UI
 {
 
 Widget::Widget(Core* core, const EdgeConstraints& edges)
-	: core(core), size(1.0f, 1.0f), edges(edges)
+	: core(core), edges(edges)
 {
+	static int ids = 0;
+	ids++;
+
+	id = ids;
+	DBG_LOG("Creating widget %d", id);
+
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_real_distribution <float> dist(0.0f, 1.0f);
+
+	bgRed = dist(gen);
+	bgBlue = dist(gen);
+	bgGreen = dist(gen);
 }
 
-void Widget::adjustPosition(Vec2 uiRadius)
+void Widget::adjustPosition(Vec2 parentRadius)
 {
 	//	Update the position of each constrain
-	edges.top.updatePosition(uiRadius.y);
-	edges.left.updatePosition(uiRadius.x);
-	edges.right.updatePosition(uiRadius.x);
-	edges.bottom.updatePosition(uiRadius.y);
+	edges.top.updatePosition(parentRadius.y);
+	edges.left.updatePosition(parentRadius.x);
+	edges.right.updatePosition(parentRadius.x);
+	edges.bottom.updatePosition(parentRadius.y);
 
-	//	Calculate the position and size of the widget
 	position = Vec2(edges.left, edges.top);
-	Vec2 newSize = Vec2(edges.right, edges.bottom) - position;
+	size = Vec2(edges.right, edges.bottom) - position;
 
-	//	How mcuh did the widget size change
-	Vec2 relation = size / newSize;
-	size = newSize;
+	position.y = -position.y;
 
 	//	Do resizing if necessary
-	onResize(relation);
+	//onResize();
+}
+
+Vec2i Widget::resize(Vec2i newSize)
+{
+	float parentRadius = static_cast <float> (newSize.x) / newSize.y;
+	adjustPosition(Vec2(parentRadius, 1.0f));
+
+	/*	Frame resize needs a size that's in pixels. Now that we know
+	 *	how large the widget is based on the constraints, we can multiply the
+	 *	parent size in pixels with a normalized version of the widget size in units */
+	newSize.x = newSize.x * (size.x / parentRadius / 2);
+	newSize.y = newSize.y * (size.y / 2);
+
+	frame.resize(newSize);
+	return newSize;
+}
+
+void Widget::render()
+{
+	DBG_LOG("Widget %d render", id);
+	Render render = frame.render();
+
+	Widget::onRender(render);
+	onRender(render);
+}
+
+void Widget::draw(Render& render)
+{
+	DBG_LOG("Drawing widget %d at (%.2f %.2f) with size (%.2f %.2f)", id, position.x, position.y, size.x, size.y);
+	render.frame(frame, position, size);
+}
+
+void Widget::draw()
+{
+	frame.draw();
 }
 
 void Widget::onRender(Render& render)
 {
+	render.color(bgRed, bgGreen, bgBlue);
+	render.clear();
+
+	return;
+
 	//	If there's a background image, draw it
 	if(bgImage)
 	{
@@ -46,20 +98,20 @@ void Widget::onRender(Render& render)
 	if(!transparent)
 	{
 		render.color(bgRed, bgGreen, bgBlue);
-		render.box(position, size, true);
+		render.box(render.topLeft, render.radius * 2.0f, true);
 	}
 
-	DBG(
-		render.color(1.0f, 0.0f, 0.0f);
-		render.box(position, size, false);
-	);
+	//DBG(
+	//	render.color(1.0f, 0.0f, 0.0f);
+	//	render.box(position, size, false);
+	//);
 }
 
 Widget* Widget::isInside(Vec2 point)
 {
-	//	If the point is inside this widget, return this widget
-	if(point >= position && point <= position + size)
-		return this;
+	////	If the point is inside this widget, return this widget
+	//if(point >= position && point <= position + size)
+	//	return this;
 
 	return nullptr;
 }

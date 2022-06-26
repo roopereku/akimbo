@@ -21,7 +21,10 @@ public:
 	Widget(const Widget& rhs) = delete;
 	Widget& operator=(const Widget& rhs) = delete;
 
-	//	Functions that get called on each frame
+	void render();
+	void draw();
+	void draw(Render& render);
+
 	virtual void onRender(Render& render);
 	virtual void onUpdate(double delta);
 
@@ -37,7 +40,8 @@ public:
 
 	//	Function that gets called when constraints should be updated
 	//	NOTE Do not override or bad stuff happens
-	virtual void adjustPosition(Vec2 uiRadius);
+	virtual Vec2i resize(Vec2i newSize);
+	void adjustPosition(Vec2 parentRadius);
 
 	//	Widget background setters
 	void setBackgroundColor(float r, float g, float b, float a = 1.0f);
@@ -77,6 +81,9 @@ private:
 	Texture* bgImage = nullptr;
 
 	EdgeConstraints edges;
+	Frame frame;
+
+	int id;
 };
 
 }

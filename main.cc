@@ -9,6 +9,49 @@ class Game : public Akimbo::Core
 public:
 	Game() : Akimbo::Core(), t(loadTexture("test.png")), f(loadFont("/usr/share/fonts/TTF/AndaleMo.TTF"))
 	{
+		auto& cont1 = ui.add <Akimbo::UI::Container> (
+			ui.left(10),
+			ui.top(10),
+			ui.right(50),
+			ui.bottom(10)
+		);
+
+		auto& cont2 = cont1.add <Akimbo::UI::Container> (
+			cont1.left(10),
+			cont1.top(10),
+			cont1.left(50),
+			cont1.bottom(10)
+		);
+
+		auto& cont3 = cont1.add <Akimbo::UI::Container> (
+			cont2.right(),
+			cont1.top(10),
+			cont1.right(10),
+			cont1.bottom(50)
+		);
+
+		auto& cont4 = cont1.add <Akimbo::UI::Container> (
+			cont2.right(0.1f),
+			cont3.bottom(0.1f),
+			cont1.right(10),
+			cont1.bottom(10)
+		);
+
+		auto& cont = ui.add <Akimbo::UI::Container> (
+			cont1.right(),
+			ui.top(10),
+			ui.right(10),
+			ui.bottom(10)
+		);
+
+		auto& cont_2 = cont.add <Akimbo::UI::Container> (
+			cont.left(),
+			cont.top(10),
+			cont.right(),
+			cont.bottom(10)
+		);
+
+
 	}
 
 	void onMouseClick(Vec2 at, int button) override

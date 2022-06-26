@@ -37,7 +37,7 @@ Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath)
 	glDeleteShader(fragment);
 
 	transformLocation = glGetUniformLocation(id, "transform");
-	colorLocation = glGetUniformLocation(id, "color");
+	//colorLocation = glGetUniformLocation(id, "color");
 }
 
 Shader::~Shader()

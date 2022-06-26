@@ -19,7 +19,8 @@ public:
 
 	void onRender(Render& render) override;
 	void onUpdate(double delta) override;
-	void adjustPosition(Vec2 uiRadius) override;
+
+	Vec2i resize(Vec2i newSize) override;
 	Widget* isInside(Vec2 point) override;
 
 	//	Function that adds a new arbitrary widget inside this container
@@ -28,10 +29,10 @@ public:
 	{
 		/*	If some of the given constraints don't originate from this container,
 		 *	negate their gaps so that they move to the inverse direction */
-		if(!isRelativeConstraint(left)) left.negateGap();
-		if(!isRelativeConstraint(top)) top.negateGap();
-		if(!isRelativeConstraint(right)) right.negateGap();
-		if(!isRelativeConstraint(bottom)) bottom.negateGap();
+		if(!isRelativeConstraint(left)) left.negateGap(true);
+		if(!isRelativeConstraint(top)) top.negateGap(true);
+		if(!isRelativeConstraint(right)) right.negateGap(true);
+		if(!isRelativeConstraint(bottom)) bottom.negateGap(true);
 
 		//	Create a new widget of the given type and pass arbitrary parameters to it
 		/*	FIXME this is a lot of unnecessary copying.

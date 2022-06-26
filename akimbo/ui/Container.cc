@@ -32,12 +32,9 @@ Widget* Container::isInside(Vec2 point)
 
 void Container::onRender(Render& render)
 {
-	Widget::onRender(render);
-
 	for(auto& child : children)
 	{
-		child->Widget::onRender(render);
-		child->onRender(render);
+		child->draw(render);
 	}
 }
 
@@ -47,12 +44,16 @@ void Container::onUpdate(double delta)
 		child->onUpdate(delta);
 }
 
-void Container::adjustPosition(Vec2 uiRadius)
+Vec2i Container::resize(Vec2i newSize)
 {
-	Widget::adjustPosition(uiRadius);
+	newSize = Widget::resize(newSize);
+	DBG_LOG("Passing size (%d %d) to children for resize", newSize.x, newSize.y);
 
 	for(auto& child : children)
-		child->adjustPosition(size / 2.0f);
+		child->resize(newSize);
+
+	render();
+	return newSize;
 }
 
 }

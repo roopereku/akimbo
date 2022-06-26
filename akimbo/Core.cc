@@ -57,7 +57,10 @@ Core::Core() : window("Akimbo", Vec2(0.5f, 0.5f)), ui(this, Vec2())
 	events.onWindowResize = [this](Vec2i newSize)
 	{
 		Vec2i oldSize = window.swapSize(newSize);
+
 		frame.resize(newSize);
+		ui.resize(newSize);
+
 		render();
 	};
 }
@@ -70,6 +73,7 @@ void Core::render()
 
 void Core::start()
 {
+	ui.render();
 	render();
 
 	bool running = window.valid();
@@ -104,18 +108,10 @@ void Core::start()
 		//ui.onUpdate(delta);
 		//onUpdate(delta);
 
-		//frame.transform.rotate(0, 1, 1);
-
 		frame.draw();
+		ui.draw();
+
 		window.swapBuffer();
-
-		///*	The UI shouldn't use the camera in any way so let's trick
-		// *	the frame and modify the position and radius to fit the UI */
-		//position = Vec2(0.0f, 0.0f);
-		//radius = uiRadius;
-
-		////	Render the UI
-		//ui.onRender(frame);
 	}
 }
 
