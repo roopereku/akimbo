@@ -37,15 +37,17 @@ public:
 
 protected:
 	//	Only Frame can create a Render object
-	Render(Shader& shader, Mat4& projection, float horizontalRadius);
+	Render(Mat4& projection, float horizontalRadius);
 
 	Mat4& projection;
-	Shader& shader;
 
 	float r = 0.0f;
 	float g = 0.0f;
 	float b = 0.0f;
 	float a = 1.0f;
+
+private:
+	void box(Shader& shader, Vec2 position, Vec2 size, bool filled);
 };
 
 }

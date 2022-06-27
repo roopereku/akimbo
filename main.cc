@@ -50,8 +50,6 @@ public:
 			cont.right(),
 			cont.bottom(10)
 		);
-
-
 	}
 
 	void onMouseClick(Vec2 at, int button) override

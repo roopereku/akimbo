@@ -8,12 +8,11 @@
 
 namespace Akimbo {
 
-Render::Render(Shader& shader, Mat4& projection, float horizontalRadius)
+Render::Render(Mat4& projection, float horizontalRadius)
 	:	topLeft(-horizontalRadius, 1.0f), topRight(+horizontalRadius, 1.0f),
 		bottomLeft(-horizontalRadius, -1.0f), bottomRight(+horizontalRadius, -1.0f),
-		center(0.0f, 0.0f), radius(horizontalRadius, 1.0f), projection(projection), shader(shader)
+		center(0.0f, 0.0f), radius(horizontalRadius, 1.0f), projection(projection)
 {
-	shader.use();
 }
 
 Render::~Render()
@@ -21,7 +20,7 @@ Render::~Render()
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glDisable(GL_DEPTH_TEST);
 
-	shader.use();
+	Shader::get(Shader::Preset::Color).use();
 }
 
 void Render::color(float r, float g, float b, float a)
@@ -41,11 +40,21 @@ void Render::clear()
 void Render::frame(Frame& frame, Vec2 position, Vec2 size)
 {
 	glBindTexture(GL_TEXTURE_2D, frame.texture);
-	box(position, size, true);
+	box(Shader::get(Shader::Preset::Texture), position, size, true);
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void Render::box(Vec2 position, Vec2 size, bool filled)
+{
+	Shader& colorShader = Shader::get(Shader::Preset::Color);
+
+	colorShader.use();
+	colorShader.setColor(r, g, b, a);
+
+	box(colorShader, position, size, true);
+}
+
+void Render::box(Shader& shader, Vec2 position, Vec2 size, bool filled)
 {
 	static Mesh square(Mesh::Shape::Square);
 

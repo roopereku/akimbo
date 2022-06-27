@@ -82,6 +82,9 @@ void Widget::onRender(Render& render)
 	render.color(bgRed, bgGreen, bgBlue);
 	render.clear();
 
+	render.color(1.0f, 1.0f, 1.0f, 1.0f);
+	render.box(render.topLeft, Vec2(0.1f, 0.1f), true);
+
 	return;
 
 	//	If there's a background image, draw it
