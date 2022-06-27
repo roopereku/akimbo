@@ -18,6 +18,14 @@ public:
 	void setTransform(const Mat4& transform);
 	void setColor(float r, float g, float b, float a = 1.0f);
 
+	enum class Preset
+	{
+		Texture,
+		Color
+	};
+
+	static Shader& get(Preset preset);
+
 private:
 	unsigned loadShader(const std::string& path, bool isVertex);
 

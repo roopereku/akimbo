@@ -28,7 +28,6 @@ public:
 private:
 	void clearBuffers();
 
-	Shader shader;
 	Mat4 projection;
 	Vec2i realSize;
 

@@ -37,7 +37,7 @@ Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath)
 	glDeleteShader(fragment);
 
 	transformLocation = glGetUniformLocation(id, "transform");
-	//colorLocation = glGetUniformLocation(id, "color");
+	colorLocation = glGetUniformLocation(id, "color");
 }
 
 Shader::~Shader()
@@ -96,6 +96,17 @@ unsigned Shader::loadShader(const std::string& path, bool isVertex)
 	}
 
 	return shader;
+}
+
+Shader& Shader::get(Preset preset)
+{
+	static Shader presets[]
+	{
+		Shader("akimbo/shaders/generic.vs", "akimbo/shaders/texture.fs"),
+		Shader("akimbo/shaders/generic.vs", "akimbo/shaders/color.fs")
+	};
+
+	return presets[static_cast <size_t> (preset)];
 }
 
 }

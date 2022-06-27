@@ -9,7 +9,7 @@
 
 namespace Akimbo {
 
-Frame::Frame() : shader("akimbo/shaders/test.vs", "akimbo/shaders/test.fs")
+Frame::Frame()
 {
 	/*	800x800 is a good reference size where (-1.0, 1.0) is the
 	 *	top-left corner when the projection is applied */
@@ -114,12 +114,13 @@ Render Frame::render()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	)
 
-	return Render(shader, projection, horizontalRadius);
+	return Render(projection, horizontalRadius);
 }
 
 void Frame::draw()
 {
 	static Mesh square(Mesh::Shape::Square);
+	Shader& shader = Shader::get(Shader::Preset::Texture);
 
 	shader.use();
 	shader.setTransform(transform.transform);
