@@ -50,9 +50,15 @@ Vec2i Container::resize(Vec2i newSize)
 	DBG_LOG("Passing size (%d %d) to children for resize", newSize.x, newSize.y);
 
 	for(auto& child : children)
+	{
 		child->resize(newSize);
+		child->renderSelf();
+	}
 
-	render();
+	//	If this is the root container, finally render it
+	if(!parent)
+		renderSelf();
+
 	return newSize;
 }
 

@@ -57,13 +57,25 @@ Vec2i Widget::resize(Vec2i newSize)
 	return newSize;
 }
 
-void Widget::render()
+void Widget::renderSelf()
 {
 	DBG_LOG("Widget %d render", id);
 	Render render = frame.render();
 
 	Widget::onRender(render);
 	onRender(render);
+
+}
+
+void Widget::render()
+{
+	renderSelf();
+
+	if(parent)
+	{
+		DBG_LOG("Widgget %d renders parent", id);
+		parent->render();
+	}
 }
 
 void Widget::draw(Render& render)
@@ -81,9 +93,6 @@ void Widget::onRender(Render& render)
 {
 	render.color(bgRed, bgGreen, bgBlue);
 	render.clear();
-
-	render.color(1.0f, 1.0f, 1.0f, 1.0f);
-	render.box(render.topLeft, Vec2(0.1f, 0.1f), true);
 
 	return;
 

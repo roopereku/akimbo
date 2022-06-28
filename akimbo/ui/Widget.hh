@@ -22,6 +22,8 @@ public:
 	Widget& operator=(const Widget& rhs) = delete;
 
 	void render();
+	void renderSelf();
+
 	void draw();
 	void draw(Render& render);
 

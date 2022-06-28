@@ -73,7 +73,7 @@ void Core::render()
 
 void Core::start()
 {
-	ui.render();
+	ui.renderSelf();
 	render();
 
 	bool running = window.valid();
@@ -105,7 +105,7 @@ void Core::start()
 		}
 
 		//	Call updates
-		//ui.onUpdate(delta);
+		ui.onUpdate(delta);
 		//onUpdate(delta);
 
 		frame.draw();
