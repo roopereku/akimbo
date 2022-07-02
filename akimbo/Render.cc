@@ -1,6 +1,7 @@
 #include "Matrix4.hh"
 #include "Render.hh"
 #include "Frame.hh"
+#include "Debug.hh"
 #include "Mesh.hh"
 
 #include <GL/glew.h>
@@ -18,9 +19,7 @@ Render::Render(Mat4& projection, float horizontalRadius)
 Render::~Render()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glDisable(GL_DEPTH_TEST);
-
-	Shader::get(Shader::Preset::Color).use();
+	//glDisable(GL_DEPTH_TEST);
 }
 
 void Render::color(float r, float g, float b, float a)
