@@ -36,13 +36,7 @@ void Frame::clearBuffers()
 
 void Frame::resize(Vec2i size)
 {
-	if(size.x < 0  || size.y < 0)
-	{
-		DBG_LOG("Negative size");
-		size = Vec2i(100, 100);
-	}
-
-	DBG_LOG("Creating framebuffer of size %d %d", size.x, size.y);
+	//DBG_LOG("Creating framebuffer of size %d %d", size.x, size.y);
 
 	clearBuffers();
 
@@ -95,9 +89,10 @@ void Frame::resize(Vec2i size)
 	realSize = size;
 }
 
-Vec2 Frame::getSize()
+Vec2 Frame::pointAt(Vec2 normalized)
 {
-	return Vec2(horizontalRadius * 2.0f, 1.0f);
+	//DBG_LOG("pointAt (%.2f %.2f) -> (%.2f %.2f)", normalized.x, normalized.y, normalized.x * horizontalRadius, normalized.y);
+	return Vec2(normalized.x * horizontalRadius, normalized.y);
 }
 
 Render Frame::render()
@@ -106,7 +101,7 @@ Render Frame::render()
 	glViewport(0, 0, realSize.x, realSize.y);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-	glEnable(GL_DEPTH_TEST);
+	//glEnable(GL_DEPTH_TEST);
 
 	DBG
 	(

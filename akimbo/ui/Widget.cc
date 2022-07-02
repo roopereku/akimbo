@@ -59,7 +59,7 @@ Vec2i Widget::resize(Vec2i newSize)
 
 void Widget::renderSelf()
 {
-	DBG_LOG("Widget %d render", id);
+	//DBG_LOG("Widget %d render", id);
 	Render render = frame.render();
 
 	Widget::onRender(render);
@@ -73,14 +73,14 @@ void Widget::render()
 
 	if(parent)
 	{
-		DBG_LOG("Widgget %d renders parent", id);
+		//DBG_LOG("Widgget %d renders parent", id);
 		parent->render();
 	}
 }
 
 void Widget::draw(Render& render)
 {
-	DBG_LOG("Drawing widget %d at (%.2f %.2f) with size (%.2f %.2f)", id, position.x, position.y, size.x, size.y);
+	//DBG_LOG("Drawing widget %d at (%.2f %.2f) with size (%.2f %.2f)", id, position.x, position.y, size.x, size.y);
 	render.frame(frame, position, size);
 }
 
@@ -119,13 +119,35 @@ void Widget::onRender(Render& render)
 	//);
 }
 
-Widget* Widget::isInside(Vec2 point)
+Widget* Widget::isInside(Vec2& point, Vec2& where)
 {
-	////	If the point is inside this widget, return this widget
-	//if(point >= position && point <= position + size)
-	//	return this;
+	if(parent)
+	{
+		/*	Because point will be a normalized point that corresponds to
+		 *	a position in the parent frame, we need to convert it to a
+		 *	normalized position that corresponds to a
+		 *	position in this widget's frame	*/
 
-	return nullptr;
+		/*	We need to know how far the point is from the top left corner
+		 *	of this widget in the paren't widget's space */
+		Vec2 insideParent = parent->frame.pointAt(point);
+		point = (insideParent - position);
+
+		/*	Now that we know where the point is relative to this widget,
+		 *	let's normalize it so that we can use Frame::pointAt() to
+		 *	figure out where the point is inside this widget's frame */
+		point.x = (point.x / (size.x)) * 2.0f - 1.0f;
+		point.y = (point.y / size.y) * 2.0f + 1.0f;
+	}
+
+	//	If the position is out of bounds, it's not inside this widget
+	if(point.x < -1.0f || point.y > 1.0f || point.x > 1.0f || point.y < -1.0f)
+		return nullptr;
+
+	//	Let's figure out where the normalized point is inside this widget's frame
+	//	FIXME We should call pointAt only for the widget that was clicked and not it's parents
+	where = frame.pointAt(point);
+	return this;
 }
 
 bool Widget::isRelativeConstraint(Constraint& constraint)

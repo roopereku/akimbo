@@ -13,7 +13,6 @@ void Switch::onRender(Render& frame)
 {
 	float separatorPosition = frame.topLeft.x + (frame.radius.x * separatorProgress);
 	Vec2 half = frame.radius * Vec2(1, 2);
-	DBG_LOG("Switch render");
 
 	frame.color(0.0f, 0.7f, 0.0f);
 	frame.box(frame.topLeft, half, true);

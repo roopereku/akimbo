@@ -21,7 +21,7 @@ public:
 	void onUpdate(double delta) override;
 
 	Vec2i resize(Vec2i newSize) override;
-	Widget* isInside(Vec2 point) override;
+	Widget* isInside(Vec2& point, Vec2& where) override;
 
 	//	Function that adds a new arbitrary widget inside this container
 	template <typename T, typename... Args>

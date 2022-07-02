@@ -30,14 +30,13 @@ Core::Core() : window("Akimbo", Vec2(0.5f, 0.5f)), ui(this, Vec2())
 
 	events.onMouseClick = [this](Vec2i realPosition, int button)
 	{
-		//	Get a mouse position that's in (-1, -1) - (+1, +1) range
-		Vec2 mousePosition = window.toWorldPosition(realPosition);
-
-		//	Fit the mouse position to the UI space
-		Vec2 mouseUI = mousePosition;
+		//	Normalize the mouse position
+		Vec2 mousePosition = window.normalizePoint(realPosition);
 
 		//	Does the click happen inside a widget
-		UI::Widget* uiClickAt = ui.isInside(mouseUI);
+		Vec2 mouseUI;
+		UI::Widget* uiClickAt = ui.isInside(mousePosition, mouseUI);
+
 		if(uiClickAt != &ui)
 		{
 			setWidgetFocus(*uiClickAt);
@@ -50,7 +49,7 @@ Core::Core() : window("Akimbo", Vec2(0.5f, 0.5f)), ui(this, Vec2())
 
 		/*	If the click didn't happen inside a widget, fit the mouse
 		 *	position to the camera space and pass it to the user */
-		//Vec2 mouseCamera = mousePosition * cameraRadius + cameraPosition;
+		mousePosition = frame.pointAt(mousePosition);
 		onMouseClick(mousePosition, button);
 	};
 

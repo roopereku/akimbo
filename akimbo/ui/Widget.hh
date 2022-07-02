@@ -51,7 +51,7 @@ public:
 	void removeBackgroundImage();
 
 	//	Is a point inside this widget
-	virtual Widget* isInside(Vec2 point);
+	virtual Widget* isInside(Vec2& point, Vec2& where);
 
 	//	Helpers to get constraints relative to this widget with units
 	Constraint top(float units = 0.0f);
@@ -74,6 +74,8 @@ protected:
 	Vec2 position;
 	Vec2 size;
 
+	int id;
+
 private:
 	//	Widget background stuff
 	float bgRed = 0;
@@ -84,8 +86,6 @@ private:
 
 	EdgeConstraints edges;
 	Frame frame;
-
-	int id;
 };
 
 }

@@ -19,9 +19,9 @@ public:
 	void resize(Vec2i size);
 
 	Render render();
-
 	Transform transform;
-	Vec2 getSize();
+
+	Vec2 pointAt(Vec2 normalized);
 
 	friend class Render;
 
