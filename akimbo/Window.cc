@@ -89,7 +89,7 @@ Vec2i Window::swapSize(Vec2i newSize)
 	return oldSize;
 }
 
-Vec2 Window::toWorldPosition(Vec2i real)
+Vec2 Window::normalizePoint(Vec2i real)
 {
 	/*	Because (0.0, 0.0) is always the center, we can subtract the real mouse
 	 *	position by half of the window size and then divide it with the same value
@@ -105,9 +105,8 @@ Vec2 Window::toWorldPosition(Vec2i real)
 	real -= (size / 2);
 	Vec2 world = (Vec2(real) / (Vec2(size) / 2.0f));
 
+	//	OpenGL requires that -1 Y is at the bottom
 	world.y = -world.y;
-	DBG_LOG("mouse at (%.2f %.2f)", world.x, world.y);
-
 	return world;
 }
 

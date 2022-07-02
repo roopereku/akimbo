@@ -21,7 +21,7 @@ public:
 	Vec2i swapSize(Vec2i newSize);
 
 	//	Returns some real position converted to a value that's in (-1, -1) - (+1, +1) range
-	Vec2 toWorldPosition(Vec2i real);
+	Vec2 normalizePoint(Vec2i real);
 
 private:
 	SDL_Window* window;
