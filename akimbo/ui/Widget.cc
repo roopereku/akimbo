@@ -2,8 +2,6 @@
 #include "../Core.hh"
 #include "../Debug.hh"
 
-#include <random>
-
 namespace Akimbo::UI
 {
 
@@ -15,14 +13,6 @@ Widget::Widget(Core* core, const EdgeConstraints& edges)
 
 	id = ids;
 	DBG_LOG("Creating widget %d", id);
-
-	std::random_device rd;
-	std::mt19937 gen(rd());
-	std::uniform_real_distribution <float> dist(0.0f, 1.0f);
-
-	bgRed = dist(gen);
-	bgBlue = dist(gen);
-	bgGreen = dist(gen);
 }
 
 void Widget::adjustPosition(Vec2 parentRadius)
@@ -91,7 +81,7 @@ void Widget::draw()
 
 void Widget::onRender(Render& render)
 {
-	render.color(bgRed, bgGreen, bgBlue);
+	render.color(bgRed, bgGreen, bgBlue, bgAlpha);
 	render.clear();
 
 	return;

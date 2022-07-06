@@ -11,6 +11,8 @@ Container::Container(Core* core, Vec2 uiRadius)
 Container::Container(Core* core, const EdgeConstraints& edges)
 	: Widget(core, edges)
 {
+	// set default color
+	setBackgroundColor(0.5f, 0.5f, 0.5f, 0.5f);
 }
 
 Widget* Container::isInside(Vec2& point, Vec2& where)
