@@ -5,7 +5,6 @@
 
 namespace Akimbo {
 
-class Window;
 class Texture
 {
 public:
@@ -13,9 +12,10 @@ public:
 	~Texture();
 
 	Texture(Texture&& rhs);
-	friend class Frame;
+	friend class Render;
 
 protected:
+	unsigned int texture;
 };
 
 }

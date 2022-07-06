@@ -36,13 +36,8 @@ Widget* Container::isInside(Vec2& point, Vec2& where)
 
 void Container::onRender(Render& render)
 {
-	render.color(0.0f, 1.0f, 0.0f);
-	render.box(Vec2(-0.05f, 0.05f), Vec2(0.1f, 0.1f), true);
-
 	for(auto& child : children)
-	{
 		child->draw(render);
-	}
 }
 
 void Container::onUpdate(double delta)

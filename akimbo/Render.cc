@@ -36,6 +36,13 @@ void Render::clear()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
+void Render::texture(Texture& texture, Vec2 position, Vec2 size)
+{
+	glBindTexture(GL_TEXTURE_2D, texture.texture);
+	box(Shader::get(Shader::Preset::Texture), position, size, true);
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
 void Render::frame(Frame& frame, Vec2 position, Vec2 size)
 {
 	glBindTexture(GL_TEXTURE_2D, frame.texture);

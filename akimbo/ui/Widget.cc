@@ -81,27 +81,15 @@ void Widget::draw()
 
 void Widget::onRender(Render& render)
 {
-	render.color(bgRed, bgGreen, bgBlue, bgAlpha);
-	render.clear();
-
-	return;
-
 	//	If there's a background image, draw it
 	if(bgImage)
-	{
-		//frame.drawTexture(*bgImage, position, size);
-		return;
-	}
+		render.texture(*bgImage, render.topLeft, render.radius * 2.f);
 
 	//	Is there any background color
-	bool transparent = !bgAlpha || (!bgRed && !bgGreen && !bgBlue);
 
 	//	If there is a background color, draw a filled box with that color
-	if(!transparent)
-	{
-		render.color(bgRed, bgGreen, bgBlue);
-		render.box(render.topLeft, render.radius * 2.0f, true);
-	}
+	render.color(bgRed, bgGreen, bgBlue, bgAlpha);
+	render.box(render.topLeft, render.radius * 2.0f, true);
 
 	//DBG(
 	//	render.color(1.0f, 0.0f, 0.0f);

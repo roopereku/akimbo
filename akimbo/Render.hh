@@ -1,6 +1,7 @@
 #ifndef AKIMBO_RENDER_HH
 #define AKIMBO_RENDER_HH
 
+#include "Texture.hh"
 #include "Vector2.hh"
 #include "Shader.hh"
 #include "Font.hh"
@@ -18,6 +19,7 @@ public:
 
 	void clear();
 
+	void texture(Texture& texture, Vec2 position, Vec2 size);
 	void frame(Frame& frame, Vec2 position, Vec2 size);
 	void box(Vec2 position, Vec2 size, bool filled);
 	void line(Vec2 from, Vec2 to);

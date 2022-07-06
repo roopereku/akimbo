@@ -7,7 +7,7 @@
 class Game : public Akimbo::Core
 {
 public:
-	Game() : Akimbo::Core(), t(loadTexture("test.png")), f(loadFont("/usr/share/fonts/TTF/AndaleMo.TTF"))
+	Game() : Akimbo::Core(), t(loadTexture("original.jpg")), f(loadFont("/usr/share/fonts/TTF/AndaleMo.TTF"))
 	{
 		auto& cont1 = ui.add <Akimbo::UI::Container> (
 			ui.left(25),
@@ -15,7 +15,10 @@ public:
 			ui.right(25),
 			ui.bottom(25)
 		);
-
+		
+		//cont1.setBackgroundImage(t);
+		cont1.setBackgroundColor(1.0f, 0.0f, 0.0f, 0.5f);
+		/*
 		auto& switch1 = cont1.add <Akimbo::UI::Switch> (
 			cont1.left(50).then(-0.2f),
 			cont1.top(50).then(-0.2f),
@@ -29,6 +32,7 @@ public:
 			switch1.right().then(0.5f),
 			switch1.bottom()
 		);
+		*/
 
 	}
 
@@ -50,6 +54,8 @@ public:
 
 		render.color(1.0f, 0.0f, 0.0f);
 		render.box(boxAt, Vec2(0.5f, 0.5f), true);
+
+		render.texture(t, Vec2(0, 0), Vec2(1.f, 1.f));
 	}
 
 	void onUpdate(double delta) override
