@@ -1,3 +1,4 @@
-akimboengine
+.cache
+build
 obj/
 .*.swp

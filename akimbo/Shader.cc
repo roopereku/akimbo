@@ -105,8 +105,8 @@ Shader& Shader::get(Preset preset)
 {
 	static Shader presets[]
 	{
-		Shader("akimbo/shaders/generic.vs", "akimbo/shaders/texture.fs"),
-		Shader("akimbo/shaders/generic.vs", "akimbo/shaders/color.fs")
+		Shader("resources/shaders/generic.vs", "resources/shaders/texture.fs"),
+		Shader("resources/shaders/generic.vs", "resources/shaders/color.fs")
 	};
 
 	return presets[static_cast <size_t> (preset)];
