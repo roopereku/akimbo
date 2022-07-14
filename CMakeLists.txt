@@ -12,4 +12,4 @@ add_executable(akimbotest test.cc)
 add_dependencies(akimbotest akimbo)
 target_link_libraries(akimbotest akimbo)
 
-FILE(COPY ${CMAKE_CURRENT_SOURCE_DIR}/resources DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+FILE(COPY ${CMAKE_CURRENT_SOURCE_DIR}/resources DESTINATION ${CMAKE_BINARY_DIR})
