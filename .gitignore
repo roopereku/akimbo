@@ -2,3 +2,4 @@
 build
 obj/
 .*.swp
+compile_commands.json
