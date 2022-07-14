@@ -14,7 +14,7 @@ Logger::Logger(Core* core, const EdgeConstraints& edges, Font& font)
 
 void Logger::onRender(Render& render)
 {
-	Vec2 currentPosition = position;
+	Vec2 currentPosition = render.topLeft;
 
 	for(size_t y = scroll; y < messages.size() && y < scroll + visibleRows; y++)
 	{
@@ -26,7 +26,7 @@ void Logger::onRender(Render& render)
 		}
 
 		currentPosition.y += characterSize.y;
-		currentPosition.x = position.x;
+		currentPosition.x = render.topLeft.x;
 	}
 }
 
@@ -36,8 +36,10 @@ void Logger::setColumns(unsigned amount)
 	onResize(Vec2());
 }
 
+
 void Logger::onResize(Vec2)
 {
+	/*
 	//	How wide is one character to fit n amount of them next to each other		
 	characterSize.x = size.x / columns;
 	characterSize.y = characterSize.x;
@@ -51,6 +53,7 @@ void Logger::onResize(Vec2)
 
 	//	If all are not visible, focus on the few before the last one
 	else scroll = messages.size() - visibleRows;
+	*/
 }
 
 void Logger::onMouseClick(Vec2 at, int button)

@@ -68,11 +68,10 @@ public:
 protected:
 	bool isRelativeConstraint(Constraint& constraint);
 
+	Vec2 getSize();
+
 	Core* core;
 	Widget* parent = nullptr;
-
-	Vec2 position;
-	Vec2 size;
 
 	int id;
 
@@ -86,6 +85,10 @@ private:
 
 	EdgeConstraints edges;
 	Frame frame;
+
+	Vec2 position;
+	Vec2 size;
+
 };
 
 }

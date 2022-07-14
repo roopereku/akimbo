@@ -134,6 +134,8 @@ void Widget::setBackgroundColor(float r, float g, float b, float a)
 	bgAlpha = a;
 }
 
+Vec2 Widget::getSize(){ return size; }
+
 void Widget::setBackgroundImage(Texture& texture)
 {
 	bgImage = &texture;

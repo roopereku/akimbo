@@ -8,7 +8,7 @@ TextInput::TextInput(Core* core, const EdgeConstraints& edges, Font& font) : Wid
 
 void TextInput::onRender(Render& render)
 {
-	render.text(text, font, position, size);
+	render.text(text, font, render.topLeft, render.radius * 2.0f);
 }
 
 void TextInput::onKeyPress(char key)

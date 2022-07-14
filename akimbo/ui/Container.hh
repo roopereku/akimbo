@@ -49,7 +49,7 @@ public:
 		child.core = core;
 
 		//	Update the position of the new widget according to the given constraints
-		child.adjustPosition(size / 2.0f);
+		child.adjustPosition(getSize() / 2.0f);
 
 		return static_cast <T&> (*children.back());
 	}
