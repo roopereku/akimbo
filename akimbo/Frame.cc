@@ -103,12 +103,6 @@ Render Frame::render()
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 	//glEnable(GL_DEPTH_TEST);
 
-	DBG
-	(
-		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	)
-
 	return Render(projection, horizontalRadius);
 }
 
@@ -119,6 +113,7 @@ void Frame::draw()
 
 	shader.use();
 	shader.setTransform(transform.transform);
+	shader.setColor(1.0f, 1.0f, 1.0f);
 
 	glBindTexture(GL_TEXTURE_2D, texture);
 	square.draw();

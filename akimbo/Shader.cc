@@ -38,6 +38,9 @@ Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath)
 
 	transformLocation = glGetUniformLocation(id, "transform");
 	colorLocation = glGetUniformLocation(id, "color");
+
+	use();
+	setColor(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 Shader::~Shader()

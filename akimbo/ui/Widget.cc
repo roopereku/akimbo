@@ -81,20 +81,10 @@ void Widget::draw()
 
 void Widget::onRender(Render& render)
 {
-	//	If there's a background image, draw it
-	if(bgImage)
-		render.texture(*bgImage, render.topLeft, render.radius * 2.f);
-
-	//	Is there any background color
-
-	//	If there is a background color, draw a filled box with that color
 	render.color(bgRed, bgGreen, bgBlue, bgAlpha);
-	render.box(render.topLeft, render.radius * 2.0f, true);
 
-	//DBG(
-	//	render.color(1.0f, 0.0f, 0.0f);
-	//	render.box(position, size, false);
-	//);
+	if(bgImage) render.texture(*bgImage, render.topLeft, render.radius * 2.f);
+	else render.clear();
 }
 
 Widget* Widget::isInside(Vec2& point, Vec2& where)

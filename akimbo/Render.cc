@@ -45,6 +45,9 @@ void Render::texture(Texture& texture, Vec2 position, Vec2 size)
 
 void Render::frame(Frame& frame, Vec2 position, Vec2 size)
 {
+	//	FIXME allow color overlays for frames
+	color(1.0f, 1.0f, 1.0f, 1.0f);
+
 	glBindTexture(GL_TEXTURE_2D, frame.texture);
 	box(Shader::get(Shader::Preset::Texture), position, size, true);
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -52,12 +55,7 @@ void Render::frame(Frame& frame, Vec2 position, Vec2 size)
 
 void Render::box(Vec2 position, Vec2 size, bool filled)
 {
-	Shader& colorShader = Shader::get(Shader::Preset::Color);
-
-	colorShader.use();
-	colorShader.setColor(r, g, b, a);
-
-	box(colorShader, position, size, true);
+	box(Shader::get(Shader::Preset::Color), position, size, true);
 }
 
 void Render::box(Shader& shader, Vec2 position, Vec2 size, bool filled)
@@ -74,6 +72,7 @@ void Render::box(Shader& shader, Vec2 position, Vec2 size, bool filled)
 	transform = glm::scale(transform, Vec3(size, 1.0f));
 
 	shader.use();
+	shader.setColor(r, g, b, a);
 	shader.setTransform(transform);
 
 	square.draw();
