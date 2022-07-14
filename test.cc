@@ -23,9 +23,7 @@ class Test : public Akimbo::Core
 					container1.bottom(50)
 				);
 
-			container1.setBackgroundColor(1.f, 0.f, 0.f);
-
-			ui.add<Akimbo::UI::Container>
+			auto& leg1 = ui.add<Akimbo::UI::Container>
 				(
 					container1.left(),
 					container1.bottom(),
@@ -33,7 +31,7 @@ class Test : public Akimbo::Core
 					container1.bottom(0.1f)
 				);
 
-			ui.add<Akimbo::UI::Container>
+			auto& leg2 = ui.add<Akimbo::UI::Container>
 				(
 					container1.right(-0.1f),
 					container1.bottom(),
@@ -41,7 +39,9 @@ class Test : public Akimbo::Core
 					container1.bottom(0.1f)
 				);
 
-			container3.setBackgroundColor(container1.)
+			container1.setBackgroundColor(1.f, 0.f, 0.f);
+			leg1.setBackgroundColor(container1);
+			leg2.setBackgroundColor(container1);
 
 		}
 

@@ -141,6 +141,11 @@ void Widget::setBackgroundImage(Texture& texture)
 	bgImage = &texture;
 }
 
+void Widget::setBackgroundColor(Widget& widget)
+{
+	setBackgroundColor(widget.bgRed, widget.bgGreen, widget.bgBlue, widget.bgAlpha);
+}
+
 void Widget::removeBackgroundImage()
 {
 	bgImage = nullptr;

@@ -47,6 +47,7 @@ public:
 
 	//	Widget background setters
 	void setBackgroundColor(float r, float g, float b, float a = 1.0f);
+	void setBackgroundColor(Widget& widget);
 	void setBackgroundImage(Texture& texture);
 	void removeBackgroundImage();
 
@@ -76,11 +77,13 @@ protected:
 	int id;
 
 private:
-	//	Widget background stuff
+
 	float bgRed = 0;
 	float bgGreen = 0;
 	float bgBlue = 0;
 	float bgAlpha = 0;
+
+	//	Widget background stuff
 	Texture* bgImage = nullptr;
 
 	EdgeConstraints edges;
