@@ -106,7 +106,8 @@ Shader& Shader::get(Preset preset)
 	static Shader presets[]
 	{
 		Shader("resources/shaders/generic.vs", "resources/shaders/texture.fs"),
-		Shader("resources/shaders/generic.vs", "resources/shaders/color.fs")
+		Shader("resources/shaders/generic.vs", "resources/shaders/color.fs"),
+		Shader("resources/shaders/generic.vs", "resources/shaders/text.fs")
 	};
 
 	return presets[static_cast <size_t> (preset)];

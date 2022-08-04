@@ -88,6 +88,9 @@ void Render::dot(Vec2 position)
 
 void Render::character(char chr, Font& font, Vec2 position, Vec2 size)
 {
+	glBindTexture(GL_TEXTURE_2D, font.texture);
+	box(Shader::get(Shader::Preset::Text), position, size, true);
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void Render::text(const std::string& str, Font& font, Vec2 position, Vec2 size)

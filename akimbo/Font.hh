@@ -7,7 +7,6 @@
 
 namespace Akimbo {
 
-class Window;
 class Font
 {
 public:
@@ -15,9 +14,19 @@ public:
 	~Font();
 
 	Font(Font&& rhs);
-	friend class Frame;
+	friend class Render;
 
 protected:
+	struct Character
+	{
+		Vec2 advance;
+		Vec2 origin;
+		Vec2 size;
+		Vec2 uv;
+	};
+
+	unsigned texture;
+	Character characters[95];
 };
 
 }

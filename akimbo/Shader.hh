@@ -21,7 +21,8 @@ public:
 	enum class Preset
 	{
 		Texture,
-		Color
+		Color,
+		Text
 	};
 
 	static Shader& get(Preset preset);
