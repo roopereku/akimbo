@@ -10,7 +10,7 @@ namespace Akimbo::UI {
 class Label : public Widget
 {
 public:
-	Label(Core* core, const EdgeConstraints& edges, Font& font);
+	Label(Font& font);
 
 	void onRender(Render& render);
 	void setText(const std::string& str);

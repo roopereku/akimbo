@@ -15,7 +15,7 @@ class Container : public Widget
 {
 public:
 	Container(Core* core, Vec2 uiRadius);
-	Container(Core* core, const EdgeConstraints& edges);
+	Container();
 
 	void onRender(Render& render) override;
 	void onUpdate(double delta) override;
@@ -38,11 +38,11 @@ public:
 		/*	FIXME this is a lot of unnecessary copying.
 		 *	Ideally EdgeConstraints could have a constructor and a move constructor
 		 *	which is then used */
-		EdgeConstraints edges { left, top, right, bottom };
-		children.push_back(std::make_shared <T> (core, edges, std::forward <Args> (args)...));
+		children.push_back(std::make_shared <T> (std::forward <Args> (args)...));
 
 		//	Because C++ only let's us access protected stuff if child is a container, cast it
 		Container& child = static_cast <Container&> (*children.back());
+		child.setConstraints(left, top, right, bottom);
 
 		//	This is the parent of the new widget
 		child.parent = this;

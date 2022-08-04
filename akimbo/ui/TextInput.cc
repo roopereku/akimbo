@@ -2,7 +2,7 @@
 
 namespace Akimbo::UI {
 
-TextInput::TextInput(Core* core, const EdgeConstraints& edges, Font& font) : Widget(core, edges), font(font)
+TextInput::TextInput(Font& font) : font(font)
 {
 }
 

@@ -5,8 +5,7 @@
 namespace Akimbo::UI
 {
 
-Widget::Widget(Core* core, const EdgeConstraints& edges)
-	: core(core), edges(edges)
+Widget::Widget()
 {
 	static int ids = 0;
 	ids++;
@@ -30,6 +29,12 @@ void Widget::adjustPosition(Vec2 parentRadius)
 
 	//	Do resizing if necessary
 	//onResize();
+}
+
+void Widget::setConstraints(const Constraint& left, const Constraint& top, const Constraint& right, const Constraint& bottom)
+{
+	edges = { left, top, right, bottom };
+	//	TODO maybe call adjustPosition here?
 }
 
 Vec2i Widget::resize(Vec2i newSize)

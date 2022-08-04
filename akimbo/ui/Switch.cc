@@ -3,8 +3,8 @@
 
 namespace Akimbo::UI {
 
-Switch::Switch(Core* core, const EdgeConstraints& edges, bool on)
-	: Widget(core, edges), on(on)
+Switch::Switch(bool on)
+	: on(on)
 {
 	separatorProgress = 1.0f * on;
 }

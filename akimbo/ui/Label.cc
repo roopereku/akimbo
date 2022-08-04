@@ -2,8 +2,8 @@
 
 namespace Akimbo::UI {
 
-Label::Label(Core* core, const EdgeConstraints& edges, Font& font)
-	: Widget(core, edges), font(font)
+Label::Label(Font& font)
+	: font(font)
 {
 }
 

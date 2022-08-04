@@ -12,7 +12,7 @@ namespace Akimbo::UI {
 class Logger : public Widget
 {
 public:
-	Logger(Core* core, const EdgeConstraints& edges, Font& font);
+	Logger(Font& font);
 
 	void onRender(Render& render) override;
 	void onResize(Vec2 resizeFactor) override;

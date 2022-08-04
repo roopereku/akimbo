@@ -10,7 +10,7 @@ namespace Akimbo::UI {
 class TextInput : public Widget
 {
 public:
-	TextInput(Core* core, const EdgeConstraints& edges, Font& font);
+	TextInput(Font& font);
 
 	void onRender(Render& render) override;
 	void onKeyPress(char key) override;

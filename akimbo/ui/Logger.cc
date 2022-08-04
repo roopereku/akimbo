@@ -5,8 +5,7 @@
 
 namespace Akimbo::UI {
 
-Logger::Logger(Core* core, const EdgeConstraints& edges, Font& font)
-	: Widget(core, edges), font(font)
+Logger::Logger(Font& font) : font(font)
 {
 	columns = 20;
 	onResize(Vec2());

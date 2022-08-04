@@ -15,7 +15,7 @@ namespace Akimbo::UI {
 class Widget
 {
 public:
-	Widget(Core* core, const EdgeConstraints& edges);
+	Widget();
 
 	//	Widgets should never be copied
 	Widget(const Widget& rhs) = delete;
@@ -44,6 +44,7 @@ public:
 	//	NOTE Do not override or bad stuff happens
 	virtual Vec2i resize(Vec2i newSize);
 	void adjustPosition(Vec2 parentRadius);
+	void setConstraints(const Constraint& left, const Constraint& top, const Constraint& right, const Constraint& bottom);
 
 	//	Widget background setters
 	void setBackgroundColor(float r, float g, float b, float a = 1.0f);

@@ -3,13 +3,14 @@
 namespace Akimbo::UI {
 
 Container::Container(Core* core, Vec2 uiRadius)
-	: Widget(core, { Constraint(0.0f, false), Constraint(0.0f, false), Constraint(1.0f, true), Constraint(1.0f, true) })
 {
+	this->core = core;
+
+	setConstraints(Constraint(0.0f, false), Constraint(0.0f, false), Constraint(1.0f, true), Constraint(1.0f, true));
 	adjustPosition(uiRadius);
 }
 
-Container::Container(Core* core, const EdgeConstraints& edges)
-	: Widget(core, edges)
+Container::Container()
 {
 	// set default color
 	setBackgroundColor(0.5f, 0.5f, 0.5f, 0.5f);
