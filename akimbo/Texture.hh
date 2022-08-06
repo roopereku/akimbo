@@ -11,11 +11,11 @@ public:
 	Texture(const std::string& path);
 	~Texture();
 
-	Texture(Texture&& rhs);
 	friend class Render;
 
 protected:
-	unsigned int texture;
+	void initialize();
+	unsigned int texture = 0;
 };
 
 }

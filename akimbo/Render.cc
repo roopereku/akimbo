@@ -36,6 +36,26 @@ void Render::clear()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
+void Render::fromAtlas(TextureAtlas& atlas, unsigned x, unsigned y, Vec2 position, Vec2 size)
+{
+	glBindTexture(GL_TEXTURE_2D, atlas.texture);
+	Shader& shader = Shader::get(Shader::Preset::Atlas);
+
+	shader.use();
+
+	//	Where is the given tile in 0.0 - 1.0 range
+	Vec2 tileOffset = Vec2(x, y) / Vec2(atlas.horizontally, atlas.vertically);
+
+	//	How large are the tiles
+	Vec2 tileSize = Vec2(1.0f, 1.0f) / Vec2(atlas.horizontally, atlas.vertically);
+
+	shader.setVec2("tileOffset", tileOffset);
+	shader.setVec2("tileSize", tileSize);
+
+	box(shader, position, size, true);
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
 void Render::texture(Texture& texture, Vec2 position, Vec2 size)
 {
 	glBindTexture(GL_TEXTURE_2D, texture.texture);

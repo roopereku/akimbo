@@ -58,6 +58,12 @@ void Shader::setColor(float r, float g, float b, float a)
 	glUniform4f(colorLocation, r, g, b, a);
 }
 
+void Shader::setVec2(const char* which, Vec2 value)
+{
+	unsigned location = glGetUniformLocation(id, which);
+	glUniform2f(location, value.x, value.y);
+}
+
 void Shader::use()
 {
 	glUseProgram(id);
@@ -106,10 +112,12 @@ Shader& Shader::get(Preset preset)
 	static Shader presets[]
 	{
 		Shader("resources/shaders/generic.vs", "resources/shaders/texture.fs"),
+		Shader("resources/shaders/atlas.vs", "resources/shaders/texture.fs"),
 		Shader("resources/shaders/generic.vs", "resources/shaders/color.fs"),
 		Shader("resources/shaders/generic.vs", "resources/shaders/text.fs")
 	};
 
+	//	TODO call use() here
 	return presets[static_cast <size_t> (preset)];
 }
 
