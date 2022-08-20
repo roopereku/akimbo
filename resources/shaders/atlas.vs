@@ -5,13 +5,13 @@ layout (location = 1) in vec2 tex;
 out vec2 texUv;
 uniform mat4 transform;
 
-uniform vec2 tileOffset;
-uniform vec2 tileSize;
+uniform vec2 start;
+uniform vec2 end;
 
 void main()
 {
 	gl_Position = transform * vec4(aPos, 1.0f);
 
-	vec2 to = vec2(tileOffset.x, 1.0f - tileOffset.y);
-	texUv = to + (tileSize * tex) + vec2(0.0f, 1.0 - tileSize.y);
+	vec2 uv = (end - start) * tex;
+	texUv = start + uv;
 }
