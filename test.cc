@@ -5,7 +5,7 @@
 class Test : public Akimbo::Core
 {
 public:
-	Test() : font(loadFont("/usr/share/fonts/TTF/AndaleMo.TTF")), texture("resources/atlas.png", 10, 14)
+	Test() : font(loadFont("/usr/share/fonts/TTF/cour.ttf")), texture("resources/atlas.png", 4,4)
 	{
 		//auto& cont1 = ui.add <Akimbo::UI::Container> (
 		//	ui.left(50),
@@ -28,11 +28,23 @@ public:
 		render.clear();
 
 		render.color(1.0f, 1.0f, 1.0f);
-		//render.texture(texture, render.topLeft, Vec2(render.radius.y, render.radius.y) * 2.0f);
-		render.fromAtlas(texture, 0, 0, render.topLeft, Vec2(render.radius.y, render.radius.y) * 2.0f);
 
 		//render.color(1.0f, 1.0f, 1.0f);
-		//render.character('x', font, render.topLeft + Vec2(0.3f, -0.3f), render.radius);
+		//render.texture(texture, render.topLeft, Vec2(render.radius.y, render.radius.y) * 2.0f);
+		render.fromAtlas(texture, 5, 5, render.topLeft, Vec2(render.radius.y, render.radius.y) * 2.0f);
+
+		Vec2 pos = render.topLeft;
+		for(char c = 32; c <= 126; c++)
+		{
+			render.character(c, font, pos, Vec2(0.1f, 0.1f));
+			pos += Vec2(0.1f, 0.0f);
+
+			if(pos.x + 0.1f > render.topRight.x)
+			{
+				pos.x = render.topLeft.x;
+				pos.y -= 0.1f;
+			}
+		}
 	}
 
 private:

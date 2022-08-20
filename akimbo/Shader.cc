@@ -114,7 +114,7 @@ Shader& Shader::get(Preset preset)
 		Shader("resources/shaders/generic.vs", "resources/shaders/texture.fs"),
 		Shader("resources/shaders/atlas.vs", "resources/shaders/texture.fs"),
 		Shader("resources/shaders/generic.vs", "resources/shaders/color.fs"),
-		Shader("resources/shaders/generic.vs", "resources/shaders/text.fs")
+		Shader("resources/shaders/atlas.vs", "resources/shaders/text.fs")
 	};
 
 	//	TODO call use() here

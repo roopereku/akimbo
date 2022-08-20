@@ -13,7 +13,6 @@ public:
 	Font(const std::string& path);
 	~Font();
 
-	Font(Font&& rhs);
 	friend class Render;
 
 protected:
@@ -22,10 +21,18 @@ protected:
 		Vec2 advance;
 		Vec2 origin;
 		Vec2 size;
+
 		Vec2 uv;
+		Vec2 uvSize;
 	};
 
 	unsigned texture;
+	Character& get(char ch);
+
+	const char start = 32;
+	const char end = 126;
+
+private:
 	Character characters[95];
 };
 

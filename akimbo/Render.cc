@@ -43,14 +43,13 @@ void Render::fromAtlas(TextureAtlas& atlas, unsigned x, unsigned y, Vec2 positio
 
 	shader.use();
 
-	//	Where is the given tile in 0.0 - 1.0 range
-	Vec2 tileOffset = Vec2(x, y) / Vec2(atlas.horizontally, atlas.vertically);
+	Vec2 tileStart = Vec2(x, y) / Vec2(atlas.horizontally, atlas.vertically);
+	tileStart.y = 1.0f - tileStart.y;
 
-	//	How large are the tiles
-	Vec2 tileSize = Vec2(1.0f, 1.0f) / Vec2(atlas.horizontally, atlas.vertically);
+	Vec2 tileEnd = tileStart + Vec2(1.0f, -1.0f) / Vec2(atlas.horizontally, atlas.vertically);
 
-	shader.setVec2("tileOffset", tileOffset);
-	shader.setVec2("tileSize", tileSize);
+	shader.setVec2("start", tileStart);
+	shader.setVec2("end", tileEnd);
 
 	box(shader, position, size, true);
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -109,7 +108,22 @@ void Render::dot(Vec2 position)
 void Render::character(char chr, Font& font, Vec2 position, Vec2 size)
 {
 	glBindTexture(GL_TEXTURE_2D, font.texture);
-	box(Shader::get(Shader::Preset::Text), position, size, true);
+
+	Shader& shader = Shader::get(Shader::Preset::Text);
+	shader.use();
+
+	Font::Character& ch = font.get(chr);
+
+	/*	This is a little cryptic but due to the way the
+	 *	atlas shader calculates things, we need to flip
+	 *	the beginning and ending Y positions for the UV positions */
+	Vec2 uv(ch.uv.x, ch.uv.y + ch.uvSize.y);
+	Vec2 uvEnd(ch.uv.x + ch.uvSize.x, ch.uv.y);
+
+	shader.setVec2("start", uv);
+	shader.setVec2("end", uvEnd);
+
+	box(shader, position, size, true);
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 

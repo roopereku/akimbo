@@ -47,7 +47,7 @@ Font::Font(const std::string& path)
 	/*	FIXME somehow figure out the width and the height beforehand
 	 *	so that FT_Load_Char can be called only once per character */
 
-	for(char c = '1'; c < ';'; c++)
+	for(char c = start; c <= end; c++)
 	{
 		if(FT_Load_Char(face, c, FT_LOAD_RENDER))
 		{
@@ -70,6 +70,9 @@ Font::Font(const std::string& path)
 	w = std::max(w, roww);
 	h += rowh;
 
+	DBG_LOG("width %u", w);
+	DBG_LOG("height %u", h);
+
 	glActiveTexture(GL_TEXTURE0);
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
@@ -90,7 +93,7 @@ Font::Font(const std::string& path)
 	int oy = 0;
 	rowh = 0;
 
-	for(char c = '1'; c < ';'; c++)
+	for(char c = start; c <= end; c++)
 	{
 		if(FT_Load_Char(face, c, FT_LOAD_RENDER))
 			return;
@@ -109,7 +112,11 @@ Font::Font(const std::string& path)
 		current->advance = Vec2(g->advance.x >> 6, g->advance.y >> 6);
 		current->size = Vec2(g->bitmap.width, g->bitmap.rows);
 		current->origin = Vec2(g->bitmap_left, g->bitmap_top);
-		current->uv = Vec2(ox / w, oy / h);
+		current->uv = Vec2(static_cast <float> (ox) / w, static_cast<float> (oy) / h);
+		current->uvSize = current->size / Vec2(w, h);
+
+		DBG_LOG("%c uv %.2f %.2f", c, current->uv.x, current->uv.y);
+		DBG_LOG("%c uvSize %.2f %.2f", c, current->uvSize.x, current->uvSize.y);
 
 		rowh = std::max(rowh, g->bitmap.rows);
 		ox += g->bitmap.width + 1;
@@ -127,8 +134,9 @@ Font::~Font()
 	}
 }
 
-Font::Font(Font&& rhs)
+Font::Character& Font::get(char ch)
 {
+	return characters[ch - start];
 }
 
 }
