@@ -109,7 +109,7 @@ void Core::start()
 
 		//	Call updates
 		ui.onUpdate(delta);
-		//onUpdate(delta);
+		onUpdate(delta);
 
 		frame.draw();
 		ui.draw();
