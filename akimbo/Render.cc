@@ -129,6 +129,30 @@ void Render::character(char chr, Font& font, Vec2 position, Vec2 size)
 
 void Render::text(const std::string& str, Font& font, Vec2 position, Vec2 size)
 {
+	color(0.5f, 0.0f, 0.0f);
+	box(position, size, true);
+
+	//	TODO Account for newlines
+
+	const float charWidth = size.y;
+	const float baseline = size.y * font.baseline;
+
+	for(auto& c : str)
+	{
+		const Font::Character& ch = font.get(c);
+		const float advance = charWidth * ch.advance;
+
+		const float chHeight = size.y * ch.sizeMultiplier.y;
+		const float chWidth = charWidth * ch.sizeMultiplier.x;
+
+		const float chBaseline = baseline - size.y * ch.baseline;
+		Vec2 chPosition = position - Vec2(-(advance * ch.bearing.x), size.y - chHeight - chBaseline);
+
+		color(1.0f, 1.0f, 1.0f);
+		character(c, font, chPosition, Vec2(chWidth, chHeight));
+
+		position.x += advance;
+	}
 }
 
 }

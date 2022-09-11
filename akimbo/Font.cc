@@ -44,8 +44,9 @@ Font::Font(const std::string& path)
 	unsigned roww = 0;
 	unsigned rowh = 0;
 
-	/*	FIXME somehow figure out the width and the height beforehand
-	 *	so that FT_Load_Char can be called only once per character */
+	unsigned tallest = 0;
+	unsigned widest = 0;
+	long maxAdvance = 0;
 
 	for(char c = start; c <= end; c++)
 	{
@@ -65,13 +66,15 @@ Font::Font(const std::string& path)
 
 		roww += g->bitmap.width + 1;
 		rowh = std::max(rowh, g->bitmap.rows);
+
+		tallest = std::max(tallest, g->bitmap.rows);
+		widest = std::max(widest, g->bitmap.width);
+		maxAdvance = std::max(maxAdvance, g->advance.x);
 	}
 
+	maxAdvance = maxAdvance >> 6;
 	w = std::max(w, roww);
 	h += rowh;
-
-	DBG_LOG("width %u", w);
-	DBG_LOG("height %u", h);
 
 	glActiveTexture(GL_TEXTURE0);
 	glGenTextures(1, &texture);
@@ -105,18 +108,31 @@ Font::Font(const std::string& path)
 			ox = 0;
 		}
 
+		//	Insert this character into the texture atlas
 		glTexSubImage2D(GL_TEXTURE_2D, 0, ox, oy,
 						g->bitmap.width, g->bitmap.rows, GL_RED,
 						GL_UNSIGNED_BYTE, g->bitmap.buffer);
 
-		current->advance = Vec2(g->advance.x >> 6, g->advance.y >> 6);
-		current->size = Vec2(g->bitmap.width, g->bitmap.rows);
-		current->origin = Vec2(g->bitmap_left, g->bitmap_top);
-		current->uv = Vec2(static_cast <float> (ox) / w, static_cast<float> (oy) / h);
-		current->uvSize = current->size / Vec2(w, h);
+		Vec2 size = Vec2(g->bitmap.width, g->bitmap.rows);
 
-		DBG_LOG("%c uv %.2f %.2f", c, current->uv.x, current->uv.y);
-		DBG_LOG("%c uvSize %.2f %.2f", c, current->uvSize.x, current->uvSize.y);
+		//	TODO This isn't exactly bearing so there might be a better name
+		current->bearing.y = size.y - g->bitmap_top;
+		current->bearing.x = static_cast <float> (g->bitmap_left) / widest;
+
+		//	How much is the advance out of the max advance
+		current->advance = static_cast <float> (g->advance.x >> 6) / maxAdvance;
+
+		//	Find out the maximum baseline
+		current->baseline = current->bearing.y / tallest;
+		baseline = std::max(baseline, current->baseline);
+
+		//	TODO Maybe here? Remove articafts on the borders
+		//	Where is this character in the texture
+		current->uvSize = size / Vec2(w + 1, h + 1);
+		current->uv = Vec2(static_cast <float> (ox) / w, static_cast<float> (oy) / h);
+
+		//	How large is this character related to the tallest and widest
+		current->sizeMultiplier = size / Vec2(widest, tallest);
 
 		rowh = std::max(rowh, g->bitmap.rows);
 		ox += g->bitmap.width + 1;

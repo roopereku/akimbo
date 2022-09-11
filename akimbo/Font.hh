@@ -18,13 +18,17 @@ public:
 protected:
 	struct Character
 	{
-		Vec2 advance;
-		Vec2 origin;
-		Vec2 size;
-
 		Vec2 uv;
 		Vec2 uvSize;
+
+		Vec2 bearing;
+		Vec2 sizeMultiplier;
+
+		float advance;
+		float baseline;
 	};
+
+	float baseline = 0.0f;
 
 	unsigned texture;
 	Character& get(char ch);
