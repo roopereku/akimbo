@@ -7,52 +7,27 @@ namespace Akimbo::UI {
 
 Logger::Logger(Font& font) : font(font)
 {
-	columns = 20;
-	onResize(Vec2());
 }
 
 void Logger::onRender(Render& render)
 {
-	Vec2 currentPosition = render.topLeft;
+	render.color(0.5f, 0.0f, 0.0f);
+	render.clear();
 
-	for(size_t y = scroll; y < messages.size() && y < scroll + visibleRows; y++)
+	float entryHeight = (render.radius.y * 2) / rows;
+	render.color(1.0f, 1.0f, 1.0f);
+
+	for(size_t i = 0; i < messages.size(); i++)
 	{
-		std::string& msg = messages[y];
-		for(size_t x = 0; x < static_cast <size_t> (columns) && x < msg.length(); x++)
-		{
-			render.character(msg[x], font, currentPosition, characterSize);
-			currentPosition.x += characterSize.x;
-		}
-
-		currentPosition.y += characterSize.y;
-		currentPosition.x = render.topLeft.x;
+		float y = render.topLeft.y - (entryHeight * i);
+		render.text(messages[i], font, Vec2(render.topLeft.x, y), Vec2(render.radius.x * 2, entryHeight));
 	}
 }
 
-void Logger::setColumns(unsigned amount)
+void Logger::setRows(unsigned amount)
 {
-	columns = amount;
-	onResize(Vec2());
-}
-
-
-void Logger::onResize(Vec2)
-{
-	/*
-	//	How wide is one character to fit n amount of them next to each other		
-	characterSize.x = size.x / columns;
-	characterSize.y = characterSize.x;
-
-	//	How many rows are visible?
-	visibleRows = size.y / characterSize.y;
-
-	//	Are all of the messages visible?
-	if(messages.size() - visibleRows >= messages.size())
-		scroll = 0;
-
-	//	If all are not visible, focus on the few before the last one
-	else scroll = messages.size() - visibleRows;
-	*/
+	rows = amount;
+	render();
 }
 
 void Logger::onMouseClick(Vec2 at, int button)
@@ -66,12 +41,7 @@ void Logger::onMouseClick(Vec2 at, int button)
 void Logger::addMessage(const std::string& msg)
 {
 	messages.push_back(msg);
-
-	if(messages.size() >= visibleRows)
-	{
-		DBG_LOG("Scroll %u -> %u", scroll, scroll + 1);
-		scroll++;
-	}
+	render();
 }
 
 }
