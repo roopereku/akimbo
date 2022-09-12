@@ -5,28 +5,27 @@
 
 namespace Akimbo::UI {
 
-Logger::Logger(Core* core, const EdgeConstraints& edges, Font& font)
-	: Widget(core, edges), font(font)
+Logger::Logger(Font& font) : font(font)
 {
 	columns = 20;
 	onResize(Vec2());
 }
 
-void Logger::onRender(Frame& frame)
+void Logger::onRender(Render& render)
 {
-	Vec2 currentPosition = position;
+	Vec2 currentPosition = render.topLeft;
 
 	for(size_t y = scroll; y < messages.size() && y < scroll + visibleRows; y++)
 	{
 		std::string& msg = messages[y];
 		for(size_t x = 0; x < static_cast <size_t> (columns) && x < msg.length(); x++)
 		{
-			frame.drawCharacter(msg[x], font, currentPosition, characterSize);
+			render.character(msg[x], font, currentPosition, characterSize);
 			currentPosition.x += characterSize.x;
 		}
 
 		currentPosition.y += characterSize.y;
-		currentPosition.x = position.x;
+		currentPosition.x = render.topLeft.x;
 	}
 }
 
@@ -36,8 +35,10 @@ void Logger::setColumns(unsigned amount)
 	onResize(Vec2());
 }
 
+
 void Logger::onResize(Vec2)
 {
+	/*
 	//	How wide is one character to fit n amount of them next to each other		
 	characterSize.x = size.x / columns;
 	characterSize.y = characterSize.x;
@@ -51,6 +52,7 @@ void Logger::onResize(Vec2)
 
 	//	If all are not visible, focus on the few before the last one
 	else scroll = messages.size() - visibleRows;
+	*/
 }
 
 void Logger::onMouseClick(Vec2 at, int button)

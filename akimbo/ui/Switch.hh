@@ -10,9 +10,9 @@ namespace Akimbo::UI {
 class Switch : public Widget
 {
 public:
-	Switch(Core* core, const EdgeConstraints& edges, bool on = false);
+	Switch(bool on = false);
 
-	void onRender(Frame& frame) override;
+	void onRender(Render& render) override;
 	void onMouseClick(Vec2 at, int button) override;
 	void onUpdate(double delta) override;
 

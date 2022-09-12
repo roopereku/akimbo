@@ -2,13 +2,13 @@
 
 namespace Akimbo::UI {
 
-TextInput::TextInput(Core* core, const EdgeConstraints& edges, Font& font) : Widget(core, edges), font(font)
+TextInput::TextInput(Font& font) : font(font)
 {
 }
 
-void TextInput::onRender(Frame& frame)
+void TextInput::onRender(Render& render)
 {
-	frame.drawText(text, font, position, size);
+	render.text(text, font, render.topLeft, render.radius * 2.0f);
 }
 
 void TextInput::onKeyPress(char key)

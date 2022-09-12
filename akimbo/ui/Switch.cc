@@ -1,26 +1,27 @@
 #include "Switch.hh"
+#include "../Debug.hh"
 
 namespace Akimbo::UI {
 
-Switch::Switch(Core* core, const EdgeConstraints& edges, bool on)
-	: Widget(core, edges), on(on)
+Switch::Switch(bool on)
+	: on(on)
 {
 	separatorProgress = 1.0f * on;
 }
 
-void Switch::onRender(Frame& frame)
+void Switch::onRender(Render& frame)
 {
-	float separatorWidth = size.x / 2;
-	float separatorPosition = position.x + (size.x * (separatorProgress / 2));
+	float separatorPosition = frame.topLeft.x + (frame.radius.x * separatorProgress);
+	Vec2 half = frame.radius * Vec2(1, 2);
 
-	frame.color(0, 100, 0);
-	frame.drawBox(position, Vec2(separatorPosition - position.x, size.y), true);
+	frame.color(0.0f, 0.7f, 0.0f);
+	frame.box(frame.topLeft, half, true);
 
-	frame.color(100, 100, 100);
-	frame.drawBox(Vec2(separatorPosition, position.y), Vec2(position.x + size.x - separatorPosition, size.y), true);
+	frame.color(0.7f, 0.7f, 0.7f);
+	frame.box(Vec2(frame.center.x, frame.topLeft.y), half, true);
 
-	frame.color(255, 255, 255);
-	frame.drawBox(Vec2(separatorPosition, position.y), Vec2(separatorWidth, size.y), true);
+	frame.color(1.0f, 1.0f, 1.0f);
+	frame.box(Vec2(separatorPosition, frame.topLeft.y), half, true);
 }
 
 void Switch::onMouseClick(Vec2 at, int button)
@@ -47,6 +48,8 @@ void Switch::onUpdate(double delta)
 		separatorProgress = 1.0f * on;
 		direction = 0;
 	}
+
+	render();
 }
 
 }

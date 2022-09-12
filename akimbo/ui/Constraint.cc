@@ -58,17 +58,28 @@ bool Constraint::isRelative(Constraint& constraint)
 	return relative == constraint.relative->relative;
 }
 
-void Constraint::negateGap()
+void Constraint::negateGap(bool useRelative)
 {
+	this->useRelative = useRelative;
+
 	//	Recursively negate this constraint
 	gap = -gap;
-	if(after) after->negateGap();
+	if(after) after->negateGap(useRelative);
 }
 
 void Constraint::updatePosition(float size)
 {
-	//	If there's no relative position, start at the top left corner
-	updatePosition(relative ? relative->position : -size, size);
+	/*	Because frames imitate a standalone window, the coordinates always
+	 *	look something like -1.0, +1.0 - +1.0 - -1.0. If the constraint moves
+	 *	to the right, start at -size. If the constraint moves to
+	 *	the left, start at + size.
+	 *
+	 *	There are cases where a widget is being added inside a container but
+	 *	the user doesn't use constraints from that container. The positions
+	 *	will be screwed up if the relative position isn't used, so let's
+	 *	use that instead if useRelative is set to true	*/
+	float relativePosition = useRelative ? relative->position : (std::signbit(gap) ? size : -size);
+	updatePosition(relativePosition, size);
 }
 
 void Constraint::updatePosition(float relativePosition, float size)

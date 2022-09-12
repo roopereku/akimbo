@@ -3,27 +3,41 @@
 
 #include "Vector2.hh"
 
-#include <SDL2/SDL_render.h>
-
 #include <string>
 
 namespace Akimbo {
 
-class Window;
 class Font
 {
 public:
-	/*	It's a bit stupid to take a window in the texture constructor,
-	 *	but for SDL it's necessary because window contains SDL_Renderer */
-	Font(const std::string& path, Window* window);
+	Font(const std::string& path);
 	~Font();
 
-	Font(Font&& rhs);
-	friend class Frame;
+	friend class Render;
 
 protected:
-	SDL_Texture* texture = NULL;
-	Vec2i characterSize;
+	struct Character
+	{
+		Vec2 uv;
+		Vec2 uvSize;
+
+		Vec2 bearing;
+		Vec2 sizeMultiplier;
+
+		float advance;
+		float baseline;
+	};
+
+	float baseline = 0.0f;
+
+	unsigned texture;
+	Character& get(char ch);
+
+	const char start = 32;
+	const char end = 126;
+
+private:
+	Character characters[95];
 };
 
 }

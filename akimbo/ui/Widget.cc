@@ -5,63 +5,122 @@
 namespace Akimbo::UI
 {
 
-Widget::Widget(Core* core, const EdgeConstraints& edges)
-	: core(core), size(1.0f, 1.0f), edges(edges)
+Widget::Widget()
 {
+	static int ids = 0;
+	ids++;
+
+	id = ids;
+	DBG_LOG("Creating widget %d", id);
 }
 
-void Widget::adjustPosition(Vec2 uiRadius)
+void Widget::adjustPosition(Vec2 parentRadius)
 {
 	//	Update the position of each constrain
-	edges.top.updatePosition(uiRadius.y);
-	edges.left.updatePosition(uiRadius.x);
-	edges.right.updatePosition(uiRadius.x);
-	edges.bottom.updatePosition(uiRadius.y);
+	edges.top.updatePosition(parentRadius.y);
+	edges.left.updatePosition(parentRadius.x);
+	edges.right.updatePosition(parentRadius.x);
+	edges.bottom.updatePosition(parentRadius.y);
 
-	//	Calculate the position and size of the widget
 	position = Vec2(edges.left, edges.top);
-	Vec2 newSize = Vec2(edges.right, edges.bottom) - position;
+	size = Vec2(edges.right, edges.bottom) - position;
 
-	//	How mcuh did the widget size change
-	Vec2 relation = size / newSize;
-	size = newSize;
+	position.y = -position.y;
 
 	//	Do resizing if necessary
-	onResize(relation);
+	//onResize();
 }
 
-void Widget::onRender(Frame& frame)
+void Widget::setConstraints(const Constraint& left, const Constraint& top, const Constraint& right, const Constraint& bottom)
 {
-	//	If there's a background image, draw it
-	if(bgImage)
-	{
-		frame.drawTexture(*bgImage, position, size);
-		return;
-	}
-
-	//	Is there any background color
-	bool transparent = !bgAlpha || (!bgRed && !bgGreen && !bgBlue);
-
-	//	If there is a background color, draw a filled box with that color
-	if(!transparent)
-	{
-		frame.color(bgRed, bgGreen, bgBlue);
-		frame.drawBox(position, size, true);
-	}
-
-	DBG(
-		frame.color(255, 0, 0);	
-		frame.drawBox(position, size, false);
-	);
+	edges = { left, top, right, bottom };
+	//	TODO maybe call adjustPosition here?
 }
 
-Widget* Widget::isInside(Vec2 point)
+Vec2i Widget::resize(Vec2i newSize)
 {
-	//	If the point is inside this widget, return this widget
-	if(point >= position && point <= position + size)
-		return this;
+	float parentRadius = static_cast <float> (newSize.x) / newSize.y;
+	adjustPosition(Vec2(parentRadius, 1.0f));
 
-	return nullptr;
+	/*	Frame resize needs a size that's in pixels. Now that we know
+	 *	how large the widget is based on the constraints, we can multiply the
+	 *	parent size in pixels with a normalized version of the widget size in units */
+	newSize.x = newSize.x * (size.x / parentRadius / 2);
+	newSize.y = newSize.y * (size.y / 2);
+
+	frame.resize(newSize);
+	return newSize;
+}
+
+void Widget::renderSelf()
+{
+	//DBG_LOG("Widget %d render", id);
+	Render render = frame.render();
+
+	Widget::onRender(render);
+	onRender(render);
+
+}
+
+void Widget::render()
+{
+	renderSelf();
+
+	if(parent)
+	{
+		//DBG_LOG("Widgget %d renders parent", id);
+		parent->render();
+	}
+}
+
+void Widget::draw(Render& render)
+{
+	//DBG_LOG("Drawing widget %d at (%.2f %.2f) with size (%.2f %.2f)", id, position.x, position.y, size.x, size.y);
+	render.frame(frame, position, size);
+}
+
+void Widget::draw()
+{
+	frame.draw();
+}
+
+void Widget::onRender(Render& render)
+{
+	render.color(bgRed, bgGreen, bgBlue, bgAlpha);
+
+	if(bgImage) render.texture(*bgImage, render.topLeft, render.radius * 2.f);
+	else render.clear();
+}
+
+Widget* Widget::isInside(Vec2& point, Vec2& where)
+{
+	if(parent)
+	{
+		/*	Because point will be a normalized point that corresponds to
+		 *	a position in the parent frame, we need to convert it to a
+		 *	normalized position that corresponds to a
+		 *	position in this widget's frame	*/
+
+		/*	We need to know how far the point is from the top left corner
+		 *	of this widget in the paren't widget's space */
+		Vec2 insideParent = parent->frame.pointAt(point);
+		point = (insideParent - position);
+
+		/*	Now that we know where the point is relative to this widget,
+		 *	let's normalize it so that we can use Frame::pointAt() to
+		 *	figure out where the point is inside this widget's frame */
+		point.x = (point.x / (size.x)) * 2.0f - 1.0f;
+		point.y = (point.y / size.y) * 2.0f + 1.0f;
+	}
+
+	//	If the position is out of bounds, it's not inside this widget
+	if(point.x < -1.0f || point.y > 1.0f || point.x > 1.0f || point.y < -1.0f)
+		return nullptr;
+
+	//	Let's figure out where the normalized point is inside this widget's frame
+	//	FIXME We should call pointAt only for the widget that was clicked and not it's parents
+	where = frame.pointAt(point);
+	return this;
 }
 
 bool Widget::isRelativeConstraint(Constraint& constraint)
@@ -72,7 +131,7 @@ bool Widget::isRelativeConstraint(Constraint& constraint)
 			edges.bottom.isRelative(constraint);
 }
 
-void Widget::setBackgroundColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+void Widget::setBackgroundColor(float r, float g, float b, float a)
 {
 	bgRed = r;
 	bgGreen = g;
@@ -80,9 +139,16 @@ void Widget::setBackgroundColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 	bgAlpha = a;
 }
 
+Vec2 Widget::getSize(){ return size; }
+
 void Widget::setBackgroundImage(Texture& texture)
 {
 	bgImage = &texture;
+}
+
+void Widget::setBackgroundColor(Widget& widget)
+{
+	setBackgroundColor(widget.bgRed, widget.bgGreen, widget.bgBlue, widget.bgAlpha);
 }
 
 void Widget::removeBackgroundImage()

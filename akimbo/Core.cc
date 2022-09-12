@@ -1,10 +1,14 @@
 #include "Core.hh"
 #include "Debug.hh"
+#include "Mesh.hh"
+
+#include <GL/glew.h>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace Akimbo {
 
-Core::Core() :	cameraRadius(2.0f, 2.0f), uiRadius(1.0f, 1.0f),
-				window("Akimbo", Vec2(0.5f, 0.5f)), ui(this, uiRadius)
+Core::Core() : window("Akimbo", Vec2(0.5f, 0.5f)), ui(this, Vec2())
 {
 	events.onKeyPress = [this](char key)
 	{
@@ -26,14 +30,13 @@ Core::Core() :	cameraRadius(2.0f, 2.0f), uiRadius(1.0f, 1.0f),
 
 	events.onMouseClick = [this](Vec2i realPosition, int button)
 	{
-		//	Get a mouse position that's in (-1, -1) - (+1, +1) range
-		Vec2 mousePosition = window.toWorldPosition(realPosition);
-
-		//	Fit the mouse position to the UI space
-		Vec2 mouseUI = mousePosition * uiRadius;
+		//	Normalize the mouse position
+		Vec2 mousePosition = window.normalizePoint(realPosition);
 
 		//	Does the click happen inside a widget
-		UI::Widget* uiClickAt = ui.isInside(mouseUI);
+		Vec2 mouseUI;
+		UI::Widget* uiClickAt = ui.isInside(mousePosition, mouseUI);
+
 		if(uiClickAt != &ui)
 		{
 			setWidgetFocus(*uiClickAt);
@@ -46,35 +49,32 @@ Core::Core() :	cameraRadius(2.0f, 2.0f), uiRadius(1.0f, 1.0f),
 
 		/*	If the click didn't happen inside a widget, fit the mouse
 		 *	position to the camera space and pass it to the user */
-		Vec2 mouseCamera = mousePosition * cameraRadius + cameraPosition;
-		onMouseClick(mouseCamera, button);
+		mousePosition = frame.pointAt(mousePosition);
+		onMouseClick(mousePosition, button);
 	};
 
 	events.onWindowResize = [this](Vec2i newSize)
 	{
-
-		/*	If a resize happens, we don't wan't to stretch the image
-		 *	but adjust the camera radius so that the image remains the same size */
-
-		//	Request the old size from the window
 		Vec2i oldSize = window.swapSize(newSize);
 
-		//	Calculate a relation between the sizes
-		Vec2 relation = oldSize.as <float> () / newSize.as <float> ();
+		frame.resize(newSize);
+		ui.resize(newSize);
 
-		//	If the relation isn't just zeroes, adjust the camera and UI radius
-		if(relation < Vec2(0.0000f, 0.0000f) || relation > Vec2(0.0000f, 0.0000f))
-		{
-			cameraRadius = cameraRadius / relation;
-			uiRadius = uiRadius / relation;
-			ui.adjustPosition(uiRadius);
-		}
+		render();
 	};
+}
 
+void Core::render()
+{
+	Render r = frame.render();
+	onRender(r);
 }
 
 void Core::start()
 {
+	ui.renderSelf();
+	render();
+
 	bool running = window.valid();
 	uint64_t lastTicks = SDL_GetTicks();
 
@@ -82,6 +82,10 @@ void Core::start()
 	{
 		running = false;
 	};
+
+	// enable transparency
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	while(running)
 	{
@@ -107,21 +111,10 @@ void Core::start()
 		ui.onUpdate(delta);
 		onUpdate(delta);
 
-		//	Create a new frame that the user can use for drawing
-		Vec2 radius = cameraRadius;
-		Vec2 position = cameraPosition;
-		Frame frame = window.renderFrame(position, radius);
+		frame.draw();
+		ui.draw();
 
-		//	Call user defined rendering
-		onRender(frame);
-
-		/*	The UI shouldn't use the camera in any way so let's trick
-		 *	the frame and modify the position and radius to fit the UI */
-		position = Vec2(0.0f, 0.0f);
-		radius = uiRadius;
-
-		//	Render the UI
-		ui.onRender(frame);
+		window.swapBuffer();
 	}
 }
 
@@ -136,24 +129,19 @@ void Core::setFpsCap(unsigned cap)
 	fpsCapValue = 1.0 / cap;
 }
 
-void Core::zoomCamera(float zoom)
-{
-	cameraRadius = cameraRadius / zoom;
-}
-
 Texture& Core::loadTexture(const std::string& path)
 {
-	textures.emplace_back(path, &window);
+	textures.emplace_back(path);
 	return textures.back();
 }
 
 Font& Core::loadFont(const std::string& path)
 {
-	fonts.emplace_back(path, &window);
+	fonts.emplace_back(path);
 	return fonts.back();
 }
 
-void Core::onRender(Frame&) {}
+void Core::onRender(Render&) {}
 void Core::onUpdate(double) {}
 void Core::onMouseClick(Vec2, int) {}
 void Core::onKeyPress(char) {}

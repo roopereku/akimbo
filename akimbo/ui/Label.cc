@@ -2,14 +2,14 @@
 
 namespace Akimbo::UI {
 
-Label::Label(Core* core, const EdgeConstraints& edges, Font& font)
-	: Widget(core, edges), font(font)
+Label::Label(Font& font)
+	: font(font)
 {
 }
 
-void Label::onRender(Frame& frame)
+void Label::onRender(Render& render)
 {
-	frame.drawText(text, font, position, size);
+	render.text(text, font, render.topLeft, render.radius * 2.0f);
 }
 
 void Label::setText(const std::string& str)

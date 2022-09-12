@@ -3,26 +3,31 @@
 namespace Akimbo::UI {
 
 Container::Container(Core* core, Vec2 uiRadius)
-	: Widget(core, { Constraint(0.0f, false), Constraint(0.0f, false), Constraint(1.0f, true), Constraint(1.0f, true) })
 {
+	this->core = core;
+
+	setConstraints(Constraint(0.0f, false), Constraint(0.0f, false), Constraint(1.0f, true), Constraint(1.0f, true));
 	adjustPosition(uiRadius);
 }
 
-Container::Container(Core* core, const EdgeConstraints& edges)
-	: Widget(core, edges)
+Container::Container()
 {
+	// set default color
+	setBackgroundColor(0.5f, 0.5f, 0.5f, 0.5f);
 }
 
-Widget* Container::isInside(Vec2 point)
+Widget* Container::isInside(Vec2& point, Vec2& where)
 {
 	//	The point isn't inside this container
-	if(!Widget::isInside(point))
+	if(!Widget::isInside(point, where))
 		return nullptr;
 
 	for(auto& child : children)
 	{
+		Vec2 normalizedParent = point;
+
 		//	Is the point inside this child
-		Widget* result = child->isInside(point);
+		Widget* result = child->isInside(normalizedParent, where);
 		if(result) return result;
 	}
 
@@ -30,15 +35,10 @@ Widget* Container::isInside(Vec2 point)
 	return this;
 }
 
-void Container::onRender(Frame& frame)
+void Container::onRender(Render& render)
 {
-	Widget::onRender(frame);
-
 	for(auto& child : children)
-	{
-		child->Widget::onRender(frame);
-		child->onRender(frame);
-	}
+		child->draw(render);
 }
 
 void Container::onUpdate(double delta)
@@ -47,12 +47,22 @@ void Container::onUpdate(double delta)
 		child->onUpdate(delta);
 }
 
-void Container::adjustPosition(Vec2 uiRadius)
+Vec2i Container::resize(Vec2i newSize)
 {
-	Widget::adjustPosition(uiRadius);
+	newSize = Widget::resize(newSize);
+	//DBG_LOG("Passing size (%d %d) to children for resize", newSize.x, newSize.y);
 
 	for(auto& child : children)
-		child->adjustPosition(size / 2);
+	{
+		child->resize(newSize);
+		child->renderSelf();
+	}
+
+	//	If this is the root container, finally render it
+	if(!parent)
+		renderSelf();
+
+	return newSize;
 }
 
 }

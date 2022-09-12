@@ -15,14 +15,19 @@ namespace Akimbo::UI {
 class Widget
 {
 public:
-	Widget(Core* core, const EdgeConstraints& edges);
+	Widget();
 
 	//	Widgets should never be copied
 	Widget(const Widget& rhs) = delete;
 	Widget& operator=(const Widget& rhs) = delete;
 
-	//	Functions that get called on each frame
-	virtual void onRender(Frame& frame);
+	void render();
+	void renderSelf();
+
+	void draw();
+	void draw(Render& render);
+
+	virtual void onRender(Render& render);
 	virtual void onUpdate(double delta);
 
 	//	Function that gets called when the user clicks this widget
@@ -37,15 +42,18 @@ public:
 
 	//	Function that gets called when constraints should be updated
 	//	NOTE Do not override or bad stuff happens
-	virtual void adjustPosition(Vec2 uiRadius);
+	virtual Vec2i resize(Vec2i newSize);
+	void adjustPosition(Vec2 parentRadius);
+	void setConstraints(const Constraint& left, const Constraint& top, const Constraint& right, const Constraint& bottom);
 
 	//	Widget background setters
-	void setBackgroundColor(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255);
+	void setBackgroundColor(float r, float g, float b, float a = 1.0f);
+	void setBackgroundColor(Widget& widget);
 	void setBackgroundImage(Texture& texture);
 	void removeBackgroundImage();
 
 	//	Is a point inside this widget
-	virtual Widget* isInside(Vec2 point);
+	virtual Widget* isInside(Vec2& point, Vec2& where);
 
 	//	Helpers to get constraints relative to this widget with units
 	Constraint top(float units = 0.0f);
@@ -62,21 +70,29 @@ public:
 protected:
 	bool isRelativeConstraint(Constraint& constraint);
 
+	Vec2 getSize();
+
 	Core* core;
 	Widget* parent = nullptr;
+
+	int id;
+
+private:
+
+	float bgRed = 0;
+	float bgGreen = 0;
+	float bgBlue = 0;
+	float bgAlpha = 0;
+
+	//	Widget background stuff
+	Texture* bgImage = nullptr;
+
+	EdgeConstraints edges;
+	Frame frame;
 
 	Vec2 position;
 	Vec2 size;
 
-private:
-	//	Widget background stuff
-	uint8_t bgRed = 0;
-	uint8_t bgGreen = 0;
-	uint8_t bgBlue = 0;
-	uint8_t bgAlpha = 0;
-	Texture* bgImage = nullptr;
-
-	EdgeConstraints edges;
 };
 
 }
