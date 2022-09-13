@@ -19,8 +19,12 @@ public:
 	//	Starts the main loop
 	void start();
 
+	Font& getDefaultFont();
+
 private:
 	UI::Widget* widgetFocus = nullptr;
+	Font* defaultFont = nullptr;
+
 	double fpsCapValue = 0;
 	Window window;
 
@@ -46,6 +50,7 @@ protected:
 
 	void render();
 
+	void setDefaultFont(Font& font);
 	Font& loadFont(const std::string& path);
 	Texture& loadTexture(const std::string& path);
 

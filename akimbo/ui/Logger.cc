@@ -1,17 +1,22 @@
 #include "Logger.hh"
+#include "../Core.hh"
 #include "../Debug.hh"
 
 #include <cmath>
 
 namespace Akimbo::UI {
 
-Logger::Logger(Font& font) : font(font)
+Logger::Logger(Font& font) : font(&font)
+{
+}
+
+Logger::Logger() : font(&core->getDefaultFont())
 {
 }
 
 void Logger::onRender(Render& render)
 {
-	render.color(0.5f, 0.0f, 0.0f);
+	render.color(0.5f, 0.5f, 0.0f);
 	render.clear();
 
 	float entryHeight = (render.radius.y * 2) / rows;
@@ -19,8 +24,8 @@ void Logger::onRender(Render& render)
 
 	for(size_t i = 0; i < messages.size(); i++)
 	{
-		float y = render.topLeft.y - (entryHeight * i);
-		render.text(messages[i], font, Vec2(render.topLeft.x, y), Vec2(render.radius.x * 2, entryHeight));
+		Vec2 position(render.topLeft.x, render.topLeft.y - (entryHeight * i));
+		render.text(messages[i], *font, position, Vec2(render.radius.x * 2, entryHeight), false);
 	}
 }
 

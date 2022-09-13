@@ -13,6 +13,7 @@ class Logger : public Widget
 {
 public:
 	Logger(Font& font);
+	Logger();
 
 	void onRender(Render& render) override;
 	void onMouseClick(Vec2 at, int button) override;
@@ -23,7 +24,7 @@ public:
 private:
 	unsigned rows = 20;
 	std::vector <std::string> messages;
-	Font& font;
+	Font* font;
 };
 
 }

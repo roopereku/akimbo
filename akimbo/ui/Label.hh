@@ -11,13 +11,14 @@ class Label : public Widget
 {
 public:
 	Label(Font& font);
+	Label();
 
 	void onRender(Render& render);
 	void setText(const std::string& str);
 
 private:
 	std::string text;
-	Font& font;
+	Font* font;
 };
 
 }

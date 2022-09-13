@@ -10,6 +10,9 @@ namespace Akimbo {
 
 Core::Core() : window("Akimbo", Vec2(0.5f, 0.5f)), ui(this, Vec2())
 {
+	//	FIXME Add a font to resources and load it from there
+	setDefaultFont(loadFont("/usr/share/fonts/TTF/Comic.TTF"));
+
 	events.onKeyPress = [this](char key)
 	{
 		//	If a widget is focused, pass the keypress to it
@@ -139,6 +142,16 @@ Font& Core::loadFont(const std::string& path)
 {
 	fonts.emplace_back(path);
 	return fonts.back();
+}
+
+Font& Core::getDefaultFont()
+{
+	return *defaultFont;
+}
+
+void Core::setDefaultFont(Font& font)
+{
+	defaultFont = &font;
 }
 
 void Core::onRender(Render&) {}
