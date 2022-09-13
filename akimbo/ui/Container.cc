@@ -65,4 +65,19 @@ Vec2i Container::resize(Vec2i newSize)
 	return newSize;
 }
 
+void Container::prepareChild(Container& child, Constraint& l, Constraint& t, Constraint& r, Constraint& b)
+{
+	/*	If some of the given constraints don't originate from this container,
+	 *	negate their gaps so that they move to the inverse direction */
+	if(!isRelativeConstraint(l)) l.negateGap(true);
+	if(!isRelativeConstraint(t)) t.negateGap(true);
+	if(!isRelativeConstraint(r)) r.negateGap(true);
+	if(!isRelativeConstraint(b)) b.negateGap(true);
+
+	child.setConstraints(l, t, r, b);
+
+	//	Update the position of the new widget according to the given constraints
+	child.adjustPosition(getSize() / 2.0f);
+}
+
 }

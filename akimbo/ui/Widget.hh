@@ -70,12 +70,13 @@ public:
 protected:
 	bool isRelativeConstraint(Constraint& constraint);
 
+	//	Spaghetti solution to notify new widgets that this is widget is their parent
+	void setAsCurrentParent();
+
 	Vec2 getSize();
 
 	Core* core;
 	Widget* parent = nullptr;
-
-	int id;
 
 private:
 

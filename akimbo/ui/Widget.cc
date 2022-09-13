@@ -5,13 +5,23 @@
 namespace Akimbo::UI
 {
 
+//	Spaghetti solution to notify new widgets that this is widget is their parent
+//	FIXME This is probably not thread safe. Make it atomic?
+static Widget* tempParentWidget = nullptr;
+
+void Widget::setAsCurrentParent()
+{
+	tempParentWidget = this;
+}
+
 Widget::Widget()
 {
-	static int ids = 0;
-	ids++;
-
-	id = ids;
-	DBG_LOG("Creating widget %d", id);
+	if(tempParentWidget)
+	{
+		parent = tempParentWidget;
+		core = parent->core;
+		tempParentWidget = nullptr;
+	}
 }
 
 void Widget::adjustPosition(Vec2 parentRadius)
@@ -54,7 +64,6 @@ Vec2i Widget::resize(Vec2i newSize)
 
 void Widget::renderSelf()
 {
-	//DBG_LOG("Widget %d render", id);
 	Render render = frame.render();
 
 	Widget::onRender(render);
@@ -64,18 +73,16 @@ void Widget::renderSelf()
 
 void Widget::render()
 {
+	//	Render this widget
 	renderSelf();
 
+	//	If there's a parent, render it recursively
 	if(parent)
-	{
-		//DBG_LOG("Widgget %d renders parent", id);
 		parent->render();
-	}
 }
 
 void Widget::draw(Render& render)
 {
-	//DBG_LOG("Drawing widget %d at (%.2f %.2f) with size (%.2f %.2f)", id, position.x, position.y, size.x, size.y);
 	render.frame(frame, position, size);
 }
 
@@ -88,6 +95,7 @@ void Widget::onRender(Render& render)
 {
 	render.color(bgRed, bgGreen, bgBlue, bgAlpha);
 
+	//	If a background image exists, render that. Else just fill the frame with a color
 	if(bgImage) render.texture(*bgImage, render.topLeft, render.radius * 2.f);
 	else render.clear();
 }
