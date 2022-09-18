@@ -13,8 +13,7 @@ Container::Container(Core* core, Vec2 uiRadius)
 
 Container::Container()
 {
-	// set default color
-	setBackgroundColor(0.5f, 0.5f, 0.5f, 0.5f);
+	//	FIXME Maybe hide sub containers too?
 }
 
 Widget* Container::isInside(Vec2& point, Vec2& where)
