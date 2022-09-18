@@ -127,32 +127,95 @@ void Render::character(char chr, Font& font, Vec2 position, Vec2 size)
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void Render::text(const std::string& str, Font& font, Vec2 position, Vec2 size)
+Vec2 Render::text(const std::string& str, Font& font, Vec2 position, Vec2 size, TextMode mode)
 {
-	color(0.5f, 0.0f, 0.0f);
-	box(position, size, true);
+	//	FIXME With the font Comic.TTF the letter 'b' is too tall
 
-	//	TODO Account for newlines
-
-	const float charWidth = size.y;
+	float maxWidth = size.y;
 	const float baseline = size.y * font.baseline;
 
-	for(auto& c : str)
+	Vec2 origin = position;
+	float maxX = position.x;
+
+	for(auto c : str)
 	{
+		//	Handle line breaks
+		if(c == '\n' || c == '\r')
+		{
+			maxX = std::max(position.x, maxX);
+			position.y -= size.y;
+			position.x = origin.x;
+
+			continue;
+		}
+
 		const Font::Character& ch = font.get(c);
-		const float advance = charWidth * ch.advance;
+		const float advance = maxWidth * ch.advance;
+
+		//	Has the text overflown the given area
+		if(position.x + advance > origin.x + size.x)
+		{
+			//	Should the overflown text be cut?
+			if(mode == TextMode::Cut)
+				continue;
+
+			//	Should the overflown text be placed on the next line?
+			else if(mode == TextMode::Wrap)
+			{
+				maxX = std::max(position.x, maxX);
+				position.y -= size.y;
+				position.x = origin.x;
+			}
+		}
 
 		const float chHeight = size.y * ch.sizeMultiplier.y;
-		const float chWidth = charWidth * ch.sizeMultiplier.x;
+		const float chWidth = maxWidth * ch.sizeMultiplier.x;
 
 		const float chBaseline = baseline - size.y * ch.baseline;
 		Vec2 chPosition = position - Vec2(-(advance * ch.bearing.x), size.y - chHeight - chBaseline);
 
-		color(1.0f, 1.0f, 1.0f);
 		character(c, font, chPosition, Vec2(chWidth, chHeight));
-
 		position.x += advance;
 	}
+
+	maxX = std::max(position.x, maxX);
+	position.y -= size.y;
+
+	//	How much space the text actually took
+	Vec2 end = Vec2(maxX, position.y);
+	return end - origin;
+}
+
+void Render::fitText(const std::string& str, Font& font, Vec2 position, Vec2 size)
+{
+	Vec2 overflow(0.0f, size.y);
+	float maxX = overflow.x;
+
+	//	Is the string larger than the given size
+	for(auto c : str)
+	{
+		if(c == '\n' || c == '\r')
+		{
+			overflow.y += size.y;
+			maxX = std::max(overflow.x, maxX);
+			overflow.x = position.x;
+			continue;
+		}
+
+		const Font::Character& ch = font.get(c);
+		overflow.x += size.y * ch.advance;
+	}
+
+	//	What is the relation between the overflow and the given size
+	maxX = std::max(overflow.x, maxX);
+	Vec2 relation = Vec2(maxX, overflow.y) / size;
+	relation.x = relation.x / relation.y;
+
+	//	If necessary, adjust the size so that the string always fits
+	if(relation.y > 1.0f) size.y /= relation.y;
+	if(relation.x > 1.0f) size.y /= relation.x;
+
+	text(str, font, position, size);
 }
 
 }

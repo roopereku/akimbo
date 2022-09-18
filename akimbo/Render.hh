@@ -28,8 +28,19 @@ public:
 	void line(Vec2 from, Vec2 to);
 	void dot(Vec2 position);
 
-	void character(char chr, Font& font, Vec2 position, Vec2 size);
-	void text(const std::string& str, Font& font, Vec2 position, Vec2 size);
+	enum class TextMode
+	{
+		Overflow,
+		Wrap,
+		Cut
+	};
+
+	//	Helpers so that the user doesn't need to type Akimbo::Render::TextMode::Wrap every time
+	const TextMode cutText = TextMode::Cut;
+	const TextMode wrapText = TextMode::Wrap;
+
+	Vec2 text(const std::string& str, Font& font, Vec2 position, Vec2 size, TextMode mode = TextMode::Overflow);
+	void fitText(const std::string& str, Font& font, Vec2 position, Vec2 size);
 
 	const Vec2 topLeft;
 	const Vec2 topRight;
@@ -43,6 +54,8 @@ public:
 protected:
 	//	Only Frame can create a Render object
 	Render(Mat4& projection, float horizontalRadius);
+
+	void character(char chr, Font& font, Vec2 position, Vec2 size);
 
 	Mat4& projection;
 
