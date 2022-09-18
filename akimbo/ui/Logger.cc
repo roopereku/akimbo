@@ -23,7 +23,10 @@ void Logger::onRender(Render& render)
 
 	for(size_t i = 0; i < messages.size(); i++)
 	{
-		Vec2 size = render.text(messages[i], *font, position, Vec2(render.radius.x * 2, entryHeight), render.wrapText);
+		Vec3& c = messages[i].second;
+		render.color(c.r, c.g, c.b);
+		
+		Vec2 size = render.text(messages[i].first, *font, position, Vec2(render.radius.x * 2, entryHeight), render.wrapText);
 		position.y += size.y;
 	}
 }
@@ -42,9 +45,9 @@ void Logger::onMouseClick(Vec2 at, int button)
 	addMessage("Logger clicked");
 }
 
-void Logger::addMessage(const std::string& msg)
+void Logger::addMessage(const std::string& msg, Vec3 color)
 {
-	messages.push_back(msg);
+	messages.push_back(std::make_pair(msg, color));
 	render();
 }
 

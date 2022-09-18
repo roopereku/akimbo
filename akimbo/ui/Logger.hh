@@ -18,12 +18,12 @@ public:
 	void onRender(Render& render) override;
 	void onMouseClick(Vec2 at, int button) override;
 
-	void addMessage(const std::string& msg);
+	void addMessage(const std::string& msg, Vec3 color = Vec3(1.0f, 1.0f, 1.0f));
 	void setRows(unsigned amount);
 
 private:
 	unsigned rows = 20;
-	std::vector <std::string> messages;
+	std::vector <std::pair <std::string, Vec3>> messages;
 	Font* font;
 };
 
