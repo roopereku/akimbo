@@ -22,6 +22,9 @@ public:
 	bool clearOnSubmit = true;
 	std::function <void(const std::string&)> onSubmit;
 
+	const std::string& getValue() { return text; }
+	void clear();
+
 private:
 	std::string text;
 	Font* font;

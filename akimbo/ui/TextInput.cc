@@ -25,6 +25,10 @@ void TextInput::onKeyPress(char key)
 
 void TextInput::onKeyPress(Key key)
 {
+	//	No point in doing anything if there's no text
+	if(text.empty())
+		return;
+
 	switch(key)
 	{
 		case Key::Return:
@@ -36,13 +40,18 @@ void TextInput::onKeyPress(Key key)
 		break;
 
 		case Key::Backspace:
-			if(!text.empty())
-				text.pop_back();
+			text.pop_back();
 		break;
 
 		default: return;
 	}
 
+	render();
+}
+
+void TextInput::clear()
+{
+	text.clear();
 	render();
 }
 
