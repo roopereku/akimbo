@@ -37,5 +37,7 @@ int main()
 ## Examples
 
 [Updating things](./examples/update.md)
+
 [Rendering](./examples/render.md)
+
 [Input handling](./examples/input.md)
