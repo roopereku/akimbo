@@ -1,43 +1,34 @@
 #include "akimbo/Core.hh"
 #include "akimbo/ui/Switch.hh"
 #include "akimbo/ui/Logger.hh"
+#include "akimbo/ui/Label.hh"
+#include "akimbo/ui/Button.hh"
 
 class Test : public Akimbo::Core
 {
 public:
-	Test() : font(loadFont("/usr/share/fonts/TTF/Comic.TTF")), texture("resources/atlas.png", 4,4)
+	Test() : texture("resources/atlas.png", 4,4)
 	{
-		auto& logger = ui.add <Akimbo::UI::Logger> (
-			ui.left(10),
-			ui.top(10),
-			ui.right(10),
-			ui.bottom(10),
-			font
+		auto& b = ui.add <Akimbo::UI::Logger> (
+			ui.left(10), ui.top(10),
+			ui.right(10), ui.bottom(10)
 		);
-
-		auto& check = ui.add <Akimbo::UI::Switch> (
-			logger.left(0.4f),
-			logger.top(),
-			logger.left(),
-			logger.bottom()
-		);
-
-		check.onSwitch = [&logger](bool on)
-		{
-			if(on) logger.setRows(5);
-			else logger.setRows(10);
-		};
 	}
 
 	void onRender(Akimbo::Render& render) override
 	{
 		render.color(0.5f, 0.5f, 0.5f);
 		render.clear();
+
+		Vec2 pos = render.center;
+		Vec2 size = render.radius * Vec2(0.5, 0.25);
+
+		render.color(0.5f, 0.0f, 0.0f);
+		render.fitText("123456\ntest\n456j\nm__213890j", getDefaultFont(), pos, size);
 	}
 
 private:
 	Akimbo::TextureAtlas texture;
-	Akimbo::Font& font;
 };
 
 int main()
