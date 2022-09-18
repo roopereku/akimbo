@@ -127,7 +127,7 @@ void Render::character(char chr, Font& font, Vec2 position, Vec2 size)
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-Vec2 Render::text(const std::string& str, Font& font, Vec2 position, Vec2 size, TextMode mode)
+Vec2 Render::text(const char* str, Font& font, Vec2 position, Vec2 size, TextMode mode)
 {
 	//	FIXME With the font Comic.TTF the letter 'b' is too tall
 
@@ -137,8 +137,10 @@ Vec2 Render::text(const std::string& str, Font& font, Vec2 position, Vec2 size, 
 	Vec2 origin = position;
 	float maxX = position.x;
 
-	for(auto c : str)
+	for(size_t i = 0; str[i] != 0; i++)
 	{
+		const char c = str[i];
+
 		//	Handle line breaks
 		if(c == '\n' || c == '\r')
 		{
@@ -184,6 +186,32 @@ Vec2 Render::text(const std::string& str, Font& font, Vec2 position, Vec2 size, 
 	//	How much space the text actually took
 	Vec2 end = Vec2(maxX, position.y);
 	return end - origin;
+}
+
+Vec2 Render::text(const std::string& str, Font& font, Vec2 position, Vec2 size, TextMode mode)
+{
+	//	If scrolling should be done, find the first visible character
+	if(mode == TextMode::Scroll)
+	{
+		float x = 0.0f;
+
+		for(auto c : str)
+		{
+			const Font::Character& ch = font.get(c);
+			x += size.y * ch.advance;
+
+			/*	FIXME
+			 *	To implement perfect scrolling we need render partial characters.
+			 *	Now the position is just shifted backwards which is fine when rendering
+			 *	text that fills the entire framebuffer. The correct way to implement
+			 *	this is first eliminating all the unnecessary characters and then
+			 *	rendering partial versions of the first visible characters */
+			if(x > size.x)
+				position.x -= (size.y * ch.advance);
+		}
+	}
+
+	return text(str.c_str(), font, position, size, mode);
 }
 
 void Render::fitText(const std::string& str, Font& font, Vec2 position, Vec2 size)

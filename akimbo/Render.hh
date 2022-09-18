@@ -31,6 +31,7 @@ public:
 	enum class TextMode
 	{
 		Overflow,
+		Scroll,
 		Wrap,
 		Cut
 	};
@@ -56,6 +57,7 @@ protected:
 	Render(Mat4& projection, float horizontalRadius);
 
 	void character(char chr, Font& font, Vec2 position, Vec2 size);
+	Vec2 text(const char* str, Font& font, Vec2 position, Vec2 size, TextMode mode = TextMode::Overflow);
 
 	Mat4& projection;
 
