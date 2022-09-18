@@ -17,7 +17,7 @@ public:
 	Container(Core* core, Vec2 uiRadius);
 	Container();
 
-	void onRender(Render& render) override;
+	virtual void onRender(Render& render) override;
 	void onUpdate(double delta) override;
 
 	Vec2i resize(Vec2i newSize) override;
