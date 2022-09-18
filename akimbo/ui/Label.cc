@@ -20,6 +20,7 @@ void Label::onRender(Render& render)
 void Label::setText(const std::string& str)
 {
 	text = str;
+	render();
 }
 
 }
