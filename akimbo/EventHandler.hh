@@ -23,6 +23,9 @@ public:
 	void update();
 
 private:
+	void keyPress(char key);
+	void keyPress(Key key);
+
 	KeyboardState keys;
 };
 

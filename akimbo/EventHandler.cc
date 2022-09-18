@@ -10,6 +10,18 @@ EventHandler::EventHandler()
 	SDL_StartTextInput();
 }
 
+void EventHandler::keyPress(char key)
+{
+	if(onKeyPress)
+		onKeyPress(key);
+}
+
+void EventHandler::keyPress(Key key)
+{
+	if(onKeyPressOther)
+		onKeyPressOther(key);
+}
+
 void EventHandler::update()
 {
 	SDL_Event event;
@@ -19,12 +31,16 @@ void EventHandler::update()
 		{
 			case SDL_KEYDOWN:
 				//	TODO handle key states
+				switch(event.key.keysym.sym)
+				{
+					case SDLK_RETURN: keyPress(Key::Return); break;
+					case SDLK_BACKSPACE: keyPress(Key::Backspace); break;
+				}
 			break;
 
 			case SDL_TEXTINPUT:
 				//	TODO support unicode
-				if(onKeyPress)
-					onKeyPress(event.text.text[0]);
+					keyPress(event.text.text[0]);
 			break;
 
 			case SDL_WINDOWEVENT:

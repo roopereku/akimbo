@@ -3,6 +3,7 @@
 #include "akimbo/ui/Logger.hh"
 #include "akimbo/ui/Label.hh"
 #include "akimbo/ui/Button.hh"
+#include "akimbo/ui/TextInput.hh"
 
 class Test : public Akimbo::Core
 {
@@ -11,20 +12,25 @@ public:
 	{
 		auto& b = ui.add <Akimbo::UI::Logger> (
 			ui.left(10), ui.top(10),
-			ui.right(10), ui.bottom(10)
+			ui.right(10), ui.bottom(50)
 		);
+
+		auto& l = ui.add <Akimbo::UI::TextInput> (
+			ui.left(50).then(-0.9f), b.bottom(0.1f),
+			ui.right(50).then(-0.9f), b.bottom(0.4f)
+		);
+
+		b.setRows(10);
+		l.onSubmit = [&b](const std::string& text)
+		{
+			b.addMessage(text);
+		};
 	}
 
 	void onRender(Akimbo::Render& render) override
 	{
 		render.color(0.5f, 0.5f, 0.5f);
 		render.clear();
-
-		Vec2 pos = render.center;
-		Vec2 size = render.radius * Vec2(0.5, 0.25);
-
-		render.color(0.5f, 0.0f, 0.0f);
-		render.fitText("123456\ntest\n456j\nm__213890j", getDefaultFont(), pos, size);
 	}
 
 private:

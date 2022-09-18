@@ -16,6 +16,9 @@ enum class Key
 	Alt,
 	Shift,
 	Control,
+
+	Return,
+	Backspace
 };
 
 class KeyboardState
