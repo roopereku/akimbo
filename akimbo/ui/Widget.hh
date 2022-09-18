@@ -83,7 +83,7 @@ private:
 	float bgRed = 0;
 	float bgGreen = 0;
 	float bgBlue = 0;
-	float bgAlpha = 0;
+	float bgAlpha = 0.5f;
 
 	//	Widget background stuff
 	Texture* bgImage = nullptr;
