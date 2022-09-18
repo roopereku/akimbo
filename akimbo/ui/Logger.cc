@@ -16,9 +16,6 @@ Logger::Logger() : font(&core->getDefaultFont())
 
 void Logger::onRender(Render& render)
 {
-	render.color(0.5f, 0.5f, 0.0f);
-	render.clear();
-
 	float entryHeight = (render.radius.y * 2) / rows;
 	render.color(1.0f, 1.0f, 1.0f);
 
