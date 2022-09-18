@@ -5,6 +5,7 @@ namespace Akimbo::UI {
 Container::Container(Core* core, Vec2 uiRadius)
 {
 	this->core = core;
+	setBackgroundColor(0.0f, 0.0f, 0.0f, 0.0f);
 
 	setConstraints(Constraint(0.0f, false), Constraint(0.0f, false), Constraint(1.0f, true), Constraint(1.0f, true));
 	adjustPosition(uiRadius);
