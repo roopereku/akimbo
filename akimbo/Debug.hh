@@ -4,8 +4,8 @@
 #include <cstdio>
 
 #ifdef DEBUG
-#define DBG(...) { __VA_ARGS__ }
-#define DBG_LOG(...) printf("[Debug] " __VA_ARGS__); putchar('\n')
+#define DBG(...) __VA_ARGS__
+#define DBG_LOG(...) { printf("[Debug] " __VA_ARGS__); putchar('\n'); }
 
 #else
 #define DBG(...)
