@@ -3,6 +3,7 @@
 
 #include "../KeyboardState.hh"
 #include "Constraint.hh"
+#include "../Debug.hh"
 #include "../Frame.hh"
 
 namespace Akimbo
@@ -69,11 +70,10 @@ public:
 
 protected:
 	bool isRelativeConstraint(Constraint& constraint);
+	float getHorizontalRadius() { return frame.getRadius(); }
 
 	//	Spaghetti solution to notify new widgets that this is widget is their parent
 	void setAsCurrentParent();
-
-	Vec2 getSize();
 
 	Core* core;
 	Widget* parent = nullptr;
@@ -94,6 +94,7 @@ private:
 	Vec2 position;
 	Vec2 size;
 
+	DBG(size_t id);
 };
 
 }

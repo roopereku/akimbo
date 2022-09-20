@@ -13,6 +13,8 @@ public:
 	Container& tab(const std::string& name);
 
 	void onRender(Render& render) override;
+	Widget* isInside(Vec2& point, Vec2& where) override;
+
 private:
 	std::vector<std::pair<Button*, Container*>> tabs;
 	Container* selected = nullptr;

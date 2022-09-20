@@ -75,9 +75,6 @@ void Container::prepareChild(Container& child, Constraint& l, Constraint& t, Con
 	if(!isRelativeConstraint(b)) b.negateGap(true);
 
 	child.setConstraints(l, t, r, b);
-
-	//	Update the position of the new widget according to the given constraints
-	child.adjustPosition(getSize() / 2.0f);
 }
 
 }

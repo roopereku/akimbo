@@ -22,6 +22,8 @@ public:
 	Transform transform;
 
 	Vec2 pointAt(Vec2 normalized);
+	Vec2i getRealSize() { return realSize; }
+	float getRadius() { return horizontalRadius; }
 
 	friend class Render;
 

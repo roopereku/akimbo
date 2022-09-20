@@ -16,6 +16,12 @@ void Widget::setAsCurrentParent()
 
 Widget::Widget()
 {
+	DBG(
+		static size_t ids = 0;
+		ids++;
+		id = ids;
+	);
+
 	if(tempParentWidget)
 	{
 		parent = tempParentWidget;
@@ -26,7 +32,7 @@ Widget::Widget()
 
 void Widget::adjustPosition(Vec2 parentRadius)
 {
-	//	Update the position of each constrain
+	//	Update the position of each constraint
 	edges.top.updatePosition(parentRadius.y);
 	edges.left.updatePosition(parentRadius.x);
 	edges.right.updatePosition(parentRadius.x);
@@ -44,7 +50,12 @@ void Widget::adjustPosition(Vec2 parentRadius)
 void Widget::setConstraints(const Constraint& left, const Constraint& top, const Constraint& right, const Constraint& bottom)
 {
 	edges = { left, top, right, bottom };
-	//	TODO maybe call adjustPosition here?
+
+	//	If this isn't the root container, do resize because the size probably changed
+	if(parent) resize(parent->frame.getRealSize());
+
+	//	Remember to render the new position
+	render();
 }
 
 Vec2i Widget::resize(Vec2i newSize)
@@ -146,8 +157,6 @@ void Widget::setBackgroundColor(float r, float g, float b, float a)
 	bgBlue = b;
 	bgAlpha = a;
 }
-
-Vec2 Widget::getSize(){ return size; }
 
 void Widget::setBackgroundImage(Texture& texture)
 {
