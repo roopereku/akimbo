@@ -6,11 +6,8 @@
 namespace Akimbo::UI
 {
 
-Container& TabbedContainer::tab(const std::string& name)
+void TabbedContainer::create(Widget* widget, const std::string& name)
 {
-	// creating new container
-	auto* temp = &add<Container>(left(), top(0.1f), right(), bottom());
-
 	// calculate the width of button
 	int tabsCount = tabs.size() + 1;
 	int percentage = ceil(100.0f / tabsCount);
@@ -28,7 +25,7 @@ Container& TabbedContainer::tab(const std::string& name)
 		x += percentage;
 	}
 
-	selected = temp;
+	selected = widget;
 
 	//	Create a new button and pair it with the new container
 	auto* btn = &add<Button>(left(x), top(), left(x + percentage), top(0.1f));
@@ -40,7 +37,7 @@ Container& TabbedContainer::tab(const std::string& name)
 	btn->setText(name);
 
 	// when the button is clicked the corresponding tab is visible
-	btn->onClick = [this, temp]()
+	btn->onClick = [this, widget]()
 	{
 		for(auto& tab : tabs)
 		{
@@ -52,18 +49,16 @@ Container& TabbedContainer::tab(const std::string& name)
 			}
 
 			//	Make the button for the newly selected tab darker
-			if(tab.second == temp)
+			if(tab.second == widget)
 			{
 				tab.first->setBackgroundColor(0.0f, 0.0f, 0.0f, 0.7f);
 				tab.first->render();
 			}
 		}
 
-		selected = temp;
+		selected = widget;
 		selected->render();
 	};
-
-	return *selected;
 }
 
 void TabbedContainer::onRender(Render& render)

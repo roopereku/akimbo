@@ -10,14 +10,28 @@ namespace Akimbo::UI
 class TabbedContainer : public Container
 {
 public:
-	Container& tab(const std::string& name);
+	template <typename T, typename... Args>
+	T& tab(const std::string& name, Args&& ...args)
+	{
+		Widget* widget = &add <T> (left(), top(0.1f), right(), bottom(), std::forward <Args> (args)...);
+		create(widget, name);
+
+		return static_cast <T&> (*widget);
+	}
+
+	Container& tab(const std::string& name)
+	{
+		return tab <Akimbo::UI::Container> (name);
+	}
 
 	void onRender(Render& render) override;
 	Widget* isInside(Vec2& point, Vec2& where) override;
 
 private:
-	std::vector<std::pair<Button*, Container*>> tabs;
-	Container* selected = nullptr;
+	void create(Widget* widget, const std::string& name);
+
+	std::vector<std::pair<Button*, Widget*>> tabs;
+	Widget* selected = nullptr;
 	
 };
 

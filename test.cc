@@ -9,7 +9,7 @@ public:
 	Test() : texture("resources/atlas.png", 4,4), p(0, 0)
 	{
 		auto& tab = ui.add<Akimbo::UI::TabbedContainer>(
-				ui.left(50).then(0.05f), ui.top(10), ui.right(10), ui.bottom(10)
+			ui.left(50).then(0.05f), ui.top(10), ui.right(10), ui.bottom(10)
 		);
 
 		auto& console = ui.add <Akimbo::UI::Console> (
@@ -18,16 +18,13 @@ public:
 
 		console.command("add") = [&tab, &console](const std::string& value)
 		{
-			auto& t = tab.tab(value);
+			if(value == "console")
+				tab.tab <Akimbo::UI::Console> ("console");
 
-			t.add <Akimbo::UI::Switch> (
-				t.left(50).then(-0.25f),
-				t.top(50).then(-0.25f),
-				t.right(50).then(-0.25f),
-				t.bottom(50).then(-0.25f)
-			);
+			else if(value == "switch")
+				tab.tab <Akimbo::UI::Switch> ("switch");
 
-			console.log.addMessage("Added tab " + value, Vec3(0.0f, 1.0f, 0.0f));
+			else console.log.addMessage("Invalid widget", Vec3(1.0f, 0.0f, 0.0f));
 		};
 	}
 
