@@ -4,14 +4,14 @@ Akimbo is a general purpose framework for making games and other applications
 
 ## Getting started
 
-- Install SDL2 and GLEW
+- Install SDL2, GLEW, GLM and Freetype2
 - `git clone https://github.com/Geckospaniel/akimbo.git`
-- `cd akimbo; git submodule update --init`
 - Add this to your `CMakeLists.txt`
 	```cmake
 	include_directories(akimbo)
 	add_subdirectory(akimbo)
 	add_executable(MyProject main.cc)
+	add_dependencies(MyProject akimbo)
 	target_link_libraries(MyProject akimbo)
 	```
 - Add this to your `main.cpp`
