@@ -38,13 +38,18 @@ void Render::clear()
 
 void Render::fromAtlas(TextureAtlas& atlas, unsigned x, unsigned y, Vec2 position, Vec2 size)
 {
+	/*	FIXME
+	 *	Since the Y axis was flipped, it broke the original texture atlas code.
+	 *	This y++ is here because the breakage was mostly that y was 1 too little */
+	y++;
+
 	glBindTexture(GL_TEXTURE_2D, atlas.texture);
 	Shader& shader = Shader::get(Shader::Preset::Atlas);
 
 	shader.use();
 
 	Vec2 tileStart = Vec2(x, y) / Vec2(atlas.horizontally, atlas.vertically);
-	tileStart.y = 1.0f - tileStart.y;
+	tileStart.y = -tileStart.y;
 
 	Vec2 tileEnd = tileStart + Vec2(1.0f, 1.0f) / Vec2(atlas.horizontally, atlas.vertically);
 

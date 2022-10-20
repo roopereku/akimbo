@@ -17,6 +17,10 @@ TextureAtlas::TextureAtlas(const std::string& path, unsigned horizontally, unsig
 			DBG_LOG("Failed to create texture atlas '%s'", path.c_str());
 		}
 	);
+
+	//	Calculate the aspect ratio of a single texture in the texture atlas
+	float atlasAspectRatio = static_cast <float> (horizontally) / vertically;
+	aspectRatio.x = aspectRatio.x / atlasAspectRatio;
 }
 
 }

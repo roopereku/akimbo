@@ -26,6 +26,7 @@ Texture::Texture(const std::string& path)
 		glGenerateMipmap(GL_TEXTURE_2D);
 		stbi_image_free(data);
 
+		aspectRatio = Vec2(static_cast <float> (width) / height, 1.0f);
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 	else
