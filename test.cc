@@ -16,7 +16,8 @@ public:
 		render.clear();
 
 		render.color(1.0f, 1.0f, 1.0f);
-		render.texture(texture, render.topLeft, render.radius)
+		render.texture(texture, render.center, render.radius);
+		render.fromAtlas(texture, 0, 0, render.topLeft, render.radius);
 	}
 
 private:

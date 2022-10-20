@@ -46,7 +46,7 @@ void Render::fromAtlas(TextureAtlas& atlas, unsigned x, unsigned y, Vec2 positio
 	Vec2 tileStart = Vec2(x, y) / Vec2(atlas.horizontally, atlas.vertically);
 	tileStart.y = 1.0f - tileStart.y;
 
-	Vec2 tileEnd = tileStart + Vec2(1.0f, -1.0f) / Vec2(atlas.horizontally, atlas.vertically);
+	Vec2 tileEnd = tileStart + Vec2(1.0f, 1.0f) / Vec2(atlas.horizontally, atlas.vertically);
 
 	shader.setVec2("start", tileStart);
 	shader.setVec2("end", tileEnd);
