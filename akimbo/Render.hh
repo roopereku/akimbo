@@ -41,6 +41,8 @@ public:
 	const TextMode wrapText = TextMode::Wrap;
 
 	Vec2 text(const std::string& str, Font& font, Vec2 position, Vec2 size, TextMode mode = TextMode::Overflow);
+	Vec2 text(const char* str, Font& font, Vec2 position, Vec2 size, TextMode mode = TextMode::Overflow);
+
 	void fitText(const std::string& str, Font& font, Vec2 position, Vec2 size);
 
 	const Vec2 topLeft;
@@ -57,7 +59,6 @@ protected:
 	Render(Mat4& projection, float horizontalRadius);
 
 	void character(char chr, Font& font, Vec2 position, Vec2 size);
-	Vec2 text(const char* str, Font& font, Vec2 position, Vec2 size, TextMode mode = TextMode::Overflow);
 
 	Mat4& projection;
 

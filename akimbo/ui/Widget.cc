@@ -41,8 +41,6 @@ void Widget::adjustPosition(Vec2 parentRadius)
 	position = Vec2(edges.left, edges.top);
 	size = Vec2(edges.right, edges.bottom) - position;
 
-	position.y = -position.y;
-
 	//	Do resizing if necessary
 	//onResize();
 }
@@ -53,6 +51,8 @@ void Widget::setConstraints(const Constraint& left, const Constraint& top, const
 
 	//	If this isn't the root container, do resize because the size probably changed
 	if(parent) resize(parent->frame.getRealSize());
+
+	//	TODO tell parent to adjust other widgets that may rely on this widget's constraints
 
 	//	Remember to render the new position
 	render();
@@ -129,7 +129,7 @@ Widget* Widget::isInside(Vec2& point, Vec2& where)
 		 *	let's normalize it so that we can use Frame::pointAt() to
 		 *	figure out where the point is inside this widget's frame */
 		point.x = (point.x / (size.x)) * 2.0f - 1.0f;
-		point.y = (point.y / size.y) * 2.0f + 1.0f;
+		point.y = (point.y / size.y) * 2.0f - 1.0f;
 	}
 
 	//	If the position is out of bounds, it's not inside this widget

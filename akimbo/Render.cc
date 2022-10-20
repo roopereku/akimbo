@@ -10,8 +10,8 @@
 namespace Akimbo {
 
 Render::Render(Mat4& projection, float horizontalRadius)
-	:	topLeft(-horizontalRadius, 1.0f), topRight(+horizontalRadius, 1.0f),
-		bottomLeft(-horizontalRadius, -1.0f), bottomRight(+horizontalRadius, -1.0f),
+	:	topLeft(-horizontalRadius, -1.0f), topRight(+horizontalRadius, -1.0f),
+		bottomLeft(-horizontalRadius, +1.0f), bottomRight(+horizontalRadius, +1.0f),
 		center(0.0f, 0.0f), radius(horizontalRadius, 1.0f), projection(projection)
 {
 }
@@ -81,6 +81,7 @@ void Render::box(Shader& shader, Vec2 position, Vec2 size, bool filled)
 {
 	static Mesh square(Mesh::Shape::Square);
 
+	position.y *= -1;
 	size /= 2.0f;
 
 	//	Position should determine the position of top left corner
@@ -129,8 +130,28 @@ void Render::character(char chr, Font& font, Vec2 position, Vec2 size)
 
 Vec2 Render::text(const char* str, Font& font, Vec2 position, Vec2 size, TextMode mode)
 {
-	//	FIXME With the font Comic.TTF the letter 'b' is too tall
+	//	If scrolling should be done, find the first visible character
+	if(mode == TextMode::Scroll)
+	{
+		float x = 0.0f;
 
+		for(size_t i = 0; str[i] != 0; i++)
+		{
+			const Font::Character& ch = font.get(str[i]);
+			x += size.y * ch.advance;
+
+			/*	FIXME
+			 *	To implement perfect scrolling we need render partial characters.
+			 *	Now the position is just shifted backwards which is fine when rendering
+			 *	text that fills the entire framebuffer. The correct way to implement
+			 *	this is first eliminating all the unnecessary characters and then
+			 *	rendering partial versions of the first visible characters */
+			if(x > size.x)
+				position.x -= (size.y * ch.advance);
+		}
+	}
+
+	//	FIXME With the font Comic.TTF the letter 'b' is too tall
 	float maxWidth = size.y;
 	const float baseline = size.y * font.baseline;
 
@@ -173,8 +194,9 @@ Vec2 Render::text(const char* str, Font& font, Vec2 position, Vec2 size, TextMod
 		const float chHeight = size.y * ch.sizeMultiplier.y;
 		const float chWidth = maxWidth * ch.sizeMultiplier.x;
 
+		//	Align the characters with each other on the baseline
 		const float chBaseline = baseline - size.y * ch.baseline;
-		Vec2 chPosition = position - Vec2(-(advance * ch.bearing.x), size.y - chHeight - chBaseline);
+		Vec2 chPosition = position + Vec2(advance * ch.bearing.x, size.y - chHeight - chBaseline);
 
 		character(c, font, chPosition, Vec2(chWidth, chHeight));
 		position.x += advance;
@@ -190,27 +212,6 @@ Vec2 Render::text(const char* str, Font& font, Vec2 position, Vec2 size, TextMod
 
 Vec2 Render::text(const std::string& str, Font& font, Vec2 position, Vec2 size, TextMode mode)
 {
-	//	If scrolling should be done, find the first visible character
-	if(mode == TextMode::Scroll)
-	{
-		float x = 0.0f;
-
-		for(auto c : str)
-		{
-			const Font::Character& ch = font.get(c);
-			x += size.y * ch.advance;
-
-			/*	FIXME
-			 *	To implement perfect scrolling we need render partial characters.
-			 *	Now the position is just shifted backwards which is fine when rendering
-			 *	text that fills the entire framebuffer. The correct way to implement
-			 *	this is first eliminating all the unnecessary characters and then
-			 *	rendering partial versions of the first visible characters */
-			if(x > size.x)
-				position.x -= (size.y * ch.advance);
-		}
-	}
-
 	return text(str.c_str(), font, position, size, mode);
 }
 

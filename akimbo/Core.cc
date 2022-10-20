@@ -11,7 +11,7 @@ namespace Akimbo {
 Core::Core() : window("Akimbo", Vec2(0.5f, 0.5f)), ui(this, Vec2(1.0f, 1.0f))
 {
 	//	FIXME Add a font to resources and load it from there
-	setDefaultFont(loadFont("/usr/share/fonts/TTF/Comic.TTF"));
+	setDefaultFont(loadFont("/usr/share/fonts/TTF/Ariali.TTF"));
 
 	events.onKeyPress = [this](char key)
 	{

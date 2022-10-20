@@ -105,8 +105,6 @@ Vec2 Window::normalizePoint(Vec2i real)
 	real -= (size / 2);
 	Vec2 world = (Vec2(real) / (Vec2(size) / 2.0f));
 
-	//	OpenGL requires that -1 Y is at the bottom
-	world.y = -world.y;
 	return world;
 }
 
