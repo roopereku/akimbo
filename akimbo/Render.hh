@@ -4,6 +4,7 @@
 #include "TextureAtlas.hh"
 #include "Texture.hh"
 #include "Vector2.hh"
+#include "Vector3.hh"
 #include "Shader.hh"
 #include "Font.hh"
 
@@ -16,6 +17,7 @@ public:
 	~Render();
 
 	void color(float r, float g, float b, float a = 1.0f);
+	void color(Vec3 value, float a = 1.0f);
 	void color(int r, int g, int b, int a = 255) = delete;
 
 	void clear();

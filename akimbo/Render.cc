@@ -30,6 +30,11 @@ void Render::color(float r, float g, float b, float a)
 	this->a = a;
 }
 
+void Render::color(Vec3 value, float a)
+{
+	color(value.r, value.g, value.b, a);
+}
+
 void Render::clear()
 {
 	glClearColor(r, g, b, a);
