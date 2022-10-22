@@ -24,15 +24,21 @@ public:
 			ui.left(25), ui.top(25)
 		);
 
-		ui.add <Akimbo::UI::Switch> (
+		auto& s = ui.add <Akimbo::UI::Switch> (
 			ui.right(25), ui.top(),
 			ui.right(), ui.top(25)
 		);
 
-		ui.add <Overlay> (
+		auto& o = ui.add <Overlay> (
 			ui.left(), ui.top(),
 			ui.left(50), ui.bottom()
 		);
+
+		s.onSwitch = [&o](bool on)
+		{
+			DBG_LOG("overlay receives mouse events %d", on);
+			o.receiveMouseEvents = on;
+		};
 	}
 
 	void onRender(Akimbo::Render& render) override
