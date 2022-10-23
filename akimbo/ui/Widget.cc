@@ -42,7 +42,7 @@ void Widget::adjustPosition(Vec2 parentRadius)
 	size = Vec2(edges.right, edges.bottom) - position;
 
 	//	Do resizing if necessary
-	onResize(size / 2.0f);
+	onResize();
 }
 
 void Widget::setConstraints(const Constraint& left, const Constraint& top, const Constraint& right, const Constraint& bottom)
@@ -181,7 +181,7 @@ void Widget::removeBackgroundImage()
 }
 
 void Widget::onUpdate(double) {}
-void Widget::onResize(Vec2) {}
+void Widget::onResize() {}
 void Widget::onMouseClick(Vec2, int) {}
 void Widget::onKeyPress(char) {}
 void Widget::onKeyPress(Key) {}

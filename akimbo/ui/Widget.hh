@@ -42,7 +42,7 @@ public:
 	virtual void onKeyPress(Key key);
 
 	//	Function that gets called when the widget is resized
-	virtual void onResize(Vec2 widgetRadius);
+	virtual void onResize();
 
 	//	Function that gets called when constraints should be updated
 	//	NOTE Do not override or bad stuff happens
