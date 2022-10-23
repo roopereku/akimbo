@@ -47,18 +47,11 @@ public:
 
 	void fitText(const std::string& str, Font& font, Vec2 position, Vec2 size);
 
-	const Vec2 topLeft;
-	const Vec2 topRight;
-	const Vec2 bottomLeft;
-	const Vec2 bottomRight;
-	const Vec2 center;
-	const Vec2 radius;
-
 	friend class Frame;
 
 protected:
 	//	Only Frame can create a Render object
-	Render(Mat4& projection, float horizontalRadius);
+	Render(Mat4& projection);
 
 	void character(char chr, Font& font, Vec2 position, Vec2 size);
 

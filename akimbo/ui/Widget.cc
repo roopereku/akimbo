@@ -14,7 +14,7 @@ void Widget::setAsCurrentParent()
 	tempParentWidget = this;
 }
 
-Widget::Widget()
+Widget::Widget() : view(frame.getView())
 {
 	DBG(
 		static size_t ids = 0;
@@ -42,7 +42,7 @@ void Widget::adjustPosition(Vec2 parentRadius)
 	size = Vec2(edges.right, edges.bottom) - position;
 
 	//	Do resizing if necessary
-	//onResize();
+	onResize(size / 2.0f);
 }
 
 void Widget::setConstraints(const Constraint& left, const Constraint& top, const Constraint& right, const Constraint& bottom)
@@ -107,7 +107,7 @@ void Widget::onRender(Render& render)
 	render.color(bgRed, bgGreen, bgBlue, bgAlpha);
 
 	//	If a background image exists, render that. Else just fill the frame with a color
-	if(bgImage) render.texture(*bgImage, render.topLeft, render.radius * 2.f);
+	if(bgImage) render.texture(*bgImage, view.topLeft, view.radius * 2.f);
 	else render.clear();
 }
 

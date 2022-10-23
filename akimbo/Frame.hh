@@ -1,6 +1,7 @@
 #ifndef AKIMBO_FRAME_HH
 #define AKIMBO_FRAME_HH
 
+#include "View.hh"
 #include "Shader.hh"
 #include "Render.hh"
 #include "Texture.hh"
@@ -25,6 +26,8 @@ public:
 	Vec2i getRealSize() { return realSize; }
 	float getRadius() { return horizontalRadius; }
 
+	const View& getView() { return view; }
+
 	friend class Render;
 
 private:
@@ -32,6 +35,7 @@ private:
 
 	Mat4 projection;
 	Vec2i realSize;
+	View view;
 
 	unsigned fbo = 0;
 	unsigned rbo = 0;

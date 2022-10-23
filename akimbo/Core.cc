@@ -8,7 +8,7 @@
 
 namespace Akimbo {
 
-Core::Core() : window("Akimbo", Vec2(0.5f, 0.5f)), ui(this, Vec2(1.0f, 1.0f))
+Core::Core() : window("Akimbo", Vec2(0.5f, 0.5f)), ui(this, Vec2(1.0f, 1.0f)), view(frame.getView())
 {
 	//	FIXME Add a font to resources and load it from there
 	setDefaultFont(loadFont("/usr/share/fonts/TTF/Ariali.TTF"));
@@ -155,6 +155,7 @@ void Core::setDefaultFont(Font& font)
 }
 
 void Core::onRender(Render&) {}
+void Core::onResize(Vec2) {}
 void Core::onUpdate(double) {}
 void Core::onMouseClick(Vec2, int) {}
 void Core::onKeyPress(char) {}

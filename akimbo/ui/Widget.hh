@@ -39,7 +39,7 @@ public:
 	virtual void onKeyPress(Key key);
 
 	//	Function that gets called when the widget is resized
-	virtual void onResize(Vec2 resizeFactor);
+	virtual void onResize(Vec2 widgetRadius);
 
 	//	Function that gets called when constraints should be updated
 	//	NOTE Do not override or bad stuff happens
@@ -68,18 +68,7 @@ public:
 	Constraint right(int percents);
 	Constraint bottom(int percents);
 
-protected:
-	bool isRelativeConstraint(Constraint& constraint);
-	float getHorizontalRadius() { return frame.getRadius(); }
-
-	//	Spaghetti solution to notify new widgets that this is widget is their parent
-	void setAsCurrentParent();
-
-	Core* core;
-	Widget* parent = nullptr;
-
 private:
-
 	float bgRed = 0;
 	float bgGreen = 0;
 	float bgBlue = 0;
@@ -95,6 +84,19 @@ private:
 	Vec2 size;
 
 	DBG(size_t id);
+
+protected:
+	bool isRelativeConstraint(Constraint& constraint);
+	float getHorizontalRadius() { return frame.getRadius(); }
+
+	//	Spaghetti solution to notify new widgets that this is widget is their parent
+	void setAsCurrentParent();
+
+	Core* core;
+	Widget* parent = nullptr;
+
+	//	Positions and stuff inside the widget
+	const View& view;
 };
 
 }

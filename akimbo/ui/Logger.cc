@@ -16,17 +16,17 @@ Logger::Logger() : font(&core->getDefaultFont())
 
 void Logger::onRender(Render& render)
 {
-	float entryHeight = (render.radius.y * 2) / rows;
+	float entryHeight = (view.radius.y * 2) / rows;
 	render.color(1.0f, 1.0f, 1.0f);
 
-	Vec2 position = render.topLeft;
+	Vec2 position = view.topLeft;
 
 	for(size_t i = 0; i < messages.size(); i++)
 	{
 		Vec3& c = messages[i].second;
 		render.color(c.r, c.g, c.b);
 		
-		Vec2 size = render.text(messages[i].first, *font, position, Vec2(render.radius.x * 2, entryHeight), render.wrapText);
+		Vec2 size = render.text(messages[i].first, *font, position, Vec2(view.radius.x * 2, entryHeight), render.wrapText);
 		position.y += size.y;
 	}
 }

@@ -45,6 +45,9 @@ protected:
 	virtual void onKeyPress(char key);
 	virtual void onKeyPress(Key key);
 
+	//	Function that's called when the window is resized
+	virtual void onResize(Vec2 screenRadius);
+
 	//	Function that can adjust the FPS cap
 	void setFpsCap(unsigned cap);
 
@@ -59,6 +62,9 @@ protected:
 
 	//	Root UI container
 	UI::Container ui;
+
+	//	Positions and stuff inside the window
+	const View& view;
 };
 
 }

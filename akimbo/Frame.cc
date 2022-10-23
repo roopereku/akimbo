@@ -9,7 +9,7 @@
 
 namespace Akimbo {
 
-Frame::Frame()
+Frame::Frame() : view(0.0f)
 {
 	/*	800x800 is a good reference size where (-1.0, 1.0) is the
 	 *	top-left corner when the projection is applied */
@@ -78,8 +78,10 @@ void Frame::resize(Vec2i size)
 	/*	The horizontal screen radius is initially -1.0 - +1.0, but when projection
 	 *	is applied, it might no longer be -1.0 - +1.0. The vertical screen radius will
 	 *	always stay the same but the horizontal doesn't so adjust it */
-	float oldHorizontal = horizontalRadius;
 	horizontalRadius = static_cast <float> (size.x) / size.y;
+
+	//	Update the view
+	view = View(horizontalRadius);
 
 	//	Recreate the Projection View matrix with the new frame dimensions
 	projection = glm::perspective(glm::radians(90.0f), static_cast <float> (size.x) / size.y, 1.0f, 100.0f);
@@ -103,7 +105,7 @@ Render Frame::render()
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 	//glEnable(GL_DEPTH_TEST);
 
-	return Render(projection, horizontalRadius);
+	return Render(projection);
 }
 
 void Frame::draw()

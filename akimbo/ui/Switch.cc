@@ -9,19 +9,19 @@ Switch::Switch(bool on)
 	separatorProgress = 1.0f * on;
 }
 
-void Switch::onRender(Render& frame)
+void Switch::onRender(Render& render)
 {
-	float separatorPosition = frame.topLeft.x + (frame.radius.x * separatorProgress);
-	Vec2 half = frame.radius * Vec2(1, 2);
+	float separatorPosition = view.topLeft.x + (view.radius.x * separatorProgress);
+	Vec2 half = view.radius * Vec2(1, 2);
 
-	frame.color(0.0f, 0.7f, 0.0f);
-	frame.box(frame.topLeft, half, true);
+	render.color(0.0f, 0.7f, 0.0f);
+	render.box(view.topLeft, half, true);
 
-	frame.color(0.7f, 0.7f, 0.7f);
-	frame.box(Vec2(frame.center.x, frame.topLeft.y), half, true);
+	render.color(0.7f, 0.7f, 0.7f);
+	render.box(Vec2(0.0f, -1.0f), half, true);
 
-	frame.color(1.0f, 1.0f, 1.0f);
-	frame.box(Vec2(separatorPosition, frame.topLeft.y), half, true);
+	render.color(1.0f, 1.0f, 1.0f);
+	render.box(Vec2(separatorPosition, -1.0f), half, true);
 }
 
 void Switch::onMouseClick(Vec2 at, int button)

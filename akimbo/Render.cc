@@ -9,10 +9,7 @@
 
 namespace Akimbo {
 
-Render::Render(Mat4& projection, float horizontalRadius)
-	:	topLeft(-horizontalRadius, -1.0f), topRight(+horizontalRadius, -1.0f),
-		bottomLeft(-horizontalRadius, +1.0f), bottomRight(+horizontalRadius, +1.0f),
-		center(0.0f, 0.0f), radius(horizontalRadius, 1.0f), projection(projection)
+Render::Render(Mat4& projection) : projection(projection)
 {
 }
 

@@ -14,7 +14,7 @@ TextInput::TextInput() : font(&core->getDefaultFont())
 void TextInput::onRender(Render& render)
 {
 	render.color(1.0f, 1.0f, 1.0f);
-	render.text(text, *font, render.topLeft, render.radius * 2.0f, Akimbo::Render::TextMode::Scroll);
+	render.text(text, *font, view.topLeft, view.radius * 2.0f, Akimbo::Render::TextMode::Scroll);
 }
 
 void TextInput::onKeyPress(char key)
