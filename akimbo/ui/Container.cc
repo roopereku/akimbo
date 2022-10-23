@@ -22,12 +22,13 @@ Widget* Container::isInside(Vec2& point, Vec2& where)
 	if(!Widget::isInside(point, where))
 		return nullptr;
 
-	for(auto& child : children)
+	//	Loop in reverse so that we check the most recent children first
+	for(auto c = children.rbegin(); c != children.rend(); c++)
 	{
 		Vec2 normalizedParent = point;
 
 		//	Is the point inside this child
-		Widget* result = child->isInside(normalizedParent, where);
+		Widget* result = c->get()->isInside(normalizedParent, where);
 		if(result) return result;
 	}
 

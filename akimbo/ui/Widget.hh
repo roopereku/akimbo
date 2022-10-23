@@ -31,6 +31,9 @@ public:
 	virtual void onRender(Render& render);
 	virtual void onUpdate(double delta);
 
+	//	Should this widget receive mouse events
+	bool receiveMouseEvents = true;
+
 	//	Function that gets called when the user clicks this widget
 	virtual void onMouseClick(Vec2, int button);
 

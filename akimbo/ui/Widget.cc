@@ -113,6 +113,13 @@ void Widget::onRender(Render& render)
 
 Widget* Widget::isInside(Vec2& point, Vec2& where)
 {
+	/*	FIXME
+	 *	Technically isInside is a general purpose function which
+	 *	just determines which widget some point is in. There
+	 *	should be a separate function which is specifically made for mouse positions */
+	if(!receiveMouseEvents)
+		return nullptr;
+
 	if(parent)
 	{
 		/*	Because point will be a normalized point that corresponds to
