@@ -24,12 +24,15 @@ public:
 		return tab <Akimbo::UI::Container> (name);
 	}
 
+	void setTitleTransparency(float alpha);
+
 	void onRender(Render& render) override;
 	Widget* isInside(Vec2& point, Vec2& where) override;
 
 private:
 	void create(Widget* widget, const std::string& name);
 
+	float titleTransparency = 0.7f;
 	std::vector<std::pair<Button*, Widget*>> tabs;
 	Widget* selected = nullptr;
 	

@@ -19,7 +19,7 @@ void TabbedContainer::create(Widget* widget, const std::string& name)
 	{
 		//	Is this tab the same as what was previously selected
 		if(tab.second == selected)
-			tab.first->setBackgroundColor(0.0f, 0.0f, 0.0f, 0.6f);
+			tab.first->setBackgroundColor(0.0f, 0.0f, 0.0f, titleTransparency);
 
 		tab.first->setConstraints(left(x), top(), left(x + percentage), top(0.1f));
 		x += percentage;
@@ -33,7 +33,7 @@ void TabbedContainer::create(Widget* widget, const std::string& name)
 
 	selected->render();
 
-	btn->setBackgroundColor(0.0f, 0.0f, 0.0f, 0.7f);
+	btn->setBackgroundColor(0.0f, 0.0f, 0.0f, titleTransparency + 0.1f);
 	btn->setText(name);
 
 	// when the button is clicked the corresponding tab is visible
@@ -43,17 +43,11 @@ void TabbedContainer::create(Widget* widget, const std::string& name)
 		{
 			//	Make the button for the previously selected tab brighter
 			if(tab.second == selected)
-			{
-				tab.first->setBackgroundColor(0.0f, 0.0f, 0.0f, 0.6f);
-				tab.first->render();
-			}
+				tab.first->setBackgroundColor(0.0f, 0.0f, 0.0f, titleTransparency);
 
 			//	Make the button for the newly selected tab darker
 			if(tab.second == widget)
-			{
-				tab.first->setBackgroundColor(0.0f, 0.0f, 0.0f, 0.7f);
-				tab.first->render();
-			}
+				tab.first->setBackgroundColor(0.0f, 0.0f, 0.0f, titleTransparency + 0.1f);
 		}
 
 		selected = widget;
@@ -68,6 +62,17 @@ void TabbedContainer::onRender(Render& render)
 
 	for(auto& tab : tabs)
 		tab.first->draw(render);
+}
+
+void TabbedContainer::setTitleTransparency(float alpha)
+{
+	titleTransparency = alpha;
+
+	for(auto& tab : tabs)
+	{
+		float a = titleTransparency + (tab.second == selected) * 0.1f;
+		tab.first->setBackgroundColor(0.0f, 0.0f, 0.0f, a);
+	}
 }
 
 Widget* TabbedContainer::isInside(Vec2& point, Vec2& where)

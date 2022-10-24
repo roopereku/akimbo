@@ -5,29 +5,35 @@
 #include "akimbo/ui/Switch.hh"
 #include "akimbo/ui/Widget.hh"
 
-class Overlay : public Akimbo::UI::Widget
-{
-public:
-	void onMouseClick(Vec2, int) override
-	{
-		DBG_LOG("overlay clicked");
-	}
-};
-
 class Test : public Akimbo::Core
 {
 public:
 	Test() : texture("resources/cardatlas.jpg", 13,5)
 	{
+		auto& t = ui.add <Akimbo::UI::TabbedContainer> (
+			ui.left(), ui.top(),
+			ui.left(75), ui.bottom()
+		);
+
+		t.tab("1");
+		t.tab("2");
+
+		auto& s = ui.add <Akimbo::UI::Switch> (
+			t.right(), t.top(),
+			ui.right(), t.bottom()
+		);
+
+		s.onSwitch = [&t](bool on)
+		{
+			if(on) t.setTitleTransparency(0.3f);
+			else t.setTitleTransparency(0.6f);
+		};
 	}
 
 	void onRender(Akimbo::Render& render) override
 	{
 		render.color(0.5f, 0.5f, 0.5f);
 		render.clear();
-
-		render.color(0.5f, 0.0f, 0.0f);
-		render.box(view.topLeft, view.radius, true);
 	}
 
 	void onMouseClick(Vec2 at, int) override

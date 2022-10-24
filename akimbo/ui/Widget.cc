@@ -163,6 +163,8 @@ void Widget::setBackgroundColor(float r, float g, float b, float a)
 	bgGreen = g;
 	bgBlue = b;
 	bgAlpha = a;
+
+	render();
 }
 
 void Widget::setBackgroundImage(Texture& texture)
