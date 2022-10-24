@@ -41,6 +41,9 @@ public:
 		return static_cast <T&> (*children.back());
 	}
 
+	Widget& operator[](size_t index) { return *children[index]; }
+	size_t count() { return children.size(); }
+
 private:
 	void prepareChild(Container& child, Constraint& l, Constraint& t, Constraint& r, Constraint& b);
 	std::vector <std::shared_ptr <Widget>> children;
