@@ -7,6 +7,21 @@
 
 namespace Akimbo {
 
+enum class TextMode
+{
+	Overflow,
+	Scroll,
+	Wrap,
+	Cut
+};
+
+enum class TextAlign
+{
+	Left,
+	Right,
+	Center,
+};
+
 class Font
 {
 public:
