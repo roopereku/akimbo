@@ -41,6 +41,9 @@ public:
 		return static_cast <T&> (*children.back());
 	}
 
+	template <typename T>
+	T& get(size_t index) { return static_cast <T&> (*children[index]); }
+
 	Widget& operator[](size_t index) { return *children[index]; }
 	size_t count() { return children.size(); }
 
