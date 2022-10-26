@@ -30,22 +30,21 @@ public:
 	void line(Vec2 from, Vec2 to);
 	void dot(Vec2 position);
 
-	enum class TextMode
-	{
-		Overflow,
-		Scroll,
-		Wrap,
-		Cut
-	};
-
-	//	Helpers so that the user doesn't need to type Akimbo::Render::TextMode::Wrap every time
+		//	Helpers so that the user doesn't need to type Akimbo::Render::TextMode::Wrap every time
 	const TextMode cutText = TextMode::Cut;
 	const TextMode wrapText = TextMode::Wrap;
+
+	const TextAlign alignCenter = TextAlign::Center;
+	const TextAlign alignRight = TextAlign::Right;
 
 	Vec2 text(const std::string& str, Font& font, Vec2 position, Vec2 size, TextMode mode = TextMode::Overflow);
 	Vec2 text(const char* str, Font& font, Vec2 position, Vec2 size, TextMode mode = TextMode::Overflow);
 
-	void fitText(const std::string& str, Font& font, Vec2 position, Vec2 size);
+	void fitText(const std::string& str, Font& font, Vec2 position, Vec2 size, TextAlign align = TextAlign::Left, bool center = false);
+	void fitText(const char* str, Font& font, Vec2 position, Vec2 size, TextAlign align = TextAlign::Left, bool center = false);
+
+	void centerText(const std::string& str, Font& font, Vec2 position, Vec2 size, TextAlign align = TextAlign::Left);
+	void centerText(const char* str, Font& font, Vec2 position, Vec2 size, TextAlign align = TextAlign::Left);
 
 	friend class Frame;
 
@@ -54,6 +53,7 @@ protected:
 	Render(Mat4& projection);
 
 	void character(char chr, Font& font, Vec2 position, Vec2 size);
+	Vec2 text(const char* str, size_t count, Font& font, Vec2 position, Vec2 size, TextMode mode = TextMode::Overflow);
 
 	Mat4& projection;
 

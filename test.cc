@@ -10,37 +10,24 @@ class Test : public Akimbo::Core
 public:
 	Test() : texture("resources/cardatlas.jpg", 13,5)
 	{
-		auto& t = ui.add <Akimbo::UI::TabbedContainer> (
-			ui.left(), ui.top(),
-			ui.left(75), ui.bottom()
+		auto& l = ui.add <Akimbo::UI::Label> (
+			ui.left(25), ui.top(25),
+			ui.right(25), ui.bottom(25)
 		);
 
-		t.tab("1");
-		t.tab("2");
-
-		auto& s = ui.add <Akimbo::UI::Switch> (
-			t.right(), t.top(),
-			ui.right(), t.bottom()
-		);
-
-		s.onSwitch = [&t](bool on)
-		{
-			if(on) t.setTitleTransparency(0.3f);
-			else t.setTitleTransparency(0.6f);
-		};
+		l.setText("moi\n123\n12345\n22");
+		l.setAlign(Akimbo::TextAlign::Right);
 	}
 
 	void onRender(Akimbo::Render& render) override
 	{
 		render.color(0.5f, 0.5f, 0.5f);
 		render.clear();
+
 	}
 
 	void onMouseClick(Vec2 at, int) override
 	{
-		if(at >= view.topLeft && at <= view.topLeft + view.radius)
-		{
-		}
 	}
 
 private:

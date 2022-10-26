@@ -135,14 +135,14 @@ void Render::character(char chr, Font& font, Vec2 position, Vec2 size)
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-Vec2 Render::text(const char* str, Font& font, Vec2 position, Vec2 size, TextMode mode)
+Vec2 Render::text(const char* str, size_t count, Font& font, Vec2 position, Vec2 size, TextMode mode)
 {
 	//	If scrolling should be done, find the first visible character
 	if(mode == TextMode::Scroll)
 	{
 		float x = 0.0f;
 
-		for(size_t i = 0; str[i] != 0; i++)
+		for(size_t i = 0; i < count; i++)
 		{
 			const Font::Character& ch = font.get(str[i]);
 			x += size.y * ch.advance;
@@ -152,7 +152,9 @@ Vec2 Render::text(const char* str, Font& font, Vec2 position, Vec2 size, TextMod
 			 *	Now the position is just shifted backwards which is fine when rendering
 			 *	text that fills the entire framebuffer. The correct way to implement
 			 *	this is first eliminating all the unnecessary characters and then
-			 *	rendering partial versions of the first visible characters */
+			 *	rendering partial versions of the first visible characters
+			 *
+			 *	Maybe glScissor is a good fix for this	*/
 			if(x > size.x)
 				position.x -= (size.y * ch.advance);
 		}
@@ -165,7 +167,7 @@ Vec2 Render::text(const char* str, Font& font, Vec2 position, Vec2 size, TextMod
 	Vec2 origin = position;
 	float maxX = position.x;
 
-	for(size_t i = 0; str[i] != 0; i++)
+	for(size_t i = 0; i < count; i++)
 	{
 		const char c = str[i];
 
@@ -173,7 +175,7 @@ Vec2 Render::text(const char* str, Font& font, Vec2 position, Vec2 size, TextMod
 		if(c == '\n' || c == '\r')
 		{
 			maxX = std::max(position.x, maxX);
-			position.y -= size.y;
+			position.y += size.y;
 			position.x = origin.x;
 
 			continue;
@@ -193,7 +195,7 @@ Vec2 Render::text(const char* str, Font& font, Vec2 position, Vec2 size, TextMod
 			else if(mode == TextMode::Wrap)
 			{
 				maxX = std::max(position.x, maxX);
-				position.y -= size.y;
+				position.y += size.y;
 				position.x = origin.x;
 			}
 		}
@@ -210,48 +212,153 @@ Vec2 Render::text(const char* str, Font& font, Vec2 position, Vec2 size, TextMod
 	}
 
 	maxX = std::max(position.x, maxX);
-	position.y -= size.y;
+	position.y += size.y;
+
+	//DBG_LOG("text maxX %.2f", maxX - origin.x);
 
 	//	How much space the text actually took
 	Vec2 end = Vec2(maxX, position.y);
 	return end - origin;
 }
 
-Vec2 Render::text(const std::string& str, Font& font, Vec2 position, Vec2 size, TextMode mode)
+Vec2 Render::text(const char* str, Font& font, Vec2 position, Vec2 size, TextMode mode)
 {
-	return text(str.c_str(), font, position, size, mode);
+	size_t l = 0;
+	while(str[l] != 0) l++;
+	return text(str, l, font, position, size, mode);
 }
 
-void Render::fitText(const std::string& str, Font& font, Vec2 position, Vec2 size)
+Vec2 Render::text(const std::string& str, Font& font, Vec2 position, Vec2 size, TextMode mode)
+{
+	return text(str.c_str(), str.size(), font, position, size, mode);
+}
+
+void Render::centerText(const char* str, Font& font, Vec2 position, Vec2 size, TextAlign align)
+{
+	fitText(str, font, position, size, align, true);
+}
+
+void Render::centerText(const std::string& str, Font& font, Vec2 position, Vec2 size, TextAlign align)
+{
+	fitText(str.c_str(), font, position, size, align, true);
+}
+
+void Render::fitText(const std::string& str, Font& font, Vec2 position, Vec2 size, TextAlign align, bool center)
+{
+	fitText(str.c_str(), font, position, size, align, center);
+}
+
+void Render::fitText(const char* str, Font& font, Vec2 position, Vec2 size, TextAlign align, bool center)
 {
 	Vec2 overflow(0.0f, size.y);
 	float maxX = overflow.x;
+	unsigned rows = 1;
 
-	//	Is the string larger than the given size
-	for(auto c : str)
+	//	Find out how much spaces the text takes
+	for(size_t i = 0; str[i] != 0; i++)
 	{
-		if(c == '\n' || c == '\r')
+		if(str[i] == '\n' || str[i] == '\r')
 		{
-			overflow.y += size.y;
 			maxX = std::max(overflow.x, maxX);
-			overflow.x = position.x;
+			overflow.y += size.y;
+			overflow.x = 0.0f;
+			rows++;
+
 			continue;
 		}
 
-		const Font::Character& ch = font.get(c);
+		const Font::Character& ch = font.get(str[i]);
 		overflow.x += size.y * ch.advance;
 	}
 
+	overflow.x = std::max(overflow.x, maxX);
+	float originalY = size.y;
+
 	//	What is the relation between the overflow and the given size
-	maxX = std::max(overflow.x, maxX);
-	Vec2 relation = Vec2(maxX, overflow.y) / size;
+	Vec2 relation = overflow / size;
+	Vec2 adjustment(0.0f, 0.0f);
+
+	//	Adjust the size so that the text always fits horizontally
+	size.y /= relation.y;
+	float x = overflow.x / relation.y;
+
+	/*	Calculate a value which tells if the text needs to be scaled
+	 *	down when it can't fit horizontally on the screen */
 	relation.x = relation.x / relation.y;
 
-	//	If necessary, adjust the size so that the string always fits
-	if(relation.y > 1.0f) size.y /= relation.y;
-	if(relation.x > 1.0f) size.y /= relation.x;
+	//	If the text can't fit horizontally on the screen, do adjustments
+	if(relation.x > 1.0f)
+	{
+		size.y /= relation.x;
+		x = x / relation.x;
+	}
 
-	text(str, font, position, size);
+	//	How much space will the longest line text actually take
+	Vec2 maxSize = Vec2(x, size.y);
+
+	//	Should the text be centered
+	if(center)
+	{
+		maxX = (1.0f - relation.x) / 2.0f;
+
+		//	If the text should be centered horizontally, set the adjustment
+		if(maxX >= 0.0f)
+			adjustment.x = size.x * maxX;
+
+		//	If the text should be centered vertically, set the adjustment
+		if(relation.x > 1.0f)
+			adjustment.y = originalY / 2 - (maxSize.y * rows) / 2;
+	}
+
+	//	If text isn't centered and is aligned on the left, it can just be rendered without extra processing
+	else if(align == TextAlign::Left)
+	{
+		text(str, font, position, size);
+		return;
+	}
+
+	//	The text alignment can be achieved by multiplying a shift with one of these values
+	float shiftMultiplier;
+	switch(align)
+	{
+		case TextAlign::Center: shiftMultiplier = 0.5f; break;
+		case TextAlign::Right: shiftMultiplier = 1.0f; break;
+		case TextAlign::Left: shiftMultiplier = 0.0f; break;
+	}
+
+	overflow.x = 0.0f;
+	const char* start = str;
+
+	/*	Now that we know where the text offset is and how much space
+	 *	the longest line takes, we need to recalculate how much
+	 *	space each line takes horizontally relative to the new height. */
+	for(size_t i = 0; true; i++)
+	{
+		/*	If there's a line break or the string ends, calculate how much
+		 *	the text should be shifted forwards and render a portion
+		 *	of the text that appears before the break */
+		if(str[i] == '\n' || str[i] == 0 || str[i] == '\r')
+		{
+			//	How many character are in this portion of the text
+			size_t count = &str[i] - start;
+
+			//	Calculate the size and shift of the portion
+			Vec2 portionSize(overflow.x, maxSize.y);
+			Vec2 shift((maxSize.x - portionSize.x) * shiftMultiplier, 0.0f);
+
+			text(start, count, font, position + adjustment + shift, portionSize);
+
+			position.y += size.y;
+			start = &str[i + 1];
+			overflow.x = 0.0f;
+
+			if(str[i] == 0) break;
+			continue;
+		}
+
+		const Font::Character& ch = font.get(str[i]);
+		overflow.x += maxSize.y * ch.advance;
+	}
 }
 
 }

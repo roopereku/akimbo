@@ -16,7 +16,11 @@ public:
 	void onRender(Render& render);
 	void setText(const std::string& str);
 
+	void setAlign(TextAlign align);
+
 private:
+	TextAlign align = TextAlign::Left;
+
 	std::string text;
 	Font* font;
 };
