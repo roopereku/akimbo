@@ -59,6 +59,9 @@ public:
 	//	Is a point inside this widget
 	virtual Widget* isInside(Vec2& point, Vec2& where);
 
+	//	Returns the real position (in target's coordinate space) of the given point inside this widget
+	virtual Vec2 getRealPosition(Vec2 point, Widget& target);
+
 	//	Helpers to get constraints relative to this widget with units
 	Constraint top(float units = 0.0f);
 	Constraint left(float units = 0.0f);

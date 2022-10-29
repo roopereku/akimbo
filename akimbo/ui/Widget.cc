@@ -149,6 +149,45 @@ Widget* Widget::isInside(Vec2& point, Vec2& where)
 	return this;
 }
 
+Vec2 Widget::getRealPosition(Vec2 point, Widget& target)
+{
+	Widget* root = this;
+	std::vector <Widget*> chain;
+
+	//	Find the container coming after the root
+	while(root != &target)
+	{
+		chain.push_back(root);
+		root = root->parent;
+	}
+
+	//	What's the initial offset and parent size?
+	Vec2 offset = chain.back()->parent->view.topLeft;
+	Vec2 parentSize = chain.back()->parent->view.radius * 2.0f;
+
+	//	Loop through the widgets in reverse order
+	for(int i = chain.size() - 1; i >= 0; i--)
+	{
+		root = chain[i]->parent;
+
+		//	How far this widget is from it's parent's origin
+		Vec2 distance = root->view.radius + chain[i]->position;
+		Vec2 percentage = distance / (root->view.radius * 2.0f);
+
+		//	Move the offset to this widget's origin
+		offset += parentSize * percentage;
+
+		//	Calculate the relation between this widget's size and it's parent's size
+		Vec2 relation = Vec2(chain[i]->frame.getRealSize()) / Vec2(root->frame.getRealSize());
+		parentSize *= relation;
+	}
+
+	//	Finally move the offset to match the given point
+	Vec2 distance = chain[0]->view.radius + point;
+	Vec2 percentage = distance / (chain[0]->view.radius * 2.0f);
+	return offset + parentSize * percentage;
+}
+
 bool Widget::isRelativeConstraint(Constraint& constraint)
 {
 	return	edges.left.isRelative(constraint) ||
