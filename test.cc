@@ -25,29 +25,25 @@ public:
 class Test : public Akimbo::Core
 {
 public:
-	Test() :
-		c1(ui.add <Akimbo::UI::Container> (ui.left(10), ui.top(25), ui.right(10), ui.bottom(25))),
-		c2(c1.add <Akimbo::UI::Container> (c1.left(25), c1.top(25), c1.right(25), c1.bottom(25))),
-		o(c2.add <Overlay> (c2.left(25), c2.top(25), c2.right(25), c2.bottom(25)))
+	Test()
 	{
-		c2.setBackgroundColor(0.0f, 0.0f, 0.1f, 0.1f);
+		auto& tabs = ui.add <Akimbo::UI::TabbedContainer> (
+			ui.left(25), ui.top(25),
+			ui.right(25), ui.bottom(25)
+		);
+
+		auto& b = tabs.tab <Akimbo::UI::Button> ("button1");
+		b.onClick = [&tabs]()
+		{
+			tabs.tab <Akimbo::UI::Switch> ("abc");
+		};
 	}
 
 	void onRender(Akimbo::Render& render) override
 	{
 		render.color(0.5f, 0.5f, 0.5f);
 		render.clear();
-
-		Vec2 at = o.getRealPosition(o.point, ui);
-
-		render.color(0.5f, 0.0f, 0.0f);
-		render.box(at, Vec2(0.2f, 0.2f), true);
 	}
-
-private:
-	Akimbo::UI::Container& c1;
-	Akimbo::UI::Container& c2;
-	Overlay& o;
 };
 
 int main()

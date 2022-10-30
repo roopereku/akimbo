@@ -12,28 +12,34 @@ void TabbedContainer::create(Widget* widget, const std::string& name)
 	int tabsCount = tabs.size() + 1;
 	int percentage = ceil(100.0f / tabsCount);
 
-	// adjust constraints of existing buttons
+	float titleAlpha = titleTransparency;
 	int x = 0;
 
+	//	Adjust the constraints of previous titles so that the new one fits
 	for(auto& tab : tabs)
 	{
-		//	Is this tab the same as what was previously selected
-		if(tab.second == selected)
+		//	If we're automatically focusing the new tab, unhighlight the old selected title
+		if(autoFocusTabs && tab.second == selected)
 			tab.first->setBackgroundColor(0.0f, 0.0f, 0.0f, titleTransparency);
 
 		tab.first->setConstraints(left(x), top(), left(x + percentage), top(0.1f));
 		x += percentage;
 	}
 
-	selected = widget;
-
 	//	Create a new button and pair it with the new container
 	auto* btn = &add<Button>(left(x), top(), left(x + percentage), top(0.1f));
-	tabs.push_back(std::make_pair(btn, selected));
+	tabs.push_back(std::make_pair(btn, widget));
 
-	selected->render();
+	//	If we added the first tab or want to automatically focus new tabs, focus the tab
+	if(tabs.size() == 1 || autoFocusTabs)
+	{
+		titleAlpha += 0.1f;
 
-	btn->setBackgroundColor(0.0f, 0.0f, 0.0f, titleTransparency + 0.1f);
+		selected = widget;
+		selected->render();
+	}
+
+	btn->setBackgroundColor(0.0f, 0.0f, 0.0f, titleAlpha);
 	btn->setText(name);
 
 	// when the button is clicked the corresponding tab is visible

@@ -10,6 +10,10 @@ namespace Akimbo::UI
 class TabbedContainer : public Container
 {
 public:
+	TabbedContainer(bool autoFocusTabs = false) : autoFocusTabs(autoFocusTabs)
+	{
+	}
+
 	template <typename T, typename... Args>
 	T& tab(const std::string& name, Args&& ...args)
 	{
@@ -33,6 +37,8 @@ private:
 	void create(Widget* widget, const std::string& name);
 
 	float titleTransparency = 0.7f;
+	bool autoFocusTabs;
+
 	std::vector<std::pair<Button*, Widget*>> tabs;
 	Widget* selected = nullptr;
 	
