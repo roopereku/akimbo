@@ -1,25 +1,47 @@
-#include "akimbo/Core.hh"
-#include "akimbo/Debug.hh"
-#include "akimbo/ui/Console.hh"
-#include "akimbo/ui/TabbedContainer.hh"
-#include "akimbo/ui/Switch.hh"
-#include "akimbo/ui/Widget.hh"
+#include <akimbo/Core.hh>
+#include <akimbo/SDL/Window.hh>
+#include <akimbo/ui/SplitContainer.hh>
+#include <akimbo/ui/TabbedContainer.hh>
+#include <akimbo/ui/ScrollContainer.hh>
 
-class Overlay : public Akimbo::UI::Widget
+#include <random>
+
+class WhiteButton : public Akimbo::UI::Widget
 {
 public:
-	Overlay() : point(0.0f, 0.0f)
+	void onRender(Akimbo::Render2D& render) override
 	{
-		setBackgroundColor(0.5f, 0.5f, 0.0f, 0.5f);
+		render.color(0.8f, 0.8f, 0.8f);
+		render.clear();
+
+		render.color(0.5f, 0.5f, 0.5f);
+		render.box(Vec2(0.25f, 0.25f), Vec2(0.5f, 0.5f));
+	}
+};
+
+class TestWidget : public Akimbo::UI::Widget
+{
+public:
+	TestWidget()
+	{
+		std::random_device rd;
+		std::mt19937 gen(rd());
+		std::uniform_real_distribution <float> dist(0.0f, 1.0f);
+
+		r = dist(gen);
+		g = dist(gen);
+		b = dist(gen);
 	}
 
-	void onRender(Akimbo::Render& render) override
+	void onRender(Akimbo::Render2D& render) override
 	{
-		render.color(0.0f, 0.0f, 1.0f, 1.0f);
-		render.box(point, Vec2(0.2f, 0.2f), true);
+		render.color(r, g, b);
+		render.clear();
 	}
 
-	Vec2 point;
+	float r;
+	float g;
+	float b;
 };
 
 class Test : public Akimbo::Core
@@ -27,27 +49,26 @@ class Test : public Akimbo::Core
 public:
 	Test()
 	{
-		auto& tabs = ui.add <Akimbo::UI::TabbedContainer> (
-			ui.left(25), ui.top(25),
-			ui.right(25), ui.bottom(25)
-		);
+		auto& window = add <Akimbo::SDL::Window> ();
 
-		auto& b = tabs.tab <Akimbo::UI::Button> ("button1");
-		b.onClick = [&tabs]()
-		{
-			tabs.tab <Akimbo::UI::Switch> ("abc");
-		};
+		auto& ui = add <Akimbo::UI::HorizontallySplitContainer> ();
+		window.setContent(ui);
+
+		auto& cont1 = ui.add <Akimbo::UI::VerticallySplitContainer> ();
+		auto& cont2 = ui.add <Akimbo::UI::VerticallySplitContainer> ();
+
+		auto& w1 = cont1.add <WhiteButton> ();
+		auto& w2 = cont1.add <TestWidget> ();
+
+		auto& w3 = cont2.add <TestWidget> ();
+		auto& w4 = cont2.add <TestWidget> ();
 	}
 
-	void onRender(Akimbo::Render& render) override
-	{
-		render.color(0.5f, 0.5f, 0.5f);
-		render.clear();
-	}
+private:
 };
 
 int main()
 {
 	Test t;
-	t.start();
+	t.run();
 }
