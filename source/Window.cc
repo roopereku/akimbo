@@ -7,6 +7,8 @@ void Window::setContent(WindowContent2D& content)
 {
 	contentType = ContentType::Content2D;
 	this->content = &content;
+
+	onContentSet();
 }
 
 void Window::renderContent(Renderer& renderer)
@@ -40,11 +42,7 @@ void Window::contentMouseClick(Vec2i at)
 void Window::contentResize(Vec2i size)
 {
 	if(content)
-	{
-		content->aspectRatio = static_cast <float> (size.x) / size.y;
-		content->size = size;
-		content->onResize();
-	}
+		content->onResize(size);
 }
 
 }

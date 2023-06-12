@@ -19,6 +19,8 @@ public:
 	virtual Renderer& getRenderer() = 0;
 
 protected:
+	virtual void onContentSet() = 0;
+
 	void renderContent(Renderer& renderer);	
 
 	void contentMouseDrag(Vec2i at); 

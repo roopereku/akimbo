@@ -12,22 +12,23 @@ namespace UI
 class ScrollContainer : public Container
 {
 public:
-	ScrollContainer(size_t maxVisible)
-		: maxVisible(maxVisible)
+	ScrollContainer()
 	{
 	}
 
+	void setMaximumSize(Widget& widget, int pixels);
+
 private:
 	void onRender(Render2D& render) override;
-	void prepare(Child& child) override;
-	bool onMouseDrag(Vec2 at) override;
-	void onMouseClick(Vec2 at) override;
+	void prepare(Widget& widget) override;
 
-	void adjustChildren();
+	bool onMouseDrag(Vec2i at) override;
+	bool onMouseClick(Vec2i at) override;
 
-	float scroll = 0;
-	size_t maxVisible;
-	Vec2 previousMouse;
+	void adjustChildren() override;
+
+	int scroll = 0;
+	Vec2i previousMouse;
 };
 
 }

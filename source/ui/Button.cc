@@ -6,10 +6,15 @@ namespace Akimbo
 namespace UI
 {
 
-void Button::onMouseClick(Vec2)
+bool Button::onMouseClick(Vec2i)
 {
 	if(onClick)
+	{
 		onClick(*this);
+		return true;
+	}
+
+	return false;
 }
 
 }

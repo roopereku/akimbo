@@ -4,8 +4,8 @@
 #include <akimbo/CoreEvent.hh>
 #include <akimbo/Module.hh>
 
-#include <vector>
 #include <memory>
+#include <list>
 
 namespace Akimbo
 {
@@ -28,7 +28,7 @@ public:
 
 private:
 	bool running = true;
-	std::vector <std::shared_ptr <Module>> modules;
+	std::list <std::shared_ptr <Module>> modules;
 };
 
 }

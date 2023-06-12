@@ -10,16 +10,10 @@ namespace Akimbo
 class WindowContentBase
 {
 public:
-	virtual void onMouseClick(Vec2i at) {};
-	virtual void onMouseDrag(Vec2i at) {};
+	virtual bool onMouseClick(Vec2i at) { return false; };
+	virtual bool onMouseDrag(Vec2i at) { return false; };
 
-	virtual void onResize() {};
-
-	friend class Window;
-
-protected:
-	Vec2i size;
-	float aspectRatio;
+	virtual void onResize(Vec2i size) {};
 };
 
 class WindowContent2D : public WindowContentBase, public RenderTarget2D

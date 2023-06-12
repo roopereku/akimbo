@@ -22,13 +22,13 @@ public:
 	{
 	}
 
-	void setMaximumSize(Widget& widget, float size);
+	void setMaximumSize(Widget& widget, int pixels);
 
 protected:
-	virtual void prepare(Child& child) override;
+	virtual void prepare(Widget& widget) override;
 
 private:
-	void adjustChildren();
+	void adjustChildren() override;
 	void onRender(Render2D& render) override;
 
 	Split direction;

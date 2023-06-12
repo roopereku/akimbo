@@ -29,8 +29,10 @@ public:
 	}
 
 protected:
-	void onMouseClick(Vec2 at) override;
-	bool onMouseDrag(Vec2 at) override;
+	virtual bool onMouseClick(Vec2i at) override;
+	virtual bool onMouseDrag(Vec2i at) override;
+
+	void onResize(Vec2i size) override;
 
 	struct Child
 	{
@@ -38,20 +40,23 @@ protected:
 		{
 		}
 
-		bool isPointInside(Vec2 at);
+		bool isPointInside(Vec2i at);
 
-		Vec2 position;
-		Vec2 size;
+		Vec2i position;
+		Vec2i size;
 
 		Widget& widget;
 
-		float maxSize;
+		int maxSize;
 	};
 
-	virtual void prepare(Child& child)=0;
+	virtual void prepare(Widget& widget) = 0;
+	virtual void adjustChildren() = 0;
+
 	Widget& addChild(Widget& widget);
 
 	std::vector <Child> children;
+	Vec2i size;
 };
 
 }

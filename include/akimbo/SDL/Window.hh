@@ -24,6 +24,8 @@ public:
 	}
 
 private:
+	void onContentSet() override;
+
 	SDL_Window* createWindow();
 	void onUpdate() override;
 

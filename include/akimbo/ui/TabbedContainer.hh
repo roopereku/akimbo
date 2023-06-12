@@ -5,37 +5,31 @@
 #include <akimbo/ui/SplitContainer.hh>
 #include <akimbo/ui/ScrollContainer.hh>
 
+#include <unordered_map>
+
 namespace Akimbo
 {
 
 namespace UI
 {
 
-class ActiveTab : public Widget
-{
-public:
-	void set(Widget& widget);
-	void onRender(Render2D& render) override;
-
-private:
-	void onMouseClick(Vec2 at) override;
-	bool onMouseDrag(Vec2 at) override;
-
-	Widget* activeWidget = nullptr;
-};
-
 class TabButton;
+class ActiveTab;
+
 class TabbedContainer : public VerticallySplitContainer
 {
 public:
 	TabbedContainer();
 
 private:
+	void prepare(Widget& widget) override;
+	void onResize(Vec2i size) override;
+
 	ScrollContainer& selector;
 	ActiveTab& active;
 
 	TabButton* previousHeader = nullptr;
-	void prepare(Child& child) override;
+	std::unordered_map <TabButton*, Widget*> tabs;
 };
 
 }

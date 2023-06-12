@@ -26,6 +26,14 @@ SDL_Window* Window::createWindow()
 	return w;
 }
 
+void Window::onContentSet()
+{
+	Vec2i windowSize;
+	SDL_GetWindowSize(window, &windowSize.x, &windowSize.y);
+
+	contentResize(windowSize);
+}
+
 void Window::onUpdate()
 {
 	SDL_Event e;

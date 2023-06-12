@@ -1,6 +1,6 @@
 #include <akimbo/ui/SplitContainer.hh>
 
-#include <SDL2/SDL_log.h>
+#include <algorithm>
 
 namespace Akimbo
 {
@@ -10,18 +10,20 @@ namespace UI
 
 void SplitContainer::onRender(Render2D& render)
 {
+	render.color(0.1f, 0.1f, 0.1f);
+	render.clear();
+
 	for(auto it : children)
 		render.target(it.position, it.size, it.widget);
 }
 
-
-void SplitContainer::setMaximumSize(Widget& widget, float size)
+void SplitContainer::setMaximumSize(Widget& widget, int pixels)
 {
 	for(auto& it : children)
 	{
 		if(&it.widget == &widget)
 		{
-			it.maxSize = size;
+			it.maxSize = pixels;
 			adjustChildren();
 			break;
 		}
@@ -30,32 +32,31 @@ void SplitContainer::setMaximumSize(Widget& widget, float size)
 
 void SplitContainer::adjustChildren()
 {
-	Vec2 offset(0, 0);
-	Vec2 part(1, 1);
+	Vec2i offset(0, 0);
+	Vec2i part = size;
 
-	float& target = (direction == Split::Horizontally ? part.x : part.y);
+	int& target = (direction == Split::Horizontally ? part.x : part.y);
 	size_t nonLimited = children.size();
 
 	for(auto& it : children)
-		nonLimited -= it.maxSize >= 0;
+		nonLimited -= it.maxSize > 0;
 
-	target = 1.0f / nonLimited;
+	nonLimited = std::max(nonLimited, 1UL);
+	target /= nonLimited;
 
 	for(auto& it : children)
 	{
-		if(it.maxSize >= 0)
+		if(it.maxSize > 0)
 			target -= (it.maxSize / nonLimited);
 	}
 
 	for(auto& it : children)
 	{
-		float shift = target;
+		it.position = offset;
 
-		if(it.maxSize >= 0 && target > it.maxSize)
+		if(it.maxSize > 0 && target > it.maxSize)
 		{
-			shift = it.maxSize;
-
-			float oldTarget = target;
+			int oldTarget = target;
 			target = it.maxSize;
 			it.size = part;
 			target = oldTarget;
@@ -63,19 +64,20 @@ void SplitContainer::adjustChildren()
 
 		else it.size = part;
 
-		it.position = offset;
-
 		if(direction == Split::Horizontally)
-			offset.x += shift;
+			offset.x += it.size.x;
 
 		else if(direction == Split::Vertically)
-			offset.y += shift;
+			offset.y += it.size.y;
+
+		it.widget.onResize(it.size);
 	}
 }
 
-void SplitContainer::prepare(Child& child)
+void SplitContainer::prepare(Widget& widget)
 {
-	child.maxSize = -1;
+	children.emplace_back(widget);
+	children.back().maxSize = 0;
 	adjustChildren();
 }
 

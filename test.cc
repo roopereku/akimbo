@@ -3,10 +3,12 @@
 #include <akimbo/ui/SplitContainer.hh>
 #include <akimbo/ui/TabbedContainer.hh>
 #include <akimbo/ui/ScrollContainer.hh>
+#include <akimbo/ui/Button.hh>
+#include <SDL2/SDL_log.h>
 
 #include <random>
 
-class WhiteButton : public Akimbo::UI::Widget
+class WhiteButton : public Akimbo::UI::Button
 {
 public:
 	void onRender(Akimbo::Render2D& render) override
@@ -37,6 +39,9 @@ public:
 	{
 		render.color(r, g, b);
 		render.clear();
+
+		render.color(1, 1, 1);
+		render.box(Vec2i(10, 10), Vec2i(100, 100));
 	}
 
 	float r;
@@ -50,18 +55,33 @@ public:
 	Test()
 	{
 		auto& window = add <Akimbo::SDL::Window> ();
-
 		auto& ui = add <Akimbo::UI::HorizontallySplitContainer> ();
 		window.setContent(ui);
 
-		auto& cont1 = ui.add <Akimbo::UI::VerticallySplitContainer> ();
-		auto& cont2 = ui.add <Akimbo::UI::VerticallySplitContainer> ();
+		auto& left = ui.add <Akimbo::UI::VerticallySplitContainer> ();
+		auto& leftTabs = left.add <Akimbo::UI::TabbedContainer> ();
 
-		auto& w1 = cont1.add <WhiteButton> ();
-		auto& w2 = cont1.add <TestWidget> ();
+		leftTabs.add <TestWidget> ();
 
-		auto& w3 = cont2.add <TestWidget> ();
-		auto& w4 = cont2.add <TestWidget> ();
+		auto& scrollContainer1 = leftTabs.add <Akimbo::UI::ScrollContainer> ();
+		auto& bcd1 = scrollContainer1.add <TestWidget> ();
+		auto& bcd2 = scrollContainer1.add <WhiteButton> ();
+		auto& bcd3 = scrollContainer1.add <TestWidget> ();
+
+		scrollContainer1.setMaximumSize(bcd1, 150);
+		scrollContainer1.setMaximumSize(bcd2, 340);
+
+		bcd2.onClick = [&leftTabs](Akimbo::UI::Button& self)
+		{
+			SDL_Log("click");
+			leftTabs.add <TestWidget> ();
+		};
+
+		leftTabs.add <TestWidget> ();
+
+		auto& tabContainer1 = leftTabs.add <Akimbo::UI::HorizontallySplitContainer> ();
+		auto& abc1 = tabContainer1.add <TestWidget> ();
+		auto& abc2 = tabContainer1.add <TestWidget> ();
 	}
 
 private:

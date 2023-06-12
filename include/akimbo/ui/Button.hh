@@ -14,7 +14,7 @@ namespace UI
 class Button : public Widget
 {
 public:
-	void onMouseClick(Vec2);
+	bool onMouseClick(Vec2i) override;
 	std::function <void(Button& button)> onClick;
 };
 

@@ -1,5 +1,7 @@
 #include <akimbo/ui/Container.hh>
 
+#include <SDL2/SDL_log.h>
+
 namespace Akimbo
 {
 
@@ -8,46 +10,42 @@ namespace UI
 
 Widget& Container::addChild(Widget& widget)
 {
-	children.emplace_back(widget);
-	prepare(children.back());
-
+	prepare(widget);
 	return widget;
 }
 
-bool Container::Child::isPointInside(Vec2 at)
+bool Container::Child::isPointInside(Vec2i at)
 {
 	return
 		at.x >= position.x && at.x <= position.x + size.x &&
 		at.y >= position.y && at.y <= position.y + size.y;
 }
 
-void Container::onMouseClick(Vec2 at)
+void Container::onResize(Vec2i size)
 {
-	for(auto it : children)
-	{
-		if(it.isPointInside(at))
-		{
-			at -= it.position;
-			at /= it.size;
+	this->size = size;
 
-			it.widget.onMouseClick(at);
-			break;
-		}
-	}
+	if(!children.empty())
+		adjustChildren();
 }
 
-bool Container::onMouseDrag(Vec2 at)
+bool Container::onMouseClick(Vec2i at)
 {
 	for(auto it : children)
 	{
 		if(it.isPointInside(at))
-		{
-			at -= it.position;
-			at /= it.size;
+			return it.widget.onMouseClick(at - it.position);
+	}
 
-			return it.widget.onMouseDrag(at);
-			break;
-		}
+	return false;
+}
+
+bool Container::onMouseDrag(Vec2i at)
+{
+	for(auto it : children)
+	{
+		if(it.isPointInside(at))
+			return it.widget.onMouseDrag(at - it.position);
 	}
 
 	return false;

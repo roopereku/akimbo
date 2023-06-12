@@ -12,10 +12,6 @@ namespace UI
 class TabButton : public Button
 {
 public:
-	TabButton(size_t index) : index(index)
-	{
-	}
-
 	void onRender(Render2D& render) override
 	{
 		render.color(0.2f, 0.2f, 0.2f);
@@ -30,26 +26,72 @@ public:
 	}
 
 	bool selected = false;
-	size_t index;
+};
+
+class ActiveTab : public Widget
+{
+public:
+	void set(Widget& widget)
+	{
+		activeWidget = &widget;
+	}
+
+	void onRender(Render2D& render) override
+	{
+		if(!activeWidget)
+		{
+			render.color(0.3f, 0.3f, 0.3f);
+			render.clear();
+		}
+
+		else render.target(Vec2(0, 0), Vec2(1, 1), *activeWidget);
+	}
+
+	void onResize(Vec2i size) override
+	{
+		if(activeWidget)
+			activeWidget->onResize(size);
+	}
+
+	bool onMouseClick(Vec2i at) override
+	{
+		return activeWidget && activeWidget->onMouseClick(at);
+	}
+
+	bool onMouseDrag(Vec2i at) override
+	{
+		return activeWidget && activeWidget->onMouseDrag(at);
+	}
+
+	Widget* activeWidget = nullptr;
 };
 
 TabbedContainer::TabbedContainer()
-	:	selector(add <ScrollContainer> (5)),
+	:	selector(add <ScrollContainer> ()),
 		active(add <ActiveTab> ())
 {
-	setMaximumSize(selector, 0.1f);
+	setMaximumSize(selector, 50);
 }
 
-void TabbedContainer::prepare(Child& child)
+void TabbedContainer::onResize(Vec2i size)
 {
-	if(children.size() <= 2)
+	SplitContainer::onResize(size);
+
+	for(auto& it : tabs)
+		it.second->onResize(children.back().size);
+}
+
+void TabbedContainer::prepare(Widget& widget)
+{
+	if(children.size() < 2)
 	{
-		SplitContainer::prepare(child);
+		SplitContainer::prepare(widget);
 		return;
 	}
 
-	active.set(child.widget);
-	auto& header = selector.add <TabButton> (children.size() - 1);
+	auto& header = selector.add <TabButton> ();
+	tabs.emplace(std::make_pair(&header, &widget));
+	selector.setMaximumSize(header, 50);
 
 	header.onClick = [this](Button& button)
 	{
@@ -59,38 +101,11 @@ void TabbedContainer::prepare(Child& child)
 		TabButton& header = static_cast <TabButton&> (button);
 		header.selected = true;
 
-		active.set(children[header.index].widget);
 		previousHeader = &header;
+		active.set(*tabs[&header]);
 	};
 
-	header.onMouseClick(Vec2());
-}
-
-void ActiveTab::set(Widget& widget)
-{
-	activeWidget = &widget;
-}
-
-void ActiveTab::onRender(Render2D& render)
-{
-	if(!activeWidget)
-	{
-		render.color(0.3f, 0.3f, 0.3f);
-		render.clear();
-	}
-
-	else render.target(Vec2(0, 0), Vec2(1, 1), *activeWidget);
-}
-
-void ActiveTab::onMouseClick(Vec2 at)
-{
-	if(activeWidget)
-		activeWidget->onMouseClick(at);
-}
-
-bool ActiveTab::onMouseDrag(Vec2 at)
-{
-	return activeWidget && activeWidget->onMouseDrag(at);
+	header.onMouseClick(Vec2i());
 }
 
 }

@@ -15,7 +15,10 @@ public:
 	virtual void clear() = 0;
 
 	virtual void box(Vec2 position, Vec2 size) = 0;
+	virtual void box(Vec2i position, Vec2i size) = 0;
+
 	virtual void target(Vec2 position, Vec2 size, RenderTarget2D& rt) = 0;
+	virtual void target(Vec2i position, Vec2i size, RenderTarget2D& rt) = 0;
 };
 
 class RenderTarget2D : public RenderTarget
