@@ -3,10 +3,7 @@
 
 #include <akimbo/WindowContent.hh>
 
-namespace Akimbo
-{
-
-namespace UI
+namespace Akimbo::UI
 {
 
 class Widget : public Akimbo::WindowContent2D
@@ -16,8 +13,6 @@ public:
 
 	virtual void onRender(Render2D& render) override;
 };
-
-}
 
 }
 

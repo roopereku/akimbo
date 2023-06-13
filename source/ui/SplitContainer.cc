@@ -2,10 +2,7 @@
 
 #include <algorithm>
 
-namespace Akimbo
-{
-
-namespace UI
+namespace Akimbo::UI
 {
 
 void SplitContainer::onRender(Render2D& render)
@@ -79,8 +76,6 @@ void SplitContainer::prepare(Widget& widget)
 	children.emplace_back(widget);
 	children.back().maxSize = 0;
 	adjustChildren();
-}
-
 }
 
 }

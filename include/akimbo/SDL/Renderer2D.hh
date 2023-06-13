@@ -6,10 +6,7 @@
 
 #include <vector>
 
-namespace Akimbo
-{
-
-namespace SDL
+namespace Akimbo::SDL
 {
 
 class Render2D : public Akimbo::Render2D
@@ -50,8 +47,6 @@ private:
 	SDL_Renderer* renderer;
 };
 
-}
-	
 }
 
 #endif

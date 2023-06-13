@@ -7,10 +7,7 @@
 
 #include <vector>
 
-namespace Akimbo
-{
-
-namespace UI
+namespace Akimbo::UI
 {
 
 class Container : public Widget
@@ -58,8 +55,6 @@ protected:
 	std::vector <Child> children;
 	Vec2i size;
 };
-
-}
 
 }
 

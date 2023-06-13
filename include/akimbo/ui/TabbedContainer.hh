@@ -7,10 +7,7 @@
 
 #include <unordered_map>
 
-namespace Akimbo
-{
-
-namespace UI
+namespace Akimbo::UI
 {
 
 class TabButton;
@@ -31,8 +28,6 @@ private:
 	TabButton* previousHeader = nullptr;
 	std::unordered_map <TabButton*, Widget*> tabs;
 };
-
-}
 
 }
 

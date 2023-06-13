@@ -3,10 +3,7 @@
 
 #include <cmath>
 
-namespace Akimbo
-{
-
-namespace UI
+namespace Akimbo::UI
 {
 
 void ScrollContainer::adjustChildren()
@@ -83,8 +80,6 @@ bool ScrollContainer::onMouseDrag(Vec2i at)
 
 	previousMouse = at;
 	return true;
-}
-
 }
 
 }

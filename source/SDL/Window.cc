@@ -2,10 +2,7 @@
 
 #include <SDL2/SDL.h>
 
-namespace Akimbo
-{
-
-namespace SDL
+namespace Akimbo::SDL
 {
 
 Window::Window() : window(createWindow()), renderer(window)
@@ -94,8 +91,6 @@ void Window::onUpdate()
 	}
 
 	renderContent(renderer);
-}
-
 }
 
 }

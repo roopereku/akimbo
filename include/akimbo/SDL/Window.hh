@@ -4,12 +4,7 @@
 #include <akimbo/Window.hh>
 #include <akimbo/SDL/Renderer2D.hh>
 
-#include <memory>
-
-namespace Akimbo
-{
-
-namespace SDL
+namespace Akimbo::SDL
 {
 
 class Window : public Akimbo::Window
@@ -35,8 +30,6 @@ private:
 	SDL_Window* window;
 	Renderer2D renderer;
 };
-
-}
 
 }
 

@@ -1,9 +1,6 @@
 #include <akimbo/SDL/Renderer2D.hh>
 
-namespace Akimbo
-{
-
-namespace SDL
+namespace Akimbo::SDL
 {
 
 Render2D::Render2D(SDL_Renderer* renderer, Vec2i offset, Vec2i screenSize)
@@ -107,8 +104,6 @@ void Renderer2D::onResize(unsigned w, unsigned h)
 {
 	screenSize.x = w;
 	screenSize.y = h;
-}
-
 }
 
 }

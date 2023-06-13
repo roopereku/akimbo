@@ -1,12 +1,7 @@
 #include <akimbo/ui/TabbedContainer.hh>
 #include <akimbo/ui/Button.hh>
 
-#include <SDL2/SDL_log.h>
-
-namespace Akimbo
-{
-
-namespace UI
+namespace Akimbo::UI
 {
 
 class TabButton : public Button
@@ -106,8 +101,6 @@ void TabbedContainer::prepare(Widget& widget)
 	};
 
 	header.onMouseClick(Vec2i());
-}
-
 }
 
 }

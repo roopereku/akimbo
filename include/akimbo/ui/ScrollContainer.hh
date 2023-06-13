@@ -3,10 +3,7 @@
 
 #include <akimbo/ui/Container.hh>
 
-namespace Akimbo
-{
-
-namespace UI
+namespace Akimbo::UI
 {
 
 class ScrollContainer : public Container
@@ -30,8 +27,6 @@ private:
 	int scroll = 0;
 	Vec2i previousMouse;
 };
-
-}
 
 }
 

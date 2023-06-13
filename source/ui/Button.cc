@@ -1,9 +1,6 @@
 #include <akimbo/ui/Button.hh>
 
-namespace Akimbo
-{
-
-namespace UI
+namespace Akimbo::UI
 {
 
 bool Button::onMouseClick(Vec2i)
@@ -15,8 +12,6 @@ bool Button::onMouseClick(Vec2i)
 	}
 
 	return false;
-}
-
 }
 
 }

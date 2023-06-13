@@ -2,10 +2,7 @@
 
 #include <SDL2/SDL_log.h>
 
-namespace Akimbo
-{
-
-namespace UI
+namespace Akimbo::UI
 {
 
 Widget& Container::addChild(Widget& widget)
@@ -49,9 +46,6 @@ bool Container::onMouseDrag(Vec2i at)
 	}
 
 	return false;
-}
-
-
 }
 
 }
