@@ -53,7 +53,7 @@ void Window::onUpdate()
 						contentResize(Vec2i(e.window.data1, e.window.data2));
 
 						renderer.onResize(e.window.data1, e.window.data2);
-						renderContent(renderer);
+						renderContent();
 
 						break;
 					}
@@ -90,7 +90,7 @@ void Window::onUpdate()
 		}
 	}
 
-	renderContent(renderer);
+	renderContent();
 }
 
 }

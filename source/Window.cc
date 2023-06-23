@@ -3,28 +3,20 @@
 namespace Akimbo
 {
 
-void Window::setContent(WindowContent2D& content)
+void Window::setContent(WindowContent& content)
 {
-	contentType = ContentType::Content2D;
-	this->content = &content;
+	content.window = this;
+	content.renderer = &getRenderer();
 
+	this->content = &content;
+	content.onAttached();
 	onContentSet();
 }
 
-void Window::renderContent(Renderer& renderer)
+void Window::renderContent()
 {
-	if(!content)
-		return;
-
-	switch(contentType)
-	{
-		case ContentType::Content2D:
-			WindowContent2D& content2D = (static_cast <WindowContent2D&> (*content));
-
-			if(content2D.popDirty())
-				renderer.render(content2D);
-		break;
-	}
+	if(content && content->popDirty())
+		getRenderer().render(*content);
 }
 
 void Window::contentMouseDrag(Vec2i at)

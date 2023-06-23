@@ -7,18 +7,31 @@
 namespace Akimbo
 {
 
-class WindowContentBase
+class Window;
+class WindowContent : public RenderTarget2D
 {
 public:
 	virtual bool onMouseClick(Vec2i at) { return false; };
 	virtual bool onMouseDrag(Vec2i at) { return false; };
 
 	virtual void onResize(Vec2i size) {};
-};
+	virtual void onAttached() {};
 
-class WindowContent2D : public WindowContentBase, public RenderTarget2D
-{
-public:
+	WindowContent& operator=(WindowContent& rhs)
+	{
+		window = rhs.window;
+		renderer = rhs.renderer;
+
+		return *this;
+	}
+
+	friend class Window;
+
+	bool hasRenderer() { return renderer; }
+
+private:
+	Window* window = nullptr;
+	Renderer* renderer = nullptr;
 };
 
 }

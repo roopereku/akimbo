@@ -8,6 +8,13 @@ namespace Akimbo::UI
 Widget& Container::addChild(Widget& widget)
 {
 	prepare(widget);
+
+	/* Call the assignment operator of WindowContent to
+	 * copy the window and renderer of this container
+	 * to the newly added widget. */
+	static_cast <WindowContent&> (widget) = *this;
+	widget.onAttached();
+
 	return widget;
 }
 
@@ -24,6 +31,18 @@ void Container::onResize(Vec2i size)
 
 	if(!children.empty())
 		adjustChildren();
+}
+
+void Container::onAttached()
+{
+	for(auto it : children)
+	{
+		/* Call the assignment operator of WindowContent to
+		 * copy the window and renderer of this container
+		 * the current child. */
+		static_cast <WindowContent&> (it.widget) = *this;
+		it.widget.onAttached();
+	}
 }
 
 bool Container::onMouseClick(Vec2i at)

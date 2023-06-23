@@ -44,6 +44,10 @@ public:
 		render.box(Vec2i(10, 10), Vec2i(100, 100));
 	}
 
+	void onAttached() override
+	{
+	}
+
 	float r;
 	float g;
 	float b;

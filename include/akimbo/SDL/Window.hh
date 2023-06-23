@@ -13,12 +13,12 @@ public:
 	Window();
 	~Window();
 
+private:
 	Renderer& getRenderer() override
 	{
 		return renderer;
 	}
 
-private:
 	void onContentSet() override;
 
 	SDL_Window* createWindow();

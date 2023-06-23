@@ -6,7 +6,7 @@
 namespace Akimbo::UI
 {
 
-class Widget : public Akimbo::WindowContent2D
+class Widget : public Akimbo::WindowContent
 {
 public:
 	void onUpdate() override;

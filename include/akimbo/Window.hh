@@ -15,26 +15,19 @@ namespace Akimbo
 class Window : public Module
 {
 public:
-	void setContent(WindowContent2D& content);
-	virtual Renderer& getRenderer() = 0;
+	void setContent(WindowContent& content);
 
 protected:
 	virtual void onContentSet() = 0;
+	virtual Renderer& getRenderer() = 0;
 
-	void renderContent(Renderer& renderer);	
-
+	void renderContent();
 	void contentMouseDrag(Vec2i at); 
 	void contentMouseClick(Vec2i at); 
 	void contentResize(Vec2i size); 
 
 private:
-	enum class ContentType
-	{
-		Content2D
-	};
-
-	ContentType contentType;
-	WindowContentBase* content = nullptr;
+	WindowContent* content = nullptr;
 };
 
 };
