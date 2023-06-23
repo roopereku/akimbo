@@ -18,6 +18,9 @@ public:
 	void box(Vec2 position, Vec2 size) override;
 	void box(Vec2i position, Vec2i size) override;
 
+	void texture(Vec2 position, Vec2 size, Texture& tex) override;
+	void texture(Vec2i position, Vec2i size, Texture& tex) override;
+
 	void target(Vec2 position, Vec2 size, RenderTarget2D& rt) override;
 	void target(Vec2i position, Vec2i size, RenderTarget2D& rt) override;
 
@@ -43,6 +46,8 @@ public:
 	void onResize(unsigned w, unsigned h) override;
 
 private:
+	std::shared_ptr <TextureDetail> initTexture(std::string_view path) override;
+
 	Vec2i screenSize;
 	SDL_Renderer* renderer;
 };

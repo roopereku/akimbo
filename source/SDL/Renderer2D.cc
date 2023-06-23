@@ -1,7 +1,34 @@
 #include <akimbo/SDL/Renderer2D.hh>
+#include <SDL2/SDL_image.h>
 
 namespace Akimbo::SDL
 {
+
+class TextureDetail : public Akimbo::TextureDetail
+{
+public:
+	TextureDetail(SDL_Renderer* renderer, std::string_view path)
+	{
+		static bool imgInitialized = false;
+		if(!imgInitialized)
+			IMG_Init(IMG_INIT_PNG);
+
+		SDL_Surface* surface = IMG_Load(path.data());
+
+		if(!surface)
+		{
+			SDL_Log("Couldn't load texture: %s", IMG_GetError());
+			return;
+		}
+
+		size = Vec2i(surface->w, surface->h);
+		texture = SDL_CreateTextureFromSurface(renderer, surface);
+
+		SDL_FreeSurface(surface);
+	}
+
+	SDL_Texture* texture;
+};
 
 Render2D::Render2D(SDL_Renderer* renderer, Vec2i offset, Vec2i screenSize)
 	: renderer(renderer), offset(offset), screenSize(screenSize)
@@ -47,6 +74,35 @@ void Render2D::box(Vec2i position, Vec2i size)
 	SDL_RenderFillRect(renderer, &r);
 }
 
+void Render2D::texture(Vec2 position, Vec2 size, Texture& tex)
+{
+	Vec2i texturePosition(
+		position.x * screenSize.x,
+		position.y * screenSize.y
+	);
+
+	Vec2i textureSize(
+		size.x * screenSize.x,
+		size.y * screenSize.y
+	);
+
+	texture(texturePosition, textureSize, tex);
+}
+
+void Render2D::texture(Vec2i position, Vec2i size, Texture& tex)
+{
+	SDL_Rect r
+	{
+		offset.x + position.x,
+		offset.y + position.y,
+		size.x,
+		size.y
+	};
+
+	const auto& detail = static_cast <const SDL::TextureDetail&> (tex.getDetail());
+	SDL_RenderCopy(renderer, detail.texture, NULL, &r);
+}
+
 void Render2D::target(Vec2 position, Vec2 size, RenderTarget2D& rt)
 {
 	Vec2i targetOffset(
@@ -86,6 +142,11 @@ Renderer2D::~Renderer2D()
 {
 	if(renderer)
 		SDL_DestroyRenderer(renderer);
+}
+
+std::shared_ptr <Akimbo::TextureDetail> Renderer2D::initTexture(std::string_view path)
+{
+	return std::make_shared <SDL::TextureDetail> (renderer, path);
 }
 
 void Renderer2D::render(RenderTarget& target)

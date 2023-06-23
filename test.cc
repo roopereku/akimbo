@@ -42,15 +42,20 @@ public:
 
 		render.color(1, 1, 1);
 		render.box(Vec2i(10, 10), Vec2i(100, 100));
+
+		render.texture(Vec2i(150, 150), Vec2i(100, 100), t);
 	}
 
 	void onAttached() override
 	{
+		t = getRenderer().createTexture("cat.png");
 	}
 
 	float r;
 	float g;
 	float b;
+
+	Akimbo::Texture t;
 };
 
 class Test : public Akimbo::Core

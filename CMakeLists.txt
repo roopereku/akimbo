@@ -8,7 +8,7 @@ file(GLOB_RECURSE AkimboSources source/*.cc)
 
 add_library(akimbo ${AkimboSources})
 target_include_directories(akimbo PUBLIC include)
-target_link_libraries(akimbo SDL2)
+target_link_libraries(akimbo SDL2 SDL2_image)
 
 project(akimbotest)
 

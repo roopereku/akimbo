@@ -27,7 +27,8 @@ public:
 
 	friend class Window;
 
-	bool hasRenderer() { return renderer; }
+protected:
+	Renderer& getRenderer() { return *renderer; }
 
 private:
 	Window* window = nullptr;

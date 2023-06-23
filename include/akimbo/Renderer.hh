@@ -2,6 +2,11 @@
 #define AKIMBO_RENDERER_HH
 
 #include <akimbo/Module.hh>
+#include <akimbo/Texture.hh>
+
+#include <unordered_map>
+#include <string_view>
+#include <memory>
 
 namespace Akimbo
 {
@@ -34,12 +39,18 @@ class Renderer
 {
 public:
 	virtual ~Renderer() {}
+	Texture createTexture(std::string_view path);
 
 	friend class Window;
+
+protected:
+	virtual std::shared_ptr <TextureDetail> initTexture(std::string_view path)=0;
 
 private:
 	virtual void render(RenderTarget& target)=0;
 	virtual void onResize(unsigned w, unsigned h)=0;
+
+	std::unordered_map <std::string_view, std::shared_ptr <TextureDetail>> textureCache;
 };
 
 }
