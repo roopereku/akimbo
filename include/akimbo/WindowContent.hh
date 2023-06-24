@@ -15,7 +15,6 @@ public:
 	virtual bool onMouseDrag(Vec2i at) { return false; };
 
 	virtual void onResize(Vec2i size) {};
-	virtual void onAttached() {};
 
 	WindowContent& operator=(WindowContent& rhs)
 	{
@@ -29,6 +28,7 @@ public:
 
 protected:
 	Renderer& getRenderer() { return *renderer; }
+	virtual void onAttached() {};
 
 private:
 	Window* window = nullptr;

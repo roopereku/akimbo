@@ -20,6 +20,9 @@ public:
 	virtual void texture(Vec2 position, Vec2 size, Texture& tex) = 0;
 	virtual void texture(Vec2i position, Vec2i size, Texture& tex) = 0;
 
+	virtual void text(Vec2 position, Vec2 size, Font& font, std::string_view str) = 0;
+	virtual void text(Vec2i position, Vec2i size, Font& font, std::string_view str) = 0;
+
 	virtual void target(Vec2 position, Vec2 size, RenderTarget2D& rt) = 0;
 	virtual void target(Vec2i position, Vec2i size, RenderTarget2D& rt) = 0;
 };

@@ -1,34 +1,12 @@
 #include <akimbo/SDL/Renderer2D.hh>
-#include <SDL2/SDL_image.h>
+#include <akimbo/SDL/TextureDetail.hh>
+#include <akimbo/SDL/FontDetail.hh>
+#include <SDL2/SDL_log.h>
+
+#include <cassert>
 
 namespace Akimbo::SDL
 {
-
-class TextureDetail : public Akimbo::TextureDetail
-{
-public:
-	TextureDetail(SDL_Renderer* renderer, std::string_view path)
-	{
-		static bool imgInitialized = false;
-		if(!imgInitialized)
-			IMG_Init(IMG_INIT_PNG);
-
-		SDL_Surface* surface = IMG_Load(path.data());
-
-		if(!surface)
-		{
-			SDL_Log("Couldn't load texture: %s", IMG_GetError());
-			return;
-		}
-
-		size = Vec2i(surface->w, surface->h);
-		texture = SDL_CreateTextureFromSurface(renderer, surface);
-
-		SDL_FreeSurface(surface);
-	}
-
-	SDL_Texture* texture;
-};
 
 Render2D::Render2D(SDL_Renderer* renderer, Vec2i offset, Vec2i screenSize)
 	: renderer(renderer), offset(offset), screenSize(screenSize)
@@ -103,6 +81,60 @@ void Render2D::texture(Vec2i position, Vec2i size, Texture& tex)
 	SDL_RenderCopy(renderer, detail.texture, NULL, &r);
 }
 
+void Render2D::text(Vec2 position, Vec2 size, Font& font, std::string_view str)
+{
+	Vec2i textPosition(
+		position.x * screenSize.x,
+		position.y * screenSize.y
+	);
+
+	Vec2i textSize(
+		size.x * screenSize.x,
+		size.y * screenSize.y
+	);
+
+	text(textPosition, textSize, font, str);
+}
+
+void Render2D::text(Vec2i position, Vec2i size, Font& font, std::string_view str)
+{
+	assert(static_cast <bool> (font));
+
+	SDL_Rect r
+	{
+		offset.x + position.x,
+		offset.y + position.y,
+		size.x,
+		size.y
+	};
+
+	color(0.5f, 0, 0);
+	box(position, size);
+
+	const auto& detail = static_cast <const SDL::FontDetail&> (font.getDetail());
+	int origin = r.x;
+
+	for(auto c : str)
+	{
+		const FontDetail::GlyphData& glyph = detail.glyphs.at(c);
+
+		SDL_Rect part
+		{
+			glyph.atlasOffset,
+			0,
+			glyph.advance,
+			detail.atlasSize.y
+		};
+
+		r.w = glyph.advance;
+		if(r.x + r.w > origin + size.x)
+			break;
+
+		SDL_RenderCopy(renderer, detail.atlas, &part, &r);
+		r.x += glyph.advance;
+	}
+}
+
 void Render2D::target(Vec2 position, Vec2 size, RenderTarget2D& rt)
 {
 	Vec2i targetOffset(
@@ -147,6 +179,11 @@ Renderer2D::~Renderer2D()
 std::shared_ptr <Akimbo::TextureDetail> Renderer2D::initTexture(std::string_view path)
 {
 	return std::make_shared <SDL::TextureDetail> (renderer, path);
+}
+
+std::shared_ptr <Akimbo::FontDetail> Renderer2D::initFont(std::string_view path)
+{
+	return std::make_shared <SDL::FontDetail> (renderer, path);
 }
 
 void Renderer2D::render(RenderTarget& target)

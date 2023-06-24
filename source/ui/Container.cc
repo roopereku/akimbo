@@ -33,7 +33,7 @@ void Container::onResize(Vec2i size)
 		adjustChildren();
 }
 
-void Container::onAttached()
+void Container::onLoadResources()
 {
 	for(auto it : children)
 	{

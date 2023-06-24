@@ -18,6 +18,9 @@ public:
 	void box(Vec2 position, Vec2 size) override;
 	void box(Vec2i position, Vec2i size) override;
 
+	void text(Vec2 position, Vec2 size, Font& font, std::string_view str) override;
+	void text(Vec2i position, Vec2i size, Font& font, std::string_view str) override;
+
 	void texture(Vec2 position, Vec2 size, Texture& tex) override;
 	void texture(Vec2i position, Vec2i size, Texture& tex) override;
 
@@ -47,6 +50,7 @@ public:
 
 private:
 	std::shared_ptr <TextureDetail> initTexture(std::string_view path) override;
+	std::shared_ptr <FontDetail> initFont(std::string_view path) override;
 
 	Vec2i screenSize;
 	SDL_Renderer* renderer;

@@ -28,8 +28,8 @@ public:
 protected:
 	virtual bool onMouseClick(Vec2i at) override;
 	virtual bool onMouseDrag(Vec2i at) override;
-	virtual void onAttached() override;
 
+	void onLoadResources() override;
 	void onResize(Vec2i size) override;
 
 	struct Child
