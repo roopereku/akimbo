@@ -1,12 +1,19 @@
 #include <akimbo/ui/TabbedContainer.hh>
 #include <akimbo/ui/Button.hh>
 
+#include <string>
+
 namespace Akimbo::UI
 {
 
 class TabButton : public Button
 {
 public:
+	TabButton(size_t index)
+	{
+		title = std::to_string(index);
+	}
+
 	void onRender(Render2D& render) override
 	{
 		render.color(0.2f, 0.2f, 0.2f);
@@ -18,9 +25,11 @@ public:
 		else render.color(0.5f, 0.5f, 0.5f);
 
 		render.box(Vec2(0.05f, 0.05f), Vec2(0.9f, 0.9f));
+		render.text(Vec2(0.05f, 0.05f), Vec2(0.9f, 0.9f), defaultFont, title);
 	}
 
 	bool selected = false;
+	std::string title;
 };
 
 class ActiveTab : public Widget
@@ -84,7 +93,7 @@ void TabbedContainer::prepare(Widget& widget)
 		return;
 	}
 
-	auto& header = selector.add <TabButton> ();
+	auto& header = selector.add <TabButton> (tabs.size());
 	tabs.emplace(std::make_pair(&header, &widget));
 	selector.setMaximumSize(header, 50);
 

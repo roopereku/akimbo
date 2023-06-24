@@ -27,11 +27,13 @@ Font Renderer::createFont(std::string_view path)
 	if(it == fontCache.end())
 	{
 		auto ret = initFont(path);
-		fontCache[path] = ret;
+		SDL_Log("Loaded font '%s'", path.data());
 
+		fontCache[path] = ret;
 		return ret;
 	}
 
+	SDL_Log("Return cached font '%s'", path.data());
 	// Return the cached font if it's been loaded previously.
 	return Font(it->second);
 }

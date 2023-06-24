@@ -108,8 +108,8 @@ void Render2D::text(Vec2i position, Vec2i size, Font& font, std::string_view str
 		size.y
 	};
 
-	color(0.5f, 0, 0);
-	box(position, size);
+	//color(0.5f, 0, 0);
+	//box(position, size);
 
 	const auto& detail = static_cast <const SDL::FontDetail&> (font.getDetail());
 	int origin = r.x;

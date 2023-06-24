@@ -5,6 +5,8 @@
 #include <akimbo/ui/ScrollContainer.hh>
 #include <akimbo/ui/Button.hh>
 
+#include <SDL2/SDL_log.h>
+
 class TestWidget : public Akimbo::UI::Widget
 {
 public:
@@ -30,7 +32,12 @@ public:
 		auto& ui = add <Akimbo::UI::HorizontallySplitContainer> ();
 		window.setContent(ui);
 
-		ui.add <TestWidget> ();
+		auto& tabs = ui.add <Akimbo::UI::TabbedContainer> ();
+		//auto& scroll = ui.add <Akimbo::UI::ScrollContainer> ();
+
+		tabs.add <TestWidget> ();
+		tabs.add <TestWidget> ();
+		tabs.add <TestWidget> ();
 	}
 
 private:
