@@ -7,14 +7,16 @@ namespace Akimbo::UI
 
 Widget& Container::addChild(Widget& widget)
 {
+	if(isAttached())
+	{
+		/* Call the assignment operator of WindowContent to
+		 * copy the window and renderer of this container
+		 * to the newly added widget. */
+		static_cast <WindowContent&> (widget) = *this;
+		widget.onAttached();
+	}
+
 	prepare(widget);
-
-	/* Call the assignment operator of WindowContent to
-	 * copy the window and renderer of this container
-	 * to the newly added widget. */
-	static_cast <WindowContent&> (widget) = *this;
-	widget.onAttached();
-
 	return widget;
 }
 

@@ -4,6 +4,8 @@
 #include <akimbo/Renderer2D.hh>
 #include <akimbo/Vector2.hh>
 
+#include <cassert>
+
 namespace Akimbo
 {
 
@@ -24,10 +26,20 @@ public:
 		return *this;
 	}
 
+	bool isAttached()
+	{
+		return window;
+	}
+
 	friend class Window;
 
 protected:
-	Renderer& getRenderer() { return *renderer; }
+	Renderer& getRenderer()
+	{
+		assert(renderer != nullptr);
+		return *renderer;
+	}
+
 	virtual void onAttached() {};
 
 private:
