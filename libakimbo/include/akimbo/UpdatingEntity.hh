@@ -13,8 +13,6 @@ class Core;
 class UpdatingEntity : public Entity, std::enable_shared_from_this <UpdatingEntity>
 {
 public:
-	UpdatingEntity();
-
 	bool isUpdating() final override
 	{
 		return true;

@@ -11,6 +11,13 @@ class Core;
 class Entity : public PropertyHost
 {
 public:
+	Entity()
+	{
+	}
+
+	Entity& operator=(const Entity& rhs) = delete;
+	Entity(const Entity& rhs) = delete;
+
 	virtual bool isUpdating()
 	{
 		return false;

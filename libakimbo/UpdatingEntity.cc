@@ -5,9 +5,4 @@
 
 namespace akimbo
 {
-
-UpdatingEntity::UpdatingEntity()
-{
-}
-
 }

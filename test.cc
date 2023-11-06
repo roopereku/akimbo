@@ -10,6 +10,7 @@ public:
 	Test()
 	{
 		auto& window = akimbo::SDL2::Window::add();
+		window.createRenderer();
 	}
 
 private:

@@ -13,6 +13,8 @@ class Window : public akimbo::Window
 public:
 	static Window& add();
 
+	Renderer& createRenderer() final override;
+
 private:
 	Window();
 

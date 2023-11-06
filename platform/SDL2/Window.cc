@@ -1,4 +1,5 @@
 #include <akimbo/SDL2/Window.hh>
+#include <akimbo/SDL2/Renderer2D.hh>
 #include <akimbo/Core.hh>
 
 namespace akimbo::SDL2
@@ -7,6 +8,12 @@ namespace akimbo::SDL2
 Window& Window::add()
 {
 	return getCore().addUpdating(new Window());
+}
+
+Renderer& Window::createRenderer()
+{
+	renderer = &SDL2::Renderer2D::add(window);
+	return *renderer;
 }
 
 Window::Window()
