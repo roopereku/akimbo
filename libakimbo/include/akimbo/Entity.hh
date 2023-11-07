@@ -3,12 +3,14 @@
 
 #include <akimbo/PropertyHost.hh>
 
+#include <memory>
+
 namespace akimbo
 {
 
 class Core;
 
-class Entity : public PropertyHost
+class Entity : public PropertyHost, public std::enable_shared_from_this <Entity>
 {
 public:
 	Entity()

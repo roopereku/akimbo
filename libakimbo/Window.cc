@@ -4,7 +4,8 @@
 namespace akimbo
 {
 
-Window::Window() : width(*this, 0), height(*this, 0)
+Window::Window()
+	: width(*this, 0), height(*this, 0), content(*this)
 {
 }
 
@@ -18,6 +19,9 @@ void Window::onResize()
 
 void Window::onPropertyChanged(Property& property)
 {
+	if(property == content)
+	{
+	}
 }
 
 }

@@ -3,14 +3,12 @@
 
 #include <akimbo/Entity.hh>
 
-#include <memory>
-
 namespace akimbo
 {
 
 class Core;
 
-class UpdatingEntity : public Entity, std::enable_shared_from_this <UpdatingEntity>
+class UpdatingEntity : public Entity
 {
 public:
 	bool isUpdating() final override

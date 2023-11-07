@@ -30,7 +30,7 @@ protected:
 	Core();
 	virtual void onUpdate() override;
 
-	std::vector <UpdatingEntity*> updatingEntities;
+	std::vector <std::shared_ptr <UpdatingEntity>> updatingEntities;
 };
 
 }

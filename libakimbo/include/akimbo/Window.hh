@@ -2,7 +2,9 @@
 #define AKIMBO_WINDOW_HH
 
 #include <akimbo/ValueProperty.hh>
+#include <akimbo/EntityProperty.hh>
 #include <akimbo/UpdatingEntity.hh>
+#include <akimbo/WindowContent.hh>
 #include <akimbo/Renderer.hh>
 
 #include <string_view>
@@ -15,6 +17,7 @@ class Window : public UpdatingEntity
 public:
 	ValueProperty <unsigned> width;
 	ValueProperty <unsigned> height;
+	EntityProperty <WindowContent> content;
 
 	virtual Renderer& createRenderer() = 0;
 
