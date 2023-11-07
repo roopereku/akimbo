@@ -15,6 +15,8 @@ public:
 
 	Renderer& createRenderer() final override;
 
+	friend class Renderer2D;
+
 private:
 	Window();
 

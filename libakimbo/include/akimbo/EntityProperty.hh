@@ -16,8 +16,13 @@ public:
 	}
 
 	EntityProperty(PropertyHost& host, T& initialValue)
-		: Property(host), entity(initialValue.shared_from_this)
+		: Property(host), entity(initialValue.shared_from_this())
 	{
+	}
+
+	operator bool()
+	{
+		return static_cast <bool> (entity);
 	}
 
 	EntityProperty& operator=(T& rhs)
@@ -26,6 +31,12 @@ public:
 		triggerChange();
 
 		return *this;
+	}
+
+	T& getValue()
+	{
+		// TODO: Assert entity validity.
+		return static_cast <T&> (*entity);
 	}
 
 private:

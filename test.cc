@@ -13,9 +13,21 @@ public:
 	}
 
 private:
-	TestContent()
+	void onRender(akimbo::Renderer2D& renderer) override
 	{
+		renderer.clear(r, 0.0f, 0.0f);
 	}
+
+	void onUpdate() override
+	{
+		c += 0.01f;
+		r = (sin(c) + 1) / 2;
+
+		render();
+	}
+
+	float c = 0.0f;
+	float r = 0.0f;
 };
 
 class Test : public akimbo::Main

@@ -12,7 +12,7 @@ Window& Window::add()
 
 Renderer& Window::createRenderer()
 {
-	renderer = &SDL2::Renderer2D::add(window);
+	renderer = &SDL2::Renderer2D::add(*this);
 	return *renderer;
 }
 
