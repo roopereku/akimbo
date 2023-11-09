@@ -4,7 +4,7 @@
 #include <akimbo/ValueProperty.hh>
 #include <akimbo/EntityProperty.hh>
 #include <akimbo/UpdatingEntity.hh>
-#include <akimbo/WindowContent.hh>
+#include <akimbo/RenderTarget2D.hh>
 #include <akimbo/Renderer.hh>
 
 #include <string_view>
@@ -12,12 +12,16 @@
 namespace akimbo
 {
 
+class WindowContent;
+
 class Window : public UpdatingEntity
 {
 public:
+	class Content;
+
 	ValueProperty <unsigned> width;
 	ValueProperty <unsigned> height;
-	EntityProperty <WindowContent> content;
+	EntityProperty <Content> content;
 
 	virtual Renderer& createRenderer() = 0;
 
@@ -32,6 +36,24 @@ protected:
 
 private:
 	void onPropertyChanged(Property& property) final override;
+};
+
+class Window::Content : public UpdatingEntity, public RenderTarget2D
+{
+public:
+	Content() : window(*this)
+	{
+	}
+
+	friend class Window;
+
+protected:
+	EntityProperty <Window> window;
+
+private:
+	void onUpdate() override
+	{
+	}
 };
 
 }

@@ -1,12 +1,12 @@
 #ifndef AKIMBO_UI_ROOT_HH
 #define AKIMBO_UI_ROOT_HH
 
-#include <akimbo/WindowContent.hh>
+#include <akimbo/Window.hh>
 
 namespace akimbo::UI
 {
 
-class Root : public WindowContent
+class Root : public Window::Content
 {
 public:
 	static Root& add();
