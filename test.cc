@@ -1,7 +1,6 @@
 #include <akimbo/Core.hh>
 #include <akimbo/ValueProperty.hh>
 #include <akimbo/Main.hh>
-
 #include <akimbo/SDL2/Window.hh>
 
 class TestContent : public akimbo::WindowContent
@@ -68,7 +67,7 @@ public:
 		auto& window = akimbo::SDL2::Window::add();
 		window.createRenderer();
 
-		auto& content = TestContent::add();
+		auto& ui = akimbo::UI::Root::add();
 		window.content = content;
 	}
 
