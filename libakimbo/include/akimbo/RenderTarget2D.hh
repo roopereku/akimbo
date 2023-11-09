@@ -2,10 +2,11 @@
 #define AKIMBO_RENDER_TARGET_2D
 
 #include <akimbo/RenderTarget.hh>
-#include <akimbo/Renderer2D.hh>
 
 namespace akimbo
 {
+
+class Renderer2D;
 
 class RenderTarget2D : public RenderTarget
 {
