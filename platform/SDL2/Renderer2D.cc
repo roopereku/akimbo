@@ -41,4 +41,15 @@ void Renderer2D::clear()
 	SDL_RenderClear(renderer);
 }
 
+void Renderer2D::box(int x, int y, int w, int h)
+{
+	SDL_Rect rect { x, y, w, h };
+	SDL_RenderFillRect(renderer, &rect);
+}
+
+void Renderer2D::line(int x1, int y1, int x2, int y2)
+{
+	SDL_RenderDrawLine(renderer, x1, y1, x2, y2);
+}
+
 }

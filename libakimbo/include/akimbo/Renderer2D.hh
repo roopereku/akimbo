@@ -15,6 +15,9 @@ public:
 	virtual void clear(float r, float g, float b, float a = 1.0f) = 0;
 	virtual void clear() = 0;
 
+	virtual void box(int x, int y, int w, int h) = 0;
+	virtual void line(int x1, int y1, int x2, int y2) = 0;
+
 protected:
 	Renderer2D(Window& target) : Renderer(target)
 	{

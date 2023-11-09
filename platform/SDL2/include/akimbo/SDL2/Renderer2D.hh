@@ -21,6 +21,9 @@ public:
 	void clear(float r, float g, float b, float a = 1.0f) override;
 	void clear() override;
 
+	void box(int x, int y, int w, int h) override;
+	void line(int x1, int y1, int x2, int y2) override;
+
 private:
 	Renderer2D(SDL2::Window& target);
 

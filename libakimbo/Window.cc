@@ -21,6 +21,7 @@ void Window::onPropertyChanged(Property& property)
 {
 	if(property == content)
 	{
+		content.getValue().window = *this;
 		content.getValue().render();
 	}
 }
