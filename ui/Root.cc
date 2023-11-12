@@ -30,6 +30,11 @@ void Root::onRender(Renderer2D& render)
 	layout.onRender(render);
 }
 
+void Root::onAttached()
+{
+	layout.size = window.getValue().size();
+}
+
 void Root::onUpdate()
 {
 	// UI Root is rendered constantly to make it easy to

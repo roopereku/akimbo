@@ -4,8 +4,7 @@
 namespace akimbo
 {
 
-Window::Window()
-	: width(*this, 0), height(*this, 0), content(*this)
+Window::Window() : content(*this)
 {
 }
 
@@ -22,6 +21,8 @@ void Window::onPropertyChanged(Property& property)
 	if(property == content)
 	{
 		content.getValue().window = *this;
+		content.getValue().onAttached();
+
 		content.getValue().render();
 	}
 }

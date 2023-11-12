@@ -28,6 +28,19 @@ public:
 		return *this;
 	}
 
+	ValueProperty <T>& operator=(const T& value)
+	{
+		this->value = value;
+		triggerChange();
+
+		return *this;
+	}
+
+	T& operator()()
+	{
+		return value;
+	}
+
 	void assignWithoutTrigger(T&& value)
 	{
 		this->value = std::move(value);

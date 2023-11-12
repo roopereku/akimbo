@@ -29,7 +29,7 @@ private:
 	{
 	}
 
-	void onChildAdded() override;
+	void onLayout() override;
 
 	Direction direction;
 };

@@ -1,6 +1,7 @@
 #ifndef AKIMBO_UI_WIDGET_RENDERER__HH
 #define AKIMBO_UI_WIDGET_RENDERER__HH
 
+#include <akimbo/Vector2.hh>
 #include <akimbo/Renderer2D.hh>
 #include <akimbo/ui/Widget.hh>
 
@@ -10,7 +11,7 @@ namespace akimbo::UI
 class WidgetRenderer : public Renderer2D
 {
 public:
-	WidgetRenderer(Renderer2D& renderer);
+	WidgetRenderer(Renderer2D& renderer, Widget& target, Vec2i offset);
 
 	void color(float r, float g, float b, float a = 1.0f) override;
 	void setScissor(int x, int y, int w, int h) override;
@@ -24,6 +25,8 @@ public:
 
 private:
 	Renderer2D& renderer;
+	Widget& target;
+	Vec2i offset;
 };
 
 }

@@ -2,6 +2,7 @@
 #define AKIMBO_UI_LAYOUT_HH
 
 #include <akimbo/ui/Widget.hh>
+#include <akimbo/Vector2.hh>
 
 #include <vector>
 
@@ -19,17 +20,15 @@ public:
 	}
 
 	void onRender(Renderer2D& render) final override;
+	virtual void onLayout() override = 0;
 
 protected:
-	virtual void onChildAdded() = 0;
-
 	struct WidgetInLayout
 	{
 		WidgetInLayout(Widget& widget);
 
 		std::shared_ptr <Widget> widget;
-		int x = 0;
-		int y = 0;
+		Vec2i position;
 	};
 
 	std::vector <WidgetInLayout> children;

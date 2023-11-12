@@ -2,8 +2,6 @@
 #include <akimbo/ui/Layout.hh>
 #include <akimbo/ui/Root.hh>
 
-#include <cstdio>
-
 namespace akimbo::UI
 {
 
@@ -12,6 +10,10 @@ Widget::Widget() : parent(*this)
 }
 
 void Widget::onRender(Renderer2D& render)
+{
+}
+
+void Widget::onLayout()
 {
 }
 
@@ -31,8 +33,20 @@ void Widget::onUpdate()
 
 void Widget::onPropertyChanged(Property& property)
 {
-	if(property == parent)
+	// Did the size of this widget change?
+	if(property == size)
 	{
+		// If this widget has a parent layout, make it rearrange its children.
+		if(parent)
+		{
+			parent.getValue().onLayout();
+		}
+
+		// If this widget has no parent layout, this should be a root layout.
+		else
+		{
+			onLayout();
+		}
 	}
 }
 

@@ -1,11 +1,10 @@
 #ifndef AKIMBO_WINDOW_HH
 #define AKIMBO_WINDOW_HH
 
-#include <akimbo/ValueProperty.hh>
 #include <akimbo/EntityProperty.hh>
-#include <akimbo/UpdatingEntity.hh>
 #include <akimbo/RenderTarget2D.hh>
 #include <akimbo/Renderer.hh>
+#include <akimbo/View.hh>
 
 #include <string_view>
 
@@ -14,13 +13,11 @@ namespace akimbo
 
 class WindowContent;
 
-class Window : public UpdatingEntity
+class Window : public View
 {
 public:
 	class Content;
 
-	ValueProperty <unsigned> width;
-	ValueProperty <unsigned> height;
 	EntityProperty <Content> content;
 
 	virtual Renderer& createRenderer() = 0;
@@ -30,7 +27,6 @@ protected:
 	virtual ~Window();
 
 	virtual void onResize();
-	virtual void onUpdate() override = 0;
 
 	Renderer* renderer = nullptr;
 
@@ -49,6 +45,8 @@ public:
 
 protected:
 	EntityProperty <Window> window;
+
+	virtual void onAttached() = 0;
 
 private:
 	void onUpdate() override

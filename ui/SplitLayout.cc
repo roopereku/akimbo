@@ -28,8 +28,39 @@ Root& SplitLayout::addRoot(Direction direction)
 	return root;
 }
 
-void SplitLayout::onChildAdded()
+void SplitLayout::onLayout()
 {
+	if(children.empty())
+	{
+		return;
+	}
+
+	int refSize = direction == Direction::Horizontal ? size().x : size().y;
+	int partition = refSize / children.size();
+	int offset = 0;
+
+	for(auto& child : children)
+	{
+		switch(direction)
+		{
+			case Direction::Horizontal:
+			{
+				child.position = Vec2i(offset, 0);
+				child.widget->size.assignWithoutTrigger(Vec2i(partition, size().y));
+				break;
+			}
+
+			case Direction::Vertical:
+			{
+				child.position = Vec2i(0, offset);
+				child.widget->size.assignWithoutTrigger(Vec2i(size().x, partition));
+				break;
+			}
+		}
+
+		child.widget->onLayout();
+		offset += partition;
+	}
 }
 
 }

@@ -14,8 +14,8 @@ void Layout::onRender(Renderer2D& render)
 {
 	for(auto& child : children)
 	{
-		WidgetRenderer renderer(render);
-		child.widget->onRender(render);
+		WidgetRenderer renderer(render, *child.widget, child.position);
+		child.widget->onRender(renderer);
 	}
 }
 
@@ -23,7 +23,7 @@ void Layout::prepareChild(Widget& child)
 {
 	child.parent = *this;
 	children.emplace_back(child);
-	onChildAdded();
+	onLayout();
 }
 
 }

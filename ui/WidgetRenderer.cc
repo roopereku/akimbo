@@ -4,8 +4,8 @@
 namespace akimbo::UI
 {
 
-WidgetRenderer::WidgetRenderer(Renderer2D& renderer)
-	: Renderer2D(renderer.getWindow()), renderer(renderer)
+WidgetRenderer::WidgetRenderer(Renderer2D& renderer, Widget& target, Vec2i offset)
+	: Renderer2D(renderer.getWindow()), renderer(renderer), target(target), offset(offset)
 {
 }
 
@@ -26,22 +26,28 @@ void WidgetRenderer::display()
 
 void WidgetRenderer::clear(float r, float g, float b, float a)
 {
-	renderer.clear(r, g, b, a);
+	renderer.color(r, g, b, a);
+	renderer.box(offset.x, offset.y, target.size().x, target.size().y);
 }
 
 void WidgetRenderer::clear()
 {
-	renderer.clear();
+	renderer.box(offset.x, offset.y, target.size().x, target.size().y);
 }
 
 void WidgetRenderer::box(int x, int y, int w, int h)
 {
-	renderer.box(x, y, w, h);
+	renderer.box(offset.x + x, offset.y + y, w, h);
 }
 
 void WidgetRenderer::line(int x1, int y1, int x2, int y2)
 {
-	renderer.line(x1, y1, x2, y2);
+	renderer.line(
+		offset.x + x1,
+		offset.y + y1,
+		offset.x + x2,
+		offset.y + y2
+	);
 }
 
 }

@@ -27,6 +27,7 @@ public:
 private:
 	Root(Layout& layout);
 	void onRender(Renderer2D& render) final override;
+	void onAttached() final override;
 	void onUpdate() final override;
 
 	Layout& layout;

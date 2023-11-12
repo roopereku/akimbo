@@ -8,20 +8,30 @@
 class TestWidget : public akimbo::UI::Widget
 {
 public:
-	static TestWidget& add()
+	static TestWidget& add(float m)
 	{
-		return getCore().addUpdating(new TestWidget);
+		return getCore().addUpdating(new TestWidget(m));
 	}
 
 	void onRender(akimbo::Renderer2D& render) override
 	{
-		render.clear(1.0f, 1.0f, 1.0f);
+		render.clear(1.0f * m, 1.0f, 1.0f);
+
+		render.color(0.0f, 0.5f, 0.0f);
+		render.box(10, 10, 100, 100);
 	}
 
 	void onUpdate() override
 	{
 		render();
 	}
+
+private:
+	TestWidget(float m) : m(m)
+	{
+	}
+
+	float m;
 };
 
 class Test : public akimbo::Main
@@ -35,7 +45,9 @@ public:
 		auto& ui = akimbo::UI::SplitLayout::addRoot();
 		window.content = ui;
 
-		auto& testWidget = ui.child(TestWidget::add());
+		auto& testWidget1 = ui.child(TestWidget::add(1.0f));
+		auto& testWidget2 = ui.child(TestWidget::add(0.5f));
+		auto& testWidget3 = ui.child(TestWidget::add(0.25f));
 	}
 
 private:

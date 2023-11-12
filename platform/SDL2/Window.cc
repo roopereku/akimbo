@@ -30,12 +30,14 @@ Window::Window()
 	SDL_DisplayMode display;
 	SDL_GetCurrentDisplayMode(0, &display);
 
-	width.assignWithoutTrigger(display.w / 2);
-	height.assignWithoutTrigger(display.h / 2);
+	size.assignWithoutTrigger(Vec2(
+		display.w / 2,
+		display.h / 2
+	));
 
 	window = SDL_CreateWindow("SDL2 window",
 			SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-			width.getValue(), height.getValue(), 0);
+			size.getValue().x, size.getValue().y, 0);
 
 	if(!window)
 	{
