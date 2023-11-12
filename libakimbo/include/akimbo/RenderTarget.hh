@@ -7,20 +7,9 @@ namespace akimbo
 class RenderTarget
 {
 public:
-	bool isDirty()
-	{
-		return dirty;
-	}
-
-	void clear()
-	{
-		dirty = false;
-	}
-
-	void render()
-	{
-		dirty = true;
-	}
+	void clear();
+	bool isDirty();
+	void render();
 
 private:
 	bool dirty = false;

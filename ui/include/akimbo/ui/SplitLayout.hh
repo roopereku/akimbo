@@ -29,7 +29,6 @@ private:
 	{
 	}
 
-	void onRender(Renderer2D& render) override;
 	void onChildAdded() override;
 
 	Direction direction;

@@ -1,19 +1,16 @@
-#ifndef AKIMBO_SDL2_RENDERER2D_HH
-#define AKIMBO_SDL2_RENDERER2D_HH
+#ifndef AKIMBO_UI_WIDGET_RENDERER__HH
+#define AKIMBO_UI_WIDGET_RENDERER__HH
 
 #include <akimbo/Renderer2D.hh>
+#include <akimbo/ui/Widget.hh>
 
-#include <SDL2/SDL.h>
-
-namespace akimbo::SDL2
+namespace akimbo::UI
 {
 
-class Window;
-
-class Renderer2D : public akimbo::Renderer2D
+class WidgetRenderer : public Renderer2D
 {
 public:
-	static Renderer2D& add(SDL2::Window& target);
+	WidgetRenderer(Renderer2D& renderer);
 
 	void color(float r, float g, float b, float a = 1.0f) override;
 	void setScissor(int x, int y, int w, int h) override;
@@ -26,9 +23,7 @@ public:
 	void line(int x1, int y1, int x2, int y2) override;
 
 private:
-	Renderer2D(SDL2::Window& target);
-
-	SDL_Renderer* renderer;
+	Renderer2D& renderer;
 };
 
 }

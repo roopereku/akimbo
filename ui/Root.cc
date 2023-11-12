@@ -27,8 +27,14 @@ Root::operator Layout&()
 void Root::onRender(Renderer2D& render)
 {
 	render.clear(0.3f, 0.3f, 0.3f);
-
 	layout.onRender(render);
+}
+
+void Root::onUpdate()
+{
+	// UI Root is rendered constantly to make it easy to
+	// render the root layout.
+	render();
 }
 
 }

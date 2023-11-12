@@ -28,11 +28,6 @@ Root& SplitLayout::addRoot(Direction direction)
 	return root;
 }
 
-void SplitLayout::onRender(Renderer2D& render)
-{
-	Widget::onRender(render);
-}
-
 void SplitLayout::onChildAdded()
 {
 }

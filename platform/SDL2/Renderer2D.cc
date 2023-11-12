@@ -25,6 +25,12 @@ void Renderer2D::display()
 	SDL_RenderPresent(renderer);
 }
 
+void Renderer2D::setScissor(int x, int y, int w, int h)
+{
+	SDL_Rect rect { x, y, w, h };
+	SDL_RenderSetClipRect(renderer, &rect);
+}
+
 void Renderer2D::color(float r, float g, float b, float a)
 {
 	SDL_SetRenderDrawColor(renderer, r * 255, g * 255, b * 255, a * 255);

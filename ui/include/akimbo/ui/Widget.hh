@@ -9,18 +9,21 @@ namespace akimbo::UI
 {
 
 class Layout;
+class WidgetRenderer;
 
-class Widget : public RenderTarget2D, public UpdatingEntity
+class Widget : public UpdatingEntity, public RenderTarget2D
 {
 public:
-	virtual void onRender(Renderer2D& render);
-
 	EntityProperty <Layout> parent;
+
+	virtual void onRender(Renderer2D& render) override;
 
 protected:
 	Widget();
 
-	virtual void onUpdate();
+	void render();
+	virtual void onUpdate() override;
+	virtual void onPropertyChanged(Property& property) override;
 };
 
 }

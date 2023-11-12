@@ -11,6 +11,12 @@ class Window;
 
 class Renderer : public UpdatingEntity
 {
+public:
+	Window& getWindow()
+	{
+		return window.getValue();
+	}
+
 protected:
 	Renderer(Window& target) : window(*this, target)
 	{

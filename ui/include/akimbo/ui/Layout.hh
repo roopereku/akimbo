@@ -14,16 +14,28 @@ public:
 	template <typename T>
 	T& child(T& widget)
 	{
-		widget.parent = *this;
-		children.emplace_back(std::static_pointer_cast <Widget> (widget.shared_from_this()));
-		onChildAdded();
+		prepareChild(widget);
 		return widget;
 	}
+
+	void onRender(Renderer2D& render) final override;
 
 protected:
 	virtual void onChildAdded() = 0;
 
-	std::vector <std::shared_ptr <Widget>> children;
+	struct WidgetInLayout
+	{
+		WidgetInLayout(Widget& widget);
+
+		std::shared_ptr <Widget> widget;
+		int x = 0;
+		int y = 0;
+	};
+
+	std::vector <WidgetInLayout> children;
+
+private:
+	void prepareChild(Widget& child);
 };
 
 }
