@@ -17,6 +17,11 @@ void Widget::onLayout()
 {
 }
 
+Widget* Widget::findAt(Vec2i& at)
+{
+	return this;
+}
+
 void Widget::render()
 {
 	if(parent)

@@ -21,6 +21,11 @@ public:
 		render.box(10, 10, 100, 100);
 	}
 
+	void onClick(Vec2i at) override
+	{
+		printf("nii %.2f\n", m);
+	}
+
 	void onUpdate() override
 	{
 		render();
@@ -45,9 +50,8 @@ public:
 		auto& ui = akimbo::UI::SplitLayout::addRoot();
 		window.content = ui;
 
-		auto& testWidget1 = ui.child(TestWidget::add(1.0f));
-		auto& testWidget2 = ui.child(TestWidget::add(0.5f));
-		auto& testWidget3 = ui.child(TestWidget::add(0.25f));
+		auto& test = ui.child(TestWidget::add(0.5));
+		auto& test2 = ui.child(TestWidget::add(0.4));
 	}
 
 private:

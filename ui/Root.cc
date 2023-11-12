@@ -35,6 +35,16 @@ void Root::onAttached()
 	layout.size = window.getValue().size();
 }
 
+void Root::onMouseClick(Vec2i at)
+{
+	focused = layout.findAt(at);
+
+	if(focused)
+	{
+		focused->onClick(at);
+	}
+}
+
 void Root::onUpdate()
 {
 	// UI Root is rendered constantly to make it easy to

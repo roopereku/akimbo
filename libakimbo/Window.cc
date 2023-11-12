@@ -27,4 +27,12 @@ void Window::onPropertyChanged(Property& property)
 	}
 }
 
+void Window::onClick(Vec2i at)
+{
+	if(content)
+	{
+		content().onMouseClick(at);
+	}
+}
+
 }

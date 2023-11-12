@@ -30,6 +30,7 @@ private:
 	}
 
 	void onLayout() override;
+	void onClick(Vec2i at) override;
 
 	Direction direction;
 };

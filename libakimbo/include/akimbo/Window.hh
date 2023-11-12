@@ -27,6 +27,7 @@ protected:
 	virtual ~Window();
 
 	virtual void onResize();
+	void onClick(Vec2i at) final override;
 
 	Renderer* renderer = nullptr;
 
@@ -47,6 +48,7 @@ protected:
 	EntityProperty <Window> window;
 
 	virtual void onAttached() = 0;
+	virtual void onMouseClick(Vec2i at) = 0;
 
 private:
 	void onUpdate() override

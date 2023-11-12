@@ -20,6 +20,8 @@ public:
 	}
 
 	void onRender(Renderer2D& render) final override;
+	Widget* findAt(Vec2i& at) final override;
+
 	virtual void onLayout() override = 0;
 
 protected:
@@ -35,6 +37,7 @@ protected:
 
 private:
 	void prepareChild(Widget& child);
+
 };
 
 }

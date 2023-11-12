@@ -33,6 +33,11 @@ public:
 		return *this;
 	}
 
+	T& operator()()
+	{
+		return getValue();
+	}
+
 	T& getValue()
 	{
 		// TODO: Assert entity validity.

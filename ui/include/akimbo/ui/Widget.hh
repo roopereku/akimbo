@@ -19,6 +19,12 @@ public:
 	virtual void onRender(Renderer2D& render) override;
 	virtual void onLayout();
 
+	/// Find a widget at the given coordinates. This function is primarily used
+	/// by Layout to find child widgets at given coordinates.
+	/// \param at Coordinates to find a widget from.
+	/// \returns Widget at given coordinats.
+	virtual Widget* findAt(Vec2i& at);
+
 protected:
 	Widget();
 

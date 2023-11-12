@@ -14,6 +14,8 @@ public:
 	View();
 
 	ValueProperty <Vec2i> size;
+
+	virtual void onClick(Vec2i at) = 0;
 };
 
 }

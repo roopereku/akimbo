@@ -57,9 +57,19 @@ void Window::onUpdate()
 	SDL_Event event;
 	while(SDL_PollEvent(&event))
 	{
-		if(event.type == SDL_QUIT)
+		switch(event.type)
 		{
-			getCore().isRunning = false;
+			case SDL_QUIT:
+			{
+				getCore().isRunning = false;
+				break;
+			}
+
+			case SDL_MOUSEBUTTONDOWN:
+			{
+				Vec2i at(event.button.x, event.button.y);
+				onClick(at);
+			}
 		}
 	}
 }

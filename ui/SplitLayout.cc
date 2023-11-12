@@ -63,4 +63,8 @@ void SplitLayout::onLayout()
 	}
 }
 
+void SplitLayout::onClick(Vec2i at)
+{
+}
+
 }
