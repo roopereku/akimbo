@@ -27,32 +27,31 @@ void Window::onPropertyChanged(Property& property)
 	}
 }
 
-void Window::mouseButtonDown(Vec2i at)
+void Window::onMouseButtonDown(Vec2i at)
 {
 	mouseHeld = true;
-	mousePosition = at;
+	mouseMoved = false;
 }
 
-void Window::mouseMoved(Vec2i at)
+void Window::onMouseMoved(Vec2i at)
 {
 	if(mouseHeld)
 	{
-		Vec2i delta = mousePosition - at;
-		onDrag(delta);
+		onDrag(at);
 	}
 
-	mousePosition = at;
+	mouseMoved = true;
 }
 
-void Window::mouseButtonUp(Vec2i at)
+void Window::onMouseButtonUp(Vec2i at)
 {
-	if(mouseHeld)
+	if(mouseHeld && !mouseMoved)
 	{
 		onClick(at);
 	}
 
 	mouseHeld = false;
-	mousePosition = at;
+	mouseMoved = false;
 }
 
 void Window::onClick(Vec2i at)
@@ -63,11 +62,11 @@ void Window::onClick(Vec2i at)
 	}
 }
 
-void Window::onDrag(Vec2i delta)
+void Window::onDrag(Vec2i at)
 {
 	if(content)
 	{
-		content().onMouseDrag(delta);
+		content().onMouseDrag(at);
 	}
 }
 

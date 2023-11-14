@@ -23,7 +23,7 @@ public:
 	virtual Renderer& createRenderer() = 0;
 
 	void onClick(Vec2i at) final override;
-	void onDrag(Vec2i delta) final override;
+	void onDrag(Vec2i at) final override;
 
 protected:
 	Window();
@@ -31,17 +31,17 @@ protected:
 
 	virtual void onResize();
 
-	void mouseButtonDown(Vec2i at);
-	void mouseMoved(Vec2i at);
-	void mouseButtonUp(Vec2i at);
+	void onMouseButtonDown(Vec2i at);
+	void onMouseMoved(Vec2i at);
+	void onMouseButtonUp(Vec2i at);
 
 	Renderer* renderer = nullptr;
 
 private:
 	void onPropertyChanged(Property& property) final override;
 
-	Vec2i mousePosition;
 	bool mouseHeld = false;
+	bool mouseMoved = false;
 };
 
 class Window::Content : public UpdatingEntity, public RenderTarget2D
@@ -58,7 +58,7 @@ protected:
 
 	virtual void onAttached() = 0;
 	virtual void onMouseClick(Vec2i at) = 0;
-	virtual void onMouseDrag(Vec2i delta) = 0;
+	virtual void onMouseDrag(Vec2i at) = 0;
 
 private:
 	void onUpdate() override

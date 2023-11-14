@@ -68,21 +68,21 @@ void Window::onUpdate()
 			case SDL_MOUSEBUTTONDOWN:
 			{
 				Vec2i at(event.button.x, event.button.y);
-				mouseButtonDown(at);
+				onMouseButtonDown(at);
 				break;
 			}
 
 			case SDL_MOUSEBUTTONUP:
 			{
 				Vec2i at(event.button.x, event.button.y);
-				mouseButtonUp(at);
+				onMouseButtonUp(at);
 				break;
 			}
 
 			case SDL_MOUSEMOTION:
 			{
 				Vec2i at(event.button.x, event.button.y);
-				mouseMoved(at);
+				onMouseMoved(at);
 				break;
 			}
 		}

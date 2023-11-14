@@ -13,6 +13,14 @@ void Widget::onRender(Renderer2D& render)
 {
 }
 
+void Widget::onDrag(Vec2i at)
+{
+}
+
+void Widget::onClick(Vec2i at)
+{
+}
+
 void Widget::onLayout()
 {
 }

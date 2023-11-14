@@ -17,6 +17,8 @@ public:
 	EntityProperty <Layout> parent;
 
 	virtual void onRender(Renderer2D& render) override;
+	virtual void onDrag(Vec2i at) override;
+	virtual void onClick(Vec2i at) override;
 	virtual void onLayout();
 
 	/// Find a widget at the given coordinates. This function is primarily used

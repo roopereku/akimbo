@@ -16,7 +16,7 @@ public:
 	ValueProperty <Vec2i> size;
 
 	virtual void onClick(Vec2i at) = 0;
-	virtual void onDrag(Vec2i delta) = 0;
+	virtual void onDrag(Vec2i at) = 0;
 };
 
 }
