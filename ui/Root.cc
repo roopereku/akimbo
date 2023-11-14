@@ -45,6 +45,10 @@ void Root::onMouseClick(Vec2i at)
 	}
 }
 
+void Root::onMouseDrag(Vec2i delta)
+{
+}
+
 void Root::onUpdate()
 {
 	// UI Root is rendered constantly to make it easy to
