@@ -1,10 +1,10 @@
 #include <akimbo/Property.hh>
-#include <akimbo/PropertyHost.hh>
+#include <akimbo/Entity.hh>
 
 namespace akimbo
 {
 
-Property::Property(PropertyHost& host) : host(host)
+Property::Property(Entity& host) : host(host)
 {
 }
 

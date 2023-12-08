@@ -1,7 +1,7 @@
 #ifndef AKIMBO_ENTITY_HH
 #define AKIMBO_ENTITY_HH
 
-#include <akimbo/PropertyHost.hh>
+#include <akimbo/Property.hh>
 
 #include <memory>
 
@@ -10,7 +10,7 @@ namespace akimbo
 
 class Core;
 
-class Entity : public PropertyHost, public std::enable_shared_from_this <Entity>
+class Entity : public std::enable_shared_from_this <Entity>
 {
 public:
 	Entity()
@@ -25,7 +25,14 @@ public:
 		return false;
 	}
 
+	// Property needs access to onPropertyChanged().
+	friend class Property;
+
 protected:
+	virtual void onPropertyChanged(Property& property)
+	{
+	}
+
 	static Core& getCore();
 };
 

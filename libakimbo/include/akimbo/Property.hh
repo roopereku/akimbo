@@ -4,12 +4,12 @@
 namespace akimbo
 {
 
-class PropertyHost;
+class Entity;
 
 class Property
 {
 public:
-	Property(PropertyHost& host);
+	Property(Entity& host);
 
 	bool operator==(Property& rhs);
 
@@ -17,7 +17,7 @@ protected:
 	void triggerChange();
 
 private:
-	PropertyHost& host;
+	Entity& host;
 };
 
 };

@@ -11,11 +11,11 @@ template <typename T>
 class EntityProperty : public Property
 {
 public:
-	EntityProperty(PropertyHost& host) : Property(host)
+	EntityProperty(Entity& host) : Property(host)
 	{
 	}
 
-	EntityProperty(PropertyHost& host, T& initialValue)
+	EntityProperty(Entity& host, T& initialValue)
 		: Property(host), entity(initialValue.shared_from_this())
 	{
 	}

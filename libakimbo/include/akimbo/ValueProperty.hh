@@ -12,11 +12,11 @@ template <typename T>
 class ValueProperty : public Property
 {
 public:
-	ValueProperty(PropertyHost& host) : Property(host)
+	ValueProperty(Entity& host) : Property(host)
 	{
 	}
 
-	ValueProperty(PropertyHost& host, T&& initial) : Property(host), value(initial)
+	ValueProperty(Entity& host, T&& initial) : Property(host), value(initial)
 	{
 	}
 
