@@ -5,17 +5,19 @@
 #include <akimbo/SDL2/Window.hh>
 #include <akimbo/ui/SplitLayout.hh>
 
+#include <random>
+
 class TestWidget : public akimbo::UI::Widget
 {
 public:
-	static TestWidget& add(float m)
+	static TestWidget& add()
 	{
-		return getCore().addUpdating(new TestWidget(m));
+		return getCore().addUpdating(new TestWidget);
 	}
 
 	void onRender(akimbo::Renderer2D& render) override
 	{
-		render.clear(1.0f * m, 1.0f, 1.0f);
+		render.clear(r, g, b);
 
 		render.color(0.0f, 0.5f, 0.0f);
 		render.box(10, 10, 100, 100);
@@ -23,7 +25,7 @@ public:
 
 	void onClick(Vec2i at) override
 	{
-		printf("nii %.2f\n", m);
+		printf("Clicked %.2f %.2f %.2f\n", r, g, b);
 	}
 
 	void onUpdate() override
@@ -32,11 +34,20 @@ public:
 	}
 
 private:
-	TestWidget(float m) : m(m)
+	TestWidget()
 	{
+		std::random_device rd;
+		std::mt19937 gen(rd());
+		std::uniform_real_distribution <float> dist(0.0f, 1.0f);
+
+		r = dist(gen);
+		g = dist(gen);
+		b = dist(gen);
 	}
 
-	float m;
+	float r;
+	float g;
+	float b;
 };
 
 class Test : public akimbo::Main
@@ -50,8 +61,15 @@ public:
 		auto& ui = akimbo::UI::SplitLayout::addRoot();
 		window.content = ui;
 
-		auto& test = ui.child(TestWidget::add(0.5));
-		auto& test2 = ui.child(TestWidget::add(0.4));
+		auto& left = ui.child(akimbo::UI::SplitLayout::addVertical());
+		auto& right = ui.child(TestWidget::add());
+
+		auto& l1 = left.child(TestWidget::add());
+		auto& l2 = left.child(TestWidget::add());
+		auto& l3 = left.child(akimbo::UI::SplitLayout::addHorizontal());
+
+		auto& inner1 = l3.child(TestWidget::add());
+		auto& inner2 = l3.child(TestWidget::add());
 	}
 
 private:
