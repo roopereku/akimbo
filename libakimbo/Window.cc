@@ -12,14 +12,11 @@ Window::~Window()
 {
 }
 
-void Window::onResize()
-{
-}
-
 void Window::onPropertyChanged(Property& property)
 {
 	if(property == content)
 	{
+		content.getValue().size = getSize();
 		content.getValue().window = *this;
 		content.getValue().onAttached();
 
@@ -37,7 +34,10 @@ void Window::onMouseMoved(Vec2i at)
 {
 	if(mouseHeld)
 	{
-		onDrag(at);
+		if(content)
+		{
+			content().onDrag(at);
+		}
 	}
 
 	mouseMoved = true;
@@ -47,27 +47,14 @@ void Window::onMouseButtonUp(Vec2i at)
 {
 	if(mouseHeld && !mouseMoved)
 	{
-		onClick(at);
+		if(content)
+		{
+			content().onClick(at);
+		}
 	}
 
 	mouseHeld = false;
 	mouseMoved = false;
-}
-
-void Window::onClick(Vec2i at)
-{
-	if(content)
-	{
-		content().onMouseClick(at);
-	}
-}
-
-void Window::onDrag(Vec2i at)
-{
-	if(content)
-	{
-		content().onMouseDrag(at);
-	}
 }
 
 }

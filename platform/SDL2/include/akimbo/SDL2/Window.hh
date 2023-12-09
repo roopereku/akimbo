@@ -20,8 +20,8 @@ public:
 private:
 	Window();
 
-	void onResize() override;
 	void handleEvents();
+	Vec2i getSize() final override;
 
 	SDL_Window* window = nullptr;
 };

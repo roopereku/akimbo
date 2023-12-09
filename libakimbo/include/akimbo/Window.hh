@@ -11,27 +11,23 @@ namespace akimbo
 
 class WindowContent;
 
-class Window : public View
+class Window : public Entity
 {
 public:
 	class Content;
-
 	EntityProperty <Content> content;
 
 	virtual Renderer& createRenderer() = 0;
-
-	void onClick(Vec2i at) final override;
-	void onDrag(Vec2i at) final override;
 
 protected:
 	Window();
 	virtual ~Window();
 
-	virtual void onResize();
-
 	void onMouseButtonDown(Vec2i at);
 	void onMouseMoved(Vec2i at);
 	void onMouseButtonUp(Vec2i at);
+
+	virtual Vec2i getSize() = 0;
 
 	Renderer* renderer = nullptr;
 
@@ -42,7 +38,7 @@ private:
 	bool mouseMoved = false;
 };
 
-class Window::Content : public Entity, public RenderTarget2D
+class Window::Content : public View, public RenderTarget2D
 {
 public:
 	Content() : window(*this)
@@ -55,8 +51,8 @@ protected:
 	EntityProperty <Window> window;
 
 	virtual void onAttached() = 0;
-	virtual void onMouseClick(Vec2i at) = 0;
-	virtual void onMouseDrag(Vec2i at) = 0;
+	void onClick(Vec2i at) = 0;
+	void onDrag(Vec2i at) = 0;
 };
 
 }

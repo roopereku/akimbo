@@ -38,10 +38,10 @@ void Root::onRender(Renderer2D& render)
 
 void Root::onAttached()
 {
-	layout.size = window.getValue().size();
+	layout.size = size.getValue();
 }
 
-void Root::onMouseClick(Vec2i at)
+void Root::onClick(Vec2i at)
 {
 	focused = layout.findAt(at);
 
@@ -51,7 +51,7 @@ void Root::onMouseClick(Vec2i at)
 	}
 }
 
-void Root::onMouseDrag(Vec2i delta)
+void Root::onDrag(Vec2i delta)
 {
 }
 

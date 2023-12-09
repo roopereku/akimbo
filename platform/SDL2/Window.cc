@@ -30,14 +30,14 @@ Window::Window()
 	SDL_DisplayMode display;
 	SDL_GetCurrentDisplayMode(0, &display);
 
-	size.assignWithoutTrigger(Vec2(
+	Vec2i size(
 		display.w / 2,
 		display.h / 2
-	));
+	);
 
 	window = SDL_CreateWindow("SDL2 window",
 			SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-			size.getValue().x, size.getValue().y, 0);
+			size.x, size.y, 0);
 
 	if(!window)
 	{
@@ -53,10 +53,6 @@ Window::Window()
 	printf("Created SDL window\n");
 }
 	
-void Window::onResize()
-{
-}
-
 void Window::handleEvents()
 {
 	SDL_Event event;
@@ -92,6 +88,14 @@ void Window::handleEvents()
 			}
 		}
 	}
+}
+
+Vec2i Window::getSize()
+{
+	Vec2i size;
+	SDL_GetWindowSizeInPixels(window, &size.x, &size.y);
+
+	return size;
 }
 
 }

@@ -28,8 +28,8 @@ private:
 	Root(Layout& layout);
 	void onRender(Renderer2D& render) final override;
 	void onAttached() final override;
-	void onMouseClick(Vec2i at) final override;
-	void onMouseDrag(Vec2i delta) final override;
+	void onClick(Vec2i at) final override;
+	void onDrag(Vec2i delta) final override;
 
 	Widget* focused = nullptr;
 	Layout& layout;
