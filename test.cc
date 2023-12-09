@@ -77,6 +77,5 @@ private:
 
 int main()
 {
-	Test test;
-	test.run();
+	akimbo::Main::run <Test> ();
 }

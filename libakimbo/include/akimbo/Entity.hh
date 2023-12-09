@@ -38,10 +38,13 @@ protected:
 	{
 	}
 
+	/// Creates a new repeating task that repeats the given amount.
+	/// \param callback The callback to call upon executing the task.
+	/// \param repetitions How many times to repeat. Defaults to 0 (Repeat infinitely).
 	template <typename Callback>
-	void addRepeatingTask(Callback&& callback)
+	void addRepeatingTask(Callback&& callback, unsigned repetitions = 0)
 	{
-		tasks.emplace_back(RepeatingTask <Callback>::make(std::move(callback)));
+		tasks.emplace_back(RepeatingTask <Callback>::make(std::move(callback), repetitions));
 	}
 
 	static Core& getCore();
