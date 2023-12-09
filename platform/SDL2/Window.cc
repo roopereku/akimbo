@@ -37,7 +37,7 @@ Window::Window()
 
 	window = SDL_CreateWindow("SDL2 window",
 			SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-			size.x, size.y, 0);
+			size.x, size.y, SDL_WINDOW_RESIZABLE);
 
 	if(!window)
 	{
@@ -60,6 +60,22 @@ void Window::handleEvents()
 	{
 		switch(event.type)
 		{
+			case SDL_WINDOWEVENT:
+			{
+				switch(event.window.event)
+				{
+					case SDL_WINDOWEVENT_RESIZED:
+					{
+						onWindowResized(Vec2i(
+							event.window.data1,
+							event.window.data2
+						));
+					}
+				}
+
+				break;
+			}
+
 			case SDL_QUIT:
 			{
 				getCore().isRunning = false;

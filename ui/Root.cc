@@ -3,6 +3,8 @@
 #include <akimbo/Renderer2D.hh>
 #include <akimbo/Core.hh>
 
+#include <cstdio>
+
 namespace akimbo::UI
 {
 
@@ -53,6 +55,14 @@ void Root::onClick(Vec2i at)
 
 void Root::onDrag(Vec2i delta)
 {
+}
+
+void Root::onPropertyChanged(Property& property)
+{
+	if(property == size)
+	{
+		layout.size = size.getValue();
+	}
 }
 
 }

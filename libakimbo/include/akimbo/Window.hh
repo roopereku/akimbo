@@ -27,6 +27,8 @@ protected:
 	void onMouseMoved(Vec2i at);
 	void onMouseButtonUp(Vec2i at);
 
+	void onWindowResized(Vec2i size);
+
 	virtual Vec2i getSize() = 0;
 
 	Renderer* renderer = nullptr;
@@ -51,8 +53,9 @@ protected:
 	EntityProperty <Window> window;
 
 	virtual void onAttached() = 0;
-	void onClick(Vec2i at) = 0;
-	void onDrag(Vec2i at) = 0;
+
+	virtual void onClick(Vec2i at) override = 0;
+	virtual void onDrag(Vec2i at) override = 0;
 };
 
 }

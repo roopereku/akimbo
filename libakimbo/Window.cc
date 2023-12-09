@@ -57,4 +57,12 @@ void Window::onMouseButtonUp(Vec2i at)
 	mouseMoved = false;
 }
 
+void Window::onWindowResized(Vec2i size)
+{
+	if(content)
+	{
+		content.getValue().size = size;
+	}
+}
+
 }
