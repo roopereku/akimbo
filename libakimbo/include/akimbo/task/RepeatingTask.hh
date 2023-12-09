@@ -13,8 +13,9 @@ class RepeatingTask : public Task
 {
 public:
 	/// Invokes the repeating task.
+	/// \param context The core that this task is being executed in.
 	/// \return True if all repetitions are done.
-	bool tryFinish() final override
+	bool tryFinish(Core&) final override
 	{
 		callback();
 		invoked++;

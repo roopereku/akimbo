@@ -4,6 +4,7 @@
 #include <akimbo/Property.hh>
 #include <akimbo/task/Task.hh>
 #include <akimbo/task/RepeatingTask.hh>
+#include <akimbo/task/TransitionTask.hh>
 
 #include <vector>
 #include <memory>
@@ -45,6 +46,15 @@ protected:
 	void addRepeatingTask(Callback&& callback, unsigned repetitions = 0)
 	{
 		tasks.emplace_back(RepeatingTask <Callback>::make(std::move(callback), repetitions));
+	}
+
+	/// Creates a new repeating task that repeats the given amount.
+	/// \param callback The callback to call upon executing the task.
+	/// \param durationSeconds How long this TransitionTask should last for.
+	template <typename Callback>
+	void addTransitionTask(Callback&& callback, double durationSeconds)
+	{
+		tasks.emplace_back(TransitionTask <Callback>::make(std::move(callback), durationSeconds));
 	}
 
 	static Core& getCore();

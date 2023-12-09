@@ -6,6 +6,7 @@
 #include <akimbo/ui/SplitLayout.hh>
 
 #include <random>
+#include <thread>
 
 class TestWidget : public akimbo::UI::Widget
 {
@@ -26,6 +27,20 @@ public:
 	void onClick(Vec2i at) override
 	{
 		printf("Clicked %.2f %.2f %.2f\n", r, g, b);
+
+		if(at.x > 10 && at.x < 100 && at.y > 10 && at.y < 100)
+		{
+			std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+		}
+
+		else
+		{
+			addTransitionTask([this](float progress)
+			{
+				r = progress;
+				render();
+			}, 3);
+		}
 	}
 
 	void onDrag(Vec2i at) override
@@ -76,8 +91,6 @@ public:
 		auto& inner1 = l3.child(TestWidget::add());
 		auto& inner2 = l3.child(TestWidget::add());
 	}
-
-private:
 };
 
 int main()

@@ -93,6 +93,7 @@ void Window::handleEvents()
 			{
 				Vec2i at(event.button.x, event.button.y);
 				onMouseButtonUp(at);
+
 				break;
 			}
 

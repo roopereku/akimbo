@@ -6,6 +6,7 @@
 
 #include <vector>
 #include <memory>
+#include <chrono>
 
 namespace akimbo
 {
@@ -20,15 +21,19 @@ public:
 		return static_cast <T&> (*entities.back());
 	}
 
+	double getDeltaTime();
 	void run();
 
 	ValueProperty <bool> isRunning;
 
-	friend class Entity;
+	// Grant access to the Core constructor.
+	friend Core& Entity::getCore();
 
 protected:
 	Core();
 
+private:
+	std::chrono::duration <double> deltaTime;
 	std::vector <std::shared_ptr <Entity>> entities;
 };
 

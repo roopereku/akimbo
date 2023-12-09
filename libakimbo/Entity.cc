@@ -14,7 +14,7 @@ void Entity::executeTasks()
 {
 	for(size_t i = 0; i < tasks.size(); i++)
 	{
-		if(tasks[i]->tryFinish())
+		if(tasks[i]->tryFinish(getCore()))
 		{
 			tasks.erase(tasks.begin() + i);
 			i--;
