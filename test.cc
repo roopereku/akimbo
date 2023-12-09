@@ -12,7 +12,7 @@ class TestWidget : public akimbo::UI::Widget
 public:
 	static TestWidget& add()
 	{
-		return getCore().addUpdating(new TestWidget);
+		return getCore().add(new TestWidget);
 	}
 
 	void onRender(akimbo::Renderer2D& render) override
@@ -28,11 +28,6 @@ public:
 		printf("Clicked %.2f %.2f %.2f\n", r, g, b);
 	}
 
-	void onUpdate() override
-	{
-		render();
-	}
-
 private:
 	TestWidget()
 	{
@@ -43,6 +38,11 @@ private:
 		r = dist(gen);
 		g = dist(gen);
 		b = dist(gen);
+
+		addRepeatingTask([this]()
+		{
+			render();
+		});
 	}
 
 	float r;

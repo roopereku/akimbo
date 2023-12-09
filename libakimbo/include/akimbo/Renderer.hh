@@ -1,7 +1,6 @@
 #ifndef AKIMBO_RENDDERER_HH
 #define AKIMBO_RENDDERER_HH
 
-#include <akimbo/UpdatingEntity.hh>
 #include <akimbo/EntityProperty.hh>
 
 namespace akimbo
@@ -9,7 +8,7 @@ namespace akimbo
 
 class Window;
 
-class Renderer : public UpdatingEntity
+class Renderer : public Entity
 {
 public:
 	Window& getWindow()
@@ -21,8 +20,6 @@ protected:
 	Renderer(Window& target) : window(*this, target)
 	{
 	}
-
-	virtual void onUpdate() override = 0;
 
 	EntityProperty <Window> window;
 };

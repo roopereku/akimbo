@@ -40,10 +40,6 @@ void Widget::render()
 	RenderTarget2D::render();
 }
 
-void Widget::onUpdate()
-{
-}
-
 void Widget::onPropertyChanged(Property& property)
 {
 	// Did the size of this widget change?

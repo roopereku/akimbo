@@ -30,7 +30,6 @@ private:
 	void onAttached() final override;
 	void onMouseClick(Vec2i at) final override;
 	void onMouseDrag(Vec2i delta) final override;
-	void onUpdate() final override;
 
 	Widget* focused = nullptr;
 	Layout& layout;

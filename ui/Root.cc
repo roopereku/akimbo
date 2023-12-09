@@ -8,6 +8,12 @@ namespace akimbo::UI
 
 Root::Root(Layout& layout) : layout(layout)
 {
+	addRepeatingTask([this]()
+	{
+		// UI Root is rendered constantly to make it easy to
+		// render the root layout.
+		render();
+	});
 }
 
 Root::~Root()
@@ -16,7 +22,7 @@ Root::~Root()
 
 Root& Root::add(Layout& layout)
 {
-	return getCore().addUpdating(new Root(layout));
+	return getCore().add(new Root(layout));
 }
 
 Root::operator Layout&()
@@ -47,13 +53,6 @@ void Root::onMouseClick(Vec2i at)
 
 void Root::onMouseDrag(Vec2i delta)
 {
-}
-
-void Root::onUpdate()
-{
-	// UI Root is rendered constantly to make it easy to
-	// render the root layout.
-	render();
 }
 
 }

@@ -31,7 +31,6 @@ protected:
 	Widget();
 
 	void render();
-	virtual void onUpdate() override;
 	virtual void onPropertyChanged(Property& property) override;
 };
 

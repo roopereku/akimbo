@@ -2,7 +2,10 @@
 #define AKIMBO_ENTITY_HH
 
 #include <akimbo/Property.hh>
+#include <akimbo/task/Task.hh>
+#include <akimbo/task/RepeatingTask.hh>
 
+#include <vector>
 #include <memory>
 
 namespace akimbo
@@ -25,6 +28,8 @@ public:
 		return false;
 	}
 
+	void executeTasks();
+
 	// Property needs access to onPropertyChanged().
 	friend class Property;
 
@@ -33,7 +38,16 @@ protected:
 	{
 	}
 
+	template <typename Callback>
+	void addRepeatingTask(Callback&& callback)
+	{
+		tasks.emplace_back(RepeatingTask <Callback>::make(std::move(callback)));
+	}
+
 	static Core& getCore();
+
+private:
+	std::vector <std::shared_ptr <Task>> tasks;
 };
 
 }

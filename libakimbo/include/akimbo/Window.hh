@@ -6,8 +6,6 @@
 #include <akimbo/Renderer.hh>
 #include <akimbo/View.hh>
 
-#include <string_view>
-
 namespace akimbo
 {
 
@@ -44,7 +42,7 @@ private:
 	bool mouseMoved = false;
 };
 
-class Window::Content : public UpdatingEntity, public RenderTarget2D
+class Window::Content : public Entity, public RenderTarget2D
 {
 public:
 	Content() : window(*this)
@@ -59,11 +57,6 @@ protected:
 	virtual void onAttached() = 0;
 	virtual void onMouseClick(Vec2i at) = 0;
 	virtual void onMouseDrag(Vec2i at) = 0;
-
-private:
-	void onUpdate() override
-	{
-	}
 };
 
 }

@@ -4,20 +4,23 @@
 namespace akimbo
 {
 
-void Renderer2D::onUpdate()
+Renderer2D::Renderer2D(Window& target) : Renderer(target)
 {
-	if(window)
+	addRepeatingTask([this]()
 	{
-		auto& content = window.getValue().content.getValue();
-
-		if(content.isDirty())
+		if(window)
 		{
-			content.onRender(*this);
-			content.clear();
-		}
+			auto& content = window.getValue().content.getValue();
 
-		display();
-	}
+			if(content.isDirty())
+			{
+				content.onRender(*this);
+				content.clear();
+			}
+
+			display();
+		}
+	});
 }
 
 }

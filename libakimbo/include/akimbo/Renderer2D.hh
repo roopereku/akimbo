@@ -20,11 +20,7 @@ public:
 	virtual void line(int x1, int y1, int x2, int y2) = 0;
 
 protected:
-	Renderer2D(Window& target) : Renderer(target)
-	{
-	}
-
-	void onUpdate() final override;
+	Renderer2D(Window& target);
 };
 
 }

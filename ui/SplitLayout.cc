@@ -7,7 +7,7 @@ namespace akimbo::UI
 
 SplitLayout& SplitLayout::add(Direction direction)
 {
-	return getCore().addUpdating(new SplitLayout(direction));
+	return getCore().add(new SplitLayout(direction));
 }
 
 SplitLayout& SplitLayout::addVertical()

@@ -17,7 +17,7 @@ Renderer2D::Renderer2D(SDL2::Window& target) : akimbo::Renderer2D(target)
 
 Renderer2D& Renderer2D::add(SDL2::Window& target)
 {
-	return getCore().addUpdating(new Renderer2D(target));
+	return getCore().add(new Renderer2D(target));
 }
 
 void Renderer2D::display()

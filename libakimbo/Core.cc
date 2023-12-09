@@ -1,7 +1,5 @@
 #include <akimbo/Core.hh>
 
-#include <cstdio>
-
 namespace akimbo
 {
 
@@ -15,17 +13,9 @@ void Core::run()
 
 	while(isRunning.getValue())
 	{
-		onUpdate();
-	}
-}
-
-void Core::onUpdate()
-{
-	for(auto entity : updatingEntities)
-	{
-		if(entity->isUpdating())
+		for(auto entity : entities)
 		{
-			entity->onUpdate();
+			entity->executeTasks();
 		}
 	}
 }

@@ -7,7 +7,7 @@ namespace akimbo::SDL2
 
 Window& Window::add()
 {
-	return getCore().addUpdating(new Window());
+	return getCore().add(new Window());
 }
 
 Renderer& Window::createRenderer()
@@ -45,6 +45,11 @@ Window::Window()
 		return;
 	}
 
+	addRepeatingTask([this]()
+	{
+		handleEvents();
+	});
+
 	printf("Created SDL window\n");
 }
 	
@@ -52,7 +57,7 @@ void Window::onResize()
 {
 }
 
-void Window::onUpdate()
+void Window::handleEvents()
 {
 	SDL_Event event;
 	while(SDL_PollEvent(&event))

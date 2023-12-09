@@ -2,13 +2,13 @@
 #define AKIMBO_VIEW_HH
 
 #include <akimbo/ValueProperty.hh>
-#include <akimbo/UpdatingEntity.hh>
+#include <akimbo/Entity.hh>
 #include <akimbo/Vector2.hh>
 
 namespace akimbo
 {
 
-class View : public UpdatingEntity
+class View : public Entity
 {
 public:
 	View();

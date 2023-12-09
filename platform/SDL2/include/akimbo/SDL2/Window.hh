@@ -21,7 +21,7 @@ private:
 	Window();
 
 	void onResize() override;
-	void onUpdate() override;
+	void handleEvents();
 
 	SDL_Window* window = nullptr;
 };

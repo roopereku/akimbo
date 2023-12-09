@@ -1,7 +1,7 @@
 #ifndef AKIMBO_CORE_HH
 #define AKIMBO_CORE_HH
 
-#include <akimbo/UpdatingEntity.hh>
+#include <akimbo/Entity.hh>
 #include <akimbo/ValueProperty.hh>
 
 #include <vector>
@@ -10,14 +10,14 @@
 namespace akimbo
 {
 
-class Core : public UpdatingEntity
+class Core : public Entity
 {
 public:
 	template <typename T>
-	T& addUpdating(T* entity)
+	T& add(T* entity)
 	{
-		updatingEntities.emplace_back(entity);
-		return static_cast <T&> (*updatingEntities.back());
+		entities.emplace_back(entity);
+		return static_cast <T&> (*entities.back());
 	}
 
 	void run();
@@ -28,9 +28,8 @@ public:
 
 protected:
 	Core();
-	virtual void onUpdate() override;
 
-	std::vector <std::shared_ptr <UpdatingEntity>> updatingEntities;
+	std::vector <std::shared_ptr <Entity>> entities;
 };
 
 }
