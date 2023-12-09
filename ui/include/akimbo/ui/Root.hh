@@ -31,7 +31,7 @@ private:
 	void onRender(Renderer2D& render) final override;
 	void onAttached() final override;
 	void onClick(Vec2i at) final override;
-	void onDrag(Vec2i delta) final override;
+	void onDrag(Vec2i at) final override;
 
 	Widget* focused = nullptr;
 	Layout& layout;

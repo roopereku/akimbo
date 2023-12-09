@@ -28,6 +28,11 @@ public:
 		printf("Clicked %.2f %.2f %.2f\n", r, g, b);
 	}
 
+	void onDrag(Vec2i at) override
+	{
+		printf("Drag %d %d\n", at.x, at.y);
+	}
+
 private:
 	TestWidget()
 	{

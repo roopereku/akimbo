@@ -53,8 +53,17 @@ void Root::onClick(Vec2i at)
 	}
 }
 
-void Root::onDrag(Vec2i delta)
+void Root::onDrag(Vec2i at)
 {
+	if(!focused)
+	{
+		focused = layout.findAt(at);
+
+		if(!focused)
+			return;
+	}
+
+	focused->onDrag(at);
 }
 
 void Root::onPropertyChanged(Property& property)
