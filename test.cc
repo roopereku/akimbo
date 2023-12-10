@@ -4,6 +4,7 @@
 #include <akimbo/Main.hh>
 #include <akimbo/SDL2/Window.hh>
 #include <akimbo/ui/SplitLayout.hh>
+#include <akimbo/ui/Toggle.hh>
 
 #include <random>
 #include <thread>
@@ -89,7 +90,7 @@ public:
 		auto& l3 = left.child(akimbo::UI::SplitLayout::addHorizontal());
 
 		auto& inner1 = l3.child(TestWidget::add());
-		auto& inner2 = l3.child(TestWidget::add());
+		auto& inner2 = l3.child(akimbo::UI::Toggle::add());
 	}
 };
 

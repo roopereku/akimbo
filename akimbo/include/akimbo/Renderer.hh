@@ -1,6 +1,7 @@
 #ifndef AKIMBO_RENDDERER_HH
 #define AKIMBO_RENDDERER_HH
 
+#include <akimbo/Window.hh>
 #include <akimbo/EntityProperty.hh>
 
 namespace akimbo

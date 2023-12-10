@@ -3,13 +3,13 @@
 
 #include <akimbo/EntityProperty.hh>
 #include <akimbo/RenderTarget2D.hh>
-#include <akimbo/Renderer.hh>
 #include <akimbo/View.hh>
 
 namespace akimbo
 {
 
 class WindowContent;
+class Renderer;
 
 class Window : public Entity
 {
