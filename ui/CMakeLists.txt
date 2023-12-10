@@ -7,5 +7,5 @@ set(CMAKE_CXX_STANDARD 17)
 file(GLOB Sources *.cc)
 
 add_library(akimboui ${Sources})
-target_link_libraries(akimboui PUBLIC libakimbo)
+target_link_libraries(akimboui PUBLIC akimbo)
 target_include_directories(akimboui PUBLIC include)
