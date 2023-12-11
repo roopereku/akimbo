@@ -23,4 +23,9 @@ Renderer2D::Renderer2D(Window& target) : Renderer(target)
 	});
 }
 
+Vec2i Renderer2D::getOrigin()
+{
+	return Vec2i(0, 0);
+}
+
 }

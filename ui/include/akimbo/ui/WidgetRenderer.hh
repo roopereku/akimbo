@@ -20,13 +20,18 @@ public:
 	void clear(float r, float g, float b, float a = 1.0f) override;
 	void clear() override;
 
-	void box(int x, int y, int w, int h) override;
+	void box(int x, int y, int w, int h, bool filled) override;
 	void line(int x1, int y1, int x2, int y2) override;
+
+	Vec2i getOrigin() final override;
+	void showBorders();
 
 private:
 	Renderer2D& renderer;
 	Widget& target;
+
 	Vec2i offset;
+	Vec2i origin;
 };
 
 }

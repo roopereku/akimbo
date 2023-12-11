@@ -47,10 +47,19 @@ void Renderer2D::clear()
 	SDL_RenderClear(renderer);
 }
 
-void Renderer2D::box(int x, int y, int w, int h)
+void Renderer2D::box(int x, int y, int w, int h, bool filled)
 {
 	SDL_Rect rect { x, y, w, h };
-	SDL_RenderFillRect(renderer, &rect);
+
+	if(filled)
+	{
+		SDL_RenderFillRect(renderer, &rect);
+	}
+
+	else
+	{
+		SDL_RenderDrawRect(renderer, &rect);
+	}
 }
 
 void Renderer2D::line(int x1, int y1, int x2, int y2)

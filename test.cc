@@ -73,6 +73,23 @@ private:
 	float b;
 };
 
+class Intrusive : public akimbo::UI::Widget
+{
+public:
+	static Intrusive& add()
+	{
+		return getCore().add(new Intrusive);
+	}
+
+	void onRender(akimbo::Renderer2D& render) override
+	{
+		render.clear(0.1, 0.1, 0.3);
+
+		render.color(0.8, 0.8, 0.8);
+		render.box(-50, 10, 100, 100);
+	}
+};
+
 class Test : public akimbo::Main
 {
 public:
@@ -84,17 +101,17 @@ public:
 		auto& ui = akimbo::UI::SplitLayout::addRoot();
 		window.content = ui;
 
-		auto& tabLayout = ui.child(akimbo::UI::TabLayout::addScrolling());
+		auto& left = ui.child(akimbo::UI::SplitLayout::addVertical());
+		auto& right = ui.child(akimbo::UI::TabLayout::addScrolling());
 
-		tabLayout.child(TestWidget::add());
-		tabLayout.child(TestWidget::add());
-		tabLayout.child(TestWidget::add());
-		tabLayout.child(TestWidget::add());
-		tabLayout.child(TestWidget::add());
-		tabLayout.child(TestWidget::add());
-		tabLayout.child(TestWidget::add());
+		left.child(TestWidget::add());
+		left.child(TestWidget::add());
 
-		tabLayout.selectedIndex = 5;
+		right.child(TestWidget::add());
+		right.child(TestWidget::add());
+		right.child(TestWidget::add());
+
+		right.selectedIndex = 2;
 	}
 };
 
