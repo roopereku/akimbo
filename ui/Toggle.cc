@@ -41,6 +41,8 @@ void Toggle::onLayout()
 
 void Toggle::onPropertyChanged(Property& property)
 {
+	Widget::onPropertyChanged(property);
+
 	if(property == toggleState)
 	{
 		addTransitionTask([this](float progress)

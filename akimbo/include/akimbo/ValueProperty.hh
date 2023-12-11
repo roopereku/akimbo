@@ -46,6 +46,11 @@ public:
 		this->value = std::move(value);
 	}
 
+	void assignWithoutTrigger(const T& value)
+	{
+		this->value = value;
+	}
+
 	const T& getValue()
 	{
 		return value;

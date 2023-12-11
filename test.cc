@@ -4,6 +4,7 @@
 #include <akimbo/Main.hh>
 #include <akimbo/SDL2/Window.hh>
 #include <akimbo/ui/SplitLayout.hh>
+#include <akimbo/ui/ScrollLayout.hh>
 #include <akimbo/ui/Toggle.hh>
 
 #include <random>
@@ -82,15 +83,10 @@ public:
 		auto& ui = akimbo::UI::SplitLayout::addRoot();
 		window.content = ui;
 
-		auto& left = ui.child(akimbo::UI::SplitLayout::addVertical());
-		auto& right = ui.child(TestWidget::add());
+		auto& scrollLayout = ui.child(akimbo::UI::ScrollLayout::addHorizontal());
 
-		auto& l1 = left.child(TestWidget::add());
-		auto& l2 = left.child(TestWidget::add());
-		auto& l3 = left.child(akimbo::UI::SplitLayout::addHorizontal());
-
-		auto& inner1 = l3.child(TestWidget::add());
-		auto& inner2 = l3.child(akimbo::UI::Toggle::add());
+		scrollLayout.child(TestWidget::add());
+		scrollLayout.child(TestWidget::add());
 	}
 };
 
