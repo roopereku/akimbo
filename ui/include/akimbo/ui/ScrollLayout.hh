@@ -20,10 +20,22 @@ public:
 
 	ValueProperty <int> scroll;
 
+	/// Adds a new ScrollLayout.
+	/// \param direction In which direction should the scrolling happen.
+	/// \return The newly created ScrollLayout.
 	static ScrollLayout& add(Direction direction);
+
+	/// Adds a new vertically scrolling ScrollLayout.
+	/// \return The newly created vertical ScrollLayout.
 	static ScrollLayout& addVertical();
+
+	/// Adds a new horizontally scrolling ScrollLayout.
+	/// \return The newly created horizontal ScrollLayout.
 	static ScrollLayout& addHorizontal();
 
+	/// Adds a new root ScrollLayout.
+	/// \param direction In which direction should the scrolling happen. Defaults to Horizontal.
+	/// \return The newly created root layout.
 	static Root& addRoot(Direction direction = Direction::Horizontal);
 
 private:
