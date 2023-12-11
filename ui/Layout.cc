@@ -41,6 +41,11 @@ Widget* Layout::findAt(Vec2i& at)
 	return nullptr;
 }
 
+size_t Layout::getChildCount()
+{
+	return children.size();
+}
+
 void Layout::prepareChild(Widget& child)
 {
 	child.parent = *this;

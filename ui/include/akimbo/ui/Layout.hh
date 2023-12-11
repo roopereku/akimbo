@@ -21,6 +21,7 @@ public:
 
 	void onRender(Renderer2D& render) final override;
 	Widget* findAt(Vec2i& at) final override;
+	size_t getChildCount();
 
 	virtual void onLayout() override = 0;
 
@@ -33,10 +34,9 @@ protected:
 		Vec2i position;
 	};
 
-	std::vector <WidgetInLayout> children;
+	virtual void prepareChild(Widget& child);
 
-private:
-	void prepareChild(Widget& child);
+	std::vector <WidgetInLayout> children;
 
 };
 

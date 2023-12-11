@@ -5,6 +5,7 @@
 #include <akimbo/SDL2/Window.hh>
 #include <akimbo/ui/SplitLayout.hh>
 #include <akimbo/ui/ScrollLayout.hh>
+#include <akimbo/ui/TabLayout.hh>
 #include <akimbo/ui/Toggle.hh>
 
 #include <random>
@@ -83,10 +84,17 @@ public:
 		auto& ui = akimbo::UI::SplitLayout::addRoot();
 		window.content = ui;
 
-		auto& scrollLayout = ui.child(akimbo::UI::ScrollLayout::addHorizontal());
+		auto& tabLayout = ui.child(akimbo::UI::TabLayout::addScrolling());
 
-		scrollLayout.child(TestWidget::add());
-		scrollLayout.child(TestWidget::add());
+		tabLayout.child(TestWidget::add());
+		tabLayout.child(TestWidget::add());
+		tabLayout.child(TestWidget::add());
+		tabLayout.child(TestWidget::add());
+		tabLayout.child(TestWidget::add());
+		tabLayout.child(TestWidget::add());
+		tabLayout.child(TestWidget::add());
+
+		tabLayout.selectedIndex = 5;
 	}
 };
 
