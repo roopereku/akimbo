@@ -33,6 +33,14 @@ public:
 	/// \return The newly created Root.
 	static Root& addRoot(Type contentType);
 
+	/// Tries to go to the next tab.
+	/// \return True if the transition was successful.
+	bool next();
+
+	/// Tries to go to the previous tab.
+	/// \return True if the transition was successful.
+	bool previous();
+
 private:
 	TabLayout(Type type);
 

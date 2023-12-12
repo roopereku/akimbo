@@ -40,6 +40,28 @@ Root& TabLayout::addRoot(Type contentType)
 	return root;
 }
 
+bool TabLayout::next()
+{
+	if(selectedIndex() + 1 < content().getChildCount())
+	{
+		selectedIndex = selectedIndex() + 1;
+		return true;
+	}
+
+	return false;
+}
+
+bool TabLayout::previous()
+{
+	if(selectedIndex() - 1 >= 0)
+	{
+		selectedIndex = selectedIndex() - 1;
+		return true;
+	}
+
+	return false;
+}
+
 void TabLayout::prepareChild(Widget& child)
 {
 	// If the content layout has been set, forward the child to it.
@@ -83,29 +105,43 @@ void TabLayout::onPropertyChanged(Property& property)
 
 	if(property == selectedIndex)
 	{
+		printf("Selected index updated to %d\n", selectedIndex());
+
 		// If the index is too high, or too low, do nothing.
 		if(selectedIndex() < 0 || selectedIndex() >= content().getChildCount())
 		{
 			// TODO: Display a warning that an invalid index was used.
 			selectedIndex.assignWithoutTrigger(previousSelected);
+			printf("Reset back to %d\n", selectedIndex());
 			return;
 		}
 
-		// How many tabs and which direction are we moving in.
-		int delta = selectedIndex() - previousSelected;
-		previousSelected = selectedIndex();
-
-		// If the content is a ScrollLayout, do a scrolling animation.
 		if(contentType == Type::Scrolling)
 		{
 			ScrollLayout& scrolling = static_cast <ScrollLayout&> (content());
 
-			addTransitionTask([&scrolling, delta](float progress)
+			addTransitionTask([&scrolling, current = selectedIndex(), prev = previousSelected](float progress)
 			{
-				// At the given interval, adjust the scroll throughout the distance between tabs.
-				scrolling.scroll = (scrolling.size().x * delta) * progress;
+				// Calculate where the origin and destination are located at.
+				const int originScroll = scrolling.size().x * prev;
+				const int destinationScroll = scrolling.size().x * current;
+
+				// Moving forwards.
+				if(originScroll < destinationScroll)
+				{
+					scrolling.scroll = originScroll + (destinationScroll - originScroll) * progress;
+				}
+
+				// Moving backwards.
+				else
+				{
+					scrolling.scroll = originScroll - (originScroll - destinationScroll) * progress;
+				}
+
 			}, 0.5);
 		}
+
+		previousSelected = selectedIndex();
 	}
 }
 

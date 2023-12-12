@@ -87,7 +87,18 @@ public:
 		render.clear(0.1, 0.2, 0.3);
 
 		render.color(0.5, 0.5, 0.5);
-		render.box(25, 25, size().x - 25, size().y - 25);
+		render.box(25, 25, size().x - 50, size().y - 50);
+	}
+
+	void onClick(Vec2i at) override
+	{
+		if(at.x >= 25 && at.x <= size().x - 25 && at.y >= 25 && at.y <= size().y - 25)
+		{
+			if(callback)
+			{
+				callback();
+			}
+		}
 	}
 
 private:
@@ -109,17 +120,25 @@ public:
 		auto& ui = akimbo::UI::SplitLayout::addRoot();
 		window.content = ui;
 
-		auto& left = ui.child(akimbo::UI::SplitLayout::addVertical());
-		auto& right = ui.child(akimbo::UI::TabLayout::addScrolling());
+		auto& container = ui.child(akimbo::UI::SplitLayout::addVertical());
 
-		left.child(TestWidget::add());
-		left.child(TestWidget::add());
+		auto& tabs = container.child(akimbo::UI::TabLayout::addScrolling());
+		auto& buttons = container.child(akimbo::UI::SplitLayout::addHorizontal());
 
-		right.child(TestWidget::add());
-		right.child(TestWidget::add());
-		right.child(TestWidget::add());
+		auto& previousButton = buttons.child(Button::add([&tabs]()
+		{
+			tabs.previous();
+		}));
 
-		right.selectedIndex = 2;
+		auto& nextButton = buttons.child(Button::add([&tabs]()
+		{
+			tabs.next();
+		}));
+
+		tabs.child(TestWidget::add());
+		tabs.child(TestWidget::add());
+		tabs.child(TestWidget::add());
+		tabs.child(TestWidget::add());
 	}
 };
 
