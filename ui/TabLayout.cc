@@ -61,8 +61,16 @@ void TabLayout::prepareChild(Widget& child)
 
 void TabLayout::onLayout()
 {
+	Layout::onLayout();
+
 	content().size.assignWithoutTrigger(size());
 	content().onLayout();
+
+	if(contentType == Type::Scrolling)
+	{
+		ScrollLayout& scrolling = static_cast <ScrollLayout&> (content());
+		scrolling.scroll = scrolling.size().x * selectedIndex();
+	}
 }
 
 void TabLayout::onClick(Vec2i at)

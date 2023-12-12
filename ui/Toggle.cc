@@ -35,8 +35,8 @@ void Toggle::onClick(Vec2i at)
 
 void Toggle::onLayout()
 {
+	Widget::onLayout();
 	switchPosition.x = size().x * (toggleState() ? 0.5f : 0.0f);
-	render();
 }
 
 void Toggle::onPropertyChanged(Property& property)

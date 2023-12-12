@@ -30,6 +30,8 @@ Root& SplitLayout::addRoot(Direction direction)
 
 void SplitLayout::onLayout()
 {
+	Layout::onLayout();
+
 	if(children.empty())
 	{
 		return;

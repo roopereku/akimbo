@@ -19,6 +19,11 @@ void Layout::onRender(Renderer2D& render)
 	}
 }
 
+void Layout::onLayout()
+{
+	Widget::onLayout();
+}
+
 Widget* Layout::findAt(Vec2i& at)
 {
 	// If the given position is inside some child widget, recurse into the child.

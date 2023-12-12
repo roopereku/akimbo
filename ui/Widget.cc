@@ -23,6 +23,7 @@ void Widget::onClick(Vec2i at)
 
 void Widget::onLayout()
 {
+	render();
 }
 
 Widget* Widget::findAt(Vec2i& at)

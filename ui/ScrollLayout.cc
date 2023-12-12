@@ -35,6 +35,8 @@ Root& ScrollLayout::addRoot(Direction direction)
 
 void ScrollLayout::onLayout()
 {
+	Layout::onLayout();
+
 	Vec2i offset = direction == Direction::Horizontal ?
 		Vec2i(-scroll(), 0) : Vec2i(0, -scroll());
 

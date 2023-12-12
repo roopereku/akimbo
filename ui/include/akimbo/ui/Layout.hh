@@ -23,7 +23,7 @@ public:
 	Widget* findAt(Vec2i& at) final override;
 	size_t getChildCount();
 
-	virtual void onLayout() override = 0;
+	virtual void onLayout() override;
 
 protected:
 	struct WidgetInLayout

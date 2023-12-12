@@ -10,6 +10,7 @@
 
 #include <random>
 #include <thread>
+#include <functional>
 
 class TestWidget : public akimbo::UI::Widget
 {
@@ -73,21 +74,28 @@ private:
 	float b;
 };
 
-class Intrusive : public akimbo::UI::Widget
+class Button : public akimbo::UI::Widget
 {
 public:
-	static Intrusive& add()
+	static Button& add(std::function <void()>&& callback)
 	{
-		return getCore().add(new Intrusive);
+		return getCore().add(new Button(std::move(callback)));
 	}
 
 	void onRender(akimbo::Renderer2D& render) override
 	{
-		render.clear(0.1, 0.1, 0.3);
+		render.clear(0.1, 0.2, 0.3);
 
-		render.color(0.8, 0.8, 0.8);
-		render.box(-50, 10, 100, 100);
+		render.color(0.5, 0.5, 0.5);
+		render.box(25, 25, size().x - 25, size().y - 25);
 	}
+
+private:
+	Button(std::function <void()>&& callback) : callback(std::move(callback))
+	{
+	}
+
+	std::function <void()> callback;
 };
 
 class Test : public akimbo::Main
