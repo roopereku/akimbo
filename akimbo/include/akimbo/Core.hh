@@ -21,6 +21,7 @@ public:
 		return static_cast <T&> (*entities.back());
 	}
 
+	void addTask(std::shared_ptr <Task>&& task);
 	double getDeltaTime();
 	void run();
 
@@ -35,6 +36,7 @@ protected:
 private:
 	std::chrono::duration <double> deltaTime;
 	std::vector <std::shared_ptr <Entity>> entities;
+	std::vector <std::shared_ptr <Task>> tasks;
 };
 
 }

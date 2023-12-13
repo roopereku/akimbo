@@ -10,16 +10,13 @@ Core& Entity::getCore()
 	return core;
 }
 
-void Entity::executeTasks()
+void Entity::onPropertyChanged(Property& property)
 {
-	for(size_t i = 0; i < tasks.size(); i++)
-	{
-		if(tasks[i]->tryFinish(getCore()))
-		{
-			tasks.erase(tasks.begin() + i);
-			i--;
-		}
-	}
+}
+
+void Entity::addTask(std::shared_ptr <Task>&& task)
+{
+	getCore().addTask(std::move(task));
 }
 
 }

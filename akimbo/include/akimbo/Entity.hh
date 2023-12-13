@@ -24,20 +24,15 @@ public:
 	Entity& operator=(const Entity& rhs) = delete;
 	Entity(const Entity& rhs) = delete;
 
-	virtual bool isUpdating()
-	{
-		return false;
-	}
-
-	void executeTasks();
-
 	// Property needs access to onPropertyChanged().
 	friend class Property;
 
 protected:
-	virtual void onPropertyChanged(Property& property)
-	{
-	}
+	virtual void onPropertyChanged(Property& property);
+
+	/// Adds a new task. Internally calls Core::addTask.
+	/// \param task The task to be added.
+	void addTask(std::shared_ptr <Task>&& task);
 
 	/// Creates a new repeating task that repeats the given amount.
 	/// \param callback The callback to call upon executing the task.
@@ -45,7 +40,7 @@ protected:
 	template <typename Callback>
 	void addRepeatingTask(Callback&& callback, unsigned repetitions = 0)
 	{
-		tasks.emplace_back(RepeatingTask <Callback>::make(std::move(callback), repetitions));
+		addTask(RepeatingTask <Callback>::make(std::move(callback), repetitions));
 	}
 
 	/// Creates a new repeating task that repeats the given amount.
@@ -54,13 +49,10 @@ protected:
 	template <typename Callback>
 	void addTransitionTask(Callback&& callback, double durationSeconds)
 	{
-		tasks.emplace_back(TransitionTask <Callback>::make(std::move(callback), durationSeconds));
+		addTask(TransitionTask <Callback>::make(std::move(callback), durationSeconds));
 	}
 
 	static Core& getCore();
-
-private:
-	std::vector <std::shared_ptr <Task>> tasks;
 };
 
 }

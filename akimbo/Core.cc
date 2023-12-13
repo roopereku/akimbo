@@ -7,6 +7,11 @@ Core::Core() : isRunning(*this, false)
 {
 }
 
+void Core::addTask(std::shared_ptr <Task>&& task)
+{
+	tasks.emplace_back(std::move(task));
+}
+
 double Core::getDeltaTime()
 {
 	return deltaTime.count();
@@ -23,9 +28,13 @@ void Core::run()
 		deltaTime = now - start;
 		start = now;
 
-		for(auto entity : entities)
+		for(size_t i = 0; i < tasks.size(); i++)
 		{
-			entity->executeTasks();
+			if(tasks[i]->tryFinish(getCore()))
+			{
+				tasks.erase(tasks.begin() + i);
+				i--;
+			}
 		}
 	}
 }
