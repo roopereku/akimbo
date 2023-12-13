@@ -12,13 +12,17 @@ class Window;
 class Renderer : public Entity
 {
 public:
-	Window& getWindow()
+	const EntityProperty <Window>& getWindow() const
 	{
-		return window.getValue();
+		return window;
 	}
 
 protected:
 	Renderer(Window& target) : window(*this, target)
+	{
+	}
+
+	Renderer(Renderer& rhs) : window(*this, rhs.window)
 	{
 	}
 

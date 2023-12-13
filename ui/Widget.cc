@@ -35,7 +35,7 @@ void Widget::render()
 {
 	if(parent)
 	{
-		parent.getValue().render();
+		parent->render();
 	}
 
 	RenderTarget2D::render();
@@ -49,7 +49,7 @@ void Widget::onPropertyChanged(Property& property)
 		// If this widget has a parent layout, make it rearrange its children.
 		if(parent)
 		{
-			parent.getValue().onLayout();
+			parent->onLayout();
 		}
 
 		// If this widget has no parent layout, this should be a root layout.

@@ -16,11 +16,11 @@ void Window::onPropertyChanged(Property& property)
 {
 	if(property == content)
 	{
-		content.getValue().size = getSize();
-		content.getValue().window = *this;
-		content.getValue().onAttached();
+		content->size = getSize();
+		content->window = *this;
+		content->onAttached();
 
-		content.getValue().render();
+		content->render();
 	}
 }
 
@@ -36,7 +36,7 @@ void Window::onMouseMoved(Vec2i at)
 	{
 		if(content)
 		{
-			content().onDrag(at);
+			content->onDrag(at);
 		}
 	}
 
@@ -49,7 +49,7 @@ void Window::onMouseButtonUp(Vec2i at)
 	{
 		if(content)
 		{
-			content().onClick(at);
+			content->onClick(at);
 		}
 	}
 
@@ -61,7 +61,7 @@ void Window::onWindowResized(Vec2i size)
 {
 	if(content)
 	{
-		content.getValue().size = size;
+		content->size = size;
 	}
 }
 

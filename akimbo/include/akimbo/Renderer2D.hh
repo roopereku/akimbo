@@ -23,6 +23,7 @@ public:
 
 protected:
 	Renderer2D(Window& target);
+	Renderer2D(Renderer2D& rhs);
 };
 
 }

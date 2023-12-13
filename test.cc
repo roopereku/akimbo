@@ -130,14 +130,17 @@ public:
 			tabs.previous();
 		}));
 
+		auto& addButton = buttons.child(Button::add([&tabs]()
+		{
+			printf("Add tab\n");
+			tabs.child(TestWidget::add());
+		}));
+
 		auto& nextButton = buttons.child(Button::add([&tabs]()
 		{
 			tabs.next();
 		}));
 
-		tabs.child(TestWidget::add());
-		tabs.child(TestWidget::add());
-		tabs.child(TestWidget::add());
 		tabs.child(TestWidget::add());
 	}
 };

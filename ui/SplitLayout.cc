@@ -48,19 +48,19 @@ void SplitLayout::onLayout()
 			case Direction::Horizontal:
 			{
 				child.position = Vec2i(offset, 0);
-				child.widget->size.assignWithoutTrigger(Vec2i(partition, size().y));
+				child.widget.lock()->size.assignWithoutTrigger(Vec2i(partition, size().y));
 				break;
 			}
 
 			case Direction::Vertical:
 			{
 				child.position = Vec2i(0, offset);
-				child.widget->size.assignWithoutTrigger(Vec2i(size().x, partition));
+				child.widget.lock()->size.assignWithoutTrigger(Vec2i(size().x, partition));
 				break;
 			}
 		}
 
-		child.widget->onLayout();
+		child.widget.lock()->onLayout();
 		offset += partition;
 	}
 }

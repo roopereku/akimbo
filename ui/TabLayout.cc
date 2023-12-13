@@ -42,7 +42,7 @@ Root& TabLayout::addRoot(Type contentType)
 
 bool TabLayout::next()
 {
-	if(selectedIndex() + 1 < content().getChildCount())
+	if(selectedIndex() + 1 < content->getChildCount())
 	{
 		selectedIndex = selectedIndex() + 1;
 		return true;
@@ -67,7 +67,7 @@ void TabLayout::prepareChild(Widget& child)
 	// If the content layout has been set, forward the child to it.
 	if(content)
 	{
-		content().child(child);
+		content->child(child);
 	}
 
 	// If the content hasn't been set, do default handling for it.
@@ -85,13 +85,13 @@ void TabLayout::onLayout()
 {
 	Layout::onLayout();
 
-	content().size.assignWithoutTrigger(size());
-	content().onLayout();
+	content->size.assignWithoutTrigger(size());
+	content->onLayout();
 
 	if(contentType == Type::Scrolling)
 	{
-		ScrollLayout& scrolling = static_cast <ScrollLayout&> (content());
-		scrolling.scroll = scrolling.size().x * selectedIndex();
+		auto scrolling = std::static_pointer_cast <ScrollLayout> (content.getValue());
+		scrolling->scroll = scrolling->size().x * selectedIndex();
 	}
 }
 
@@ -108,7 +108,7 @@ void TabLayout::onPropertyChanged(Property& property)
 		printf("Selected index updated to %d\n", selectedIndex());
 
 		// If the index is too high, or too low, do nothing.
-		if(selectedIndex() < 0 || selectedIndex() >= content().getChildCount())
+		if(selectedIndex() < 0 || selectedIndex() >= content->getChildCount())
 		{
 			// TODO: Display a warning that an invalid index was used.
 			selectedIndex.assignWithoutTrigger(previousSelected);
@@ -118,24 +118,24 @@ void TabLayout::onPropertyChanged(Property& property)
 
 		if(contentType == Type::Scrolling)
 		{
-			ScrollLayout& scrolling = static_cast <ScrollLayout&> (content());
+			auto scrolling = std::static_pointer_cast <ScrollLayout> (content.getValue());
 
-			addTransitionTask([&scrolling, current = selectedIndex(), prev = previousSelected](float progress)
+			addTransitionTask([scrolling, current = selectedIndex(), prev = previousSelected](float progress)
 			{
 				// Calculate where the origin and destination are located at.
-				const int originScroll = scrolling.size().x * prev;
-				const int destinationScroll = scrolling.size().x * current;
+				const int originScroll = scrolling->size().x * prev;
+				const int destinationScroll = scrolling->size().x * current;
 
 				// Moving forwards.
 				if(originScroll < destinationScroll)
 				{
-					scrolling.scroll = originScroll + (destinationScroll - originScroll) * progress;
+					scrolling->scroll = originScroll + (destinationScroll - originScroll) * progress;
 				}
 
 				// Moving backwards.
 				else
 				{
-					scrolling.scroll = originScroll - (originScroll - destinationScroll) * progress;
+					scrolling->scroll = originScroll - (originScroll - destinationScroll) * progress;
 				}
 
 			}, 0.5);

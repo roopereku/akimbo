@@ -14,8 +14,8 @@ void Layout::onRender(Renderer2D& render)
 {
 	for(auto& child : children)
 	{
-		WidgetRenderer renderer(render, *child.widget, child.position);
-		child.widget->onRender(renderer);
+		WidgetRenderer renderer(render, child.widget, child.position);
+		child.widget.lock()->onRender(renderer);
 	}
 }
 
@@ -29,16 +29,19 @@ Widget* Layout::findAt(Vec2i& at)
 	// If the given position is inside some child widget, recurse into the child.
 	for(auto& child : children)
 	{
+		auto childWidget = child.widget.lock();
+		const auto childSize = childWidget->size();
+
 		if(at.x >= child.position.x && at.y >= child.position.y &&
-			at.x <= child.position.x + child.widget->size().x &&
-			at.y <= child.position.y + child.widget->size().y)
+			at.x <= child.position.x + childSize.x &&
+			at.y <= child.position.y + childSize.y)
 		{
 			// Modify the location so that 0 0 matches the top left
 			// corner of the current child widget.
 			at.x -= child.position.x;
 			at.y -= child.position.y;
 
-			return child.widget->findAt(at);
+			return childWidget->findAt(at);
 		}
 	}
 

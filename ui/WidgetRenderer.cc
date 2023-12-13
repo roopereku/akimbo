@@ -6,8 +6,8 @@
 namespace akimbo::UI
 {
 
-WidgetRenderer::WidgetRenderer(Renderer2D& renderer, Widget& target, Vec2i offset)
-	: Renderer2D(renderer.getWindow()), renderer(renderer), target(target), offset(offset)
+WidgetRenderer::WidgetRenderer(Renderer2D& renderer, std::weak_ptr <Widget> target, Vec2i offset)
+	: Renderer2D(renderer), renderer(renderer), target(target), offset(offset)
 {
 	Vec2i previousOrigin = renderer.getOrigin();
 
@@ -18,7 +18,8 @@ WidgetRenderer::WidgetRenderer(Renderer2D& renderer, Widget& target, Vec2i offse
 		std::max(previousOrigin.y, previousOrigin.y + offset.y)
 	);
 
-	renderer.setScissor(origin.x, origin.y, target.size().x, target.size().y);
+	const auto targetSize = target.lock()->size();
+	renderer.setScissor(origin.x, origin.y, targetSize.x, targetSize.y);
 }
 
 void WidgetRenderer::color(float r, float g, float b, float a)
@@ -38,13 +39,16 @@ void WidgetRenderer::display()
 
 void WidgetRenderer::clear(float r, float g, float b, float a)
 {
+	const auto targetSize = target.lock()->size();
+
 	renderer.color(r, g, b, a);
-	renderer.box(offset.x, offset.y, target.size().x, target.size().y);
+	renderer.box(offset.x, offset.y, targetSize.x, targetSize.y);
 }
 
 void WidgetRenderer::clear()
 {
-	renderer.box(offset.x, offset.y, target.size().x, target.size().y);
+	const auto targetSize = target.lock()->size();
+	renderer.box(offset.x, offset.y, targetSize.x, targetSize.y);
 }
 
 void WidgetRenderer::box(int x, int y, int w, int h, bool filled)
@@ -64,8 +68,10 @@ void WidgetRenderer::line(int x1, int y1, int x2, int y2)
 
 void WidgetRenderer::showBorders()
 {
+	const auto targetSize = target.lock()->size();
+
 	renderer.color(1.0f, 1.0f, 1.0f);
-	line(0, 0, target.size().x, target.size().y);
+	line(0, 0, targetSize.x, targetSize.y);
 }
 
 Vec2i WidgetRenderer::getOrigin()

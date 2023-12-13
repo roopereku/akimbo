@@ -59,8 +59,8 @@ void ScrollLayout::onLayout()
 			}
 		}
 
-		child.widget->size.assignWithoutTrigger(size());
-		child.widget->onLayout();
+		child.widget.lock()->size.assignWithoutTrigger(size());
+		child.widget.lock()->onLayout();
 	}
 }
 

@@ -40,7 +40,7 @@ void Root::onRender(Renderer2D& render)
 
 void Root::onAttached()
 {
-	layout.size = size.getValue();
+	layout.size = size();
 }
 
 void Root::onClick(Vec2i at)
@@ -70,7 +70,7 @@ void Root::onPropertyChanged(Property& property)
 {
 	if(property == size)
 	{
-		layout.size = size.getValue();
+		layout.size = size();
 	}
 }
 

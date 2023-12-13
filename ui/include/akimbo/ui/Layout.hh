@@ -30,7 +30,7 @@ protected:
 	{
 		WidgetInLayout(Widget& widget);
 
-		std::shared_ptr <Widget> widget;
+		std::weak_ptr <Widget> widget;
 		Vec2i position;
 	};
 

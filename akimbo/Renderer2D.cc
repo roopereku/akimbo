@@ -8,19 +8,25 @@ Renderer2D::Renderer2D(Window& target) : Renderer(target)
 {
 	addRepeatingTask([this]()
 	{
-		if(window)
+		if(window && window->content)
 		{
-			auto& content = window.getValue().content.getValue();
+			auto& content = window->content;
 
-			if(content.isDirty())
+			if(content->isDirty())
 			{
-				content.onRender(*this);
-				content.clear();
+				content->onRender(*this);
+				content->clear();
 			}
 
 			display();
 		}
 	});
+
+
+}
+
+Renderer2D::Renderer2D(Renderer2D& rhs) : Renderer(rhs)
+{
 }
 
 Vec2i Renderer2D::getOrigin()

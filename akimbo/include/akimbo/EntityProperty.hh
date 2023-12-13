@@ -4,6 +4,8 @@
 #include <akimbo/Entity.hh>
 #include <akimbo/Property.hh>
 
+#include <cassert>
+
 namespace akimbo
 {
 
@@ -16,36 +18,41 @@ public:
 	}
 
 	EntityProperty(Entity& host, T& initialValue)
-		: Property(host), entity(initialValue.shared_from_this())
+		: Property(host), entity(std::static_pointer_cast <T> (initialValue.shared_from_this()))
+	{
+	}
+
+	EntityProperty(Entity& host, EntityProperty <T>& rhs)
+		: Property(host), entity(rhs.entity)
 	{
 	}
 
 	operator bool()
 	{
-		return static_cast <bool> (entity);
+		return static_cast <bool> (!entity.expired());
 	}
 
 	EntityProperty& operator=(T& rhs)
 	{
-		entity = rhs.shared_from_this();
+		entity = std::static_pointer_cast <T> (rhs.shared_from_this());
 		triggerChange();
 
 		return *this;
 	}
 
-	T& operator()()
+	std::shared_ptr <T> getValue()
+	{
+		assert(!entity.expired());
+		return entity.lock();
+	}
+
+	std::shared_ptr <T> operator->()
 	{
 		return getValue();
 	}
 
-	T& getValue()
-	{
-		// TODO: Assert entity validity.
-		return static_cast <T&> (*entity);
-	}
-
 private:
-	std::shared_ptr <Entity> entity;
+	std::weak_ptr <T> entity;
 };
 
 }
